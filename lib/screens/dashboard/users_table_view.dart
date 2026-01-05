@@ -6,32 +6,31 @@ class UsersTableView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: CustomTable(
-            headers: const [
-              'Users ID',
-              'Nmae',
-              'Email',
-              'Phone',
-              'Address',
-              'Status', // This will now hold our custom Chip widget
-              'Action',
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: CustomTable(
+          headers: const [
+            'Users ID',
+            'Name',
+            'Email',
+            'Phone',
+            'Address',
+            'Status',
+            'Action',
+          ],
+          rows: [
+            [
+              '#User-7721',
+              'John Doe',
+              'johndoe@example.com',
+              '4545645675',
+              'New yourk',
+              'Active',
+              ElevatedButton(onPressed: () {}, child: const Text("Details")),
             ],
-            rows: [
-              [
-                '#User-7721',
-                'John Doe',
-                'johndoe@example.com',
-                '4545645675',
-                'New yourk',
-                'Active',
-                ElevatedButton(onPressed: () {}, child: const Text("Details")),
-              ],
-            ],
-          ),
+          ],
         ),
       ),
     );

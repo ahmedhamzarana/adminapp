@@ -8,7 +8,8 @@ class OrderTableView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: SingleChildScrollView(
+      child: Align(
+        alignment: Alignment.topLeft, // 👈 FIX
         child: CustomTable(
           headers: const [
             'Order ID',
@@ -16,7 +17,7 @@ class OrderTableView extends StatelessWidget {
             'Product',
             'Amount',
             'Date',
-            'Status', // This will now hold our custom Chip widget
+            'Status',
             'Action',
           ],
           rows: [
@@ -36,15 +37,6 @@ class OrderTableView extends StatelessWidget {
               '\$100',
               'Oct 25, 2023',
               _buildStatusChip('Pending', Colors.orange),
-              ElevatedButton(onPressed: () {}, child: const Text("Details")),
-            ],
-            [
-              '#ORD-9910',
-              'Mike Ross',
-              'Fossil Grant',
-              '\$250',
-              'Oct 26, 2023',
-              _buildStatusChip('Shipped', Colors.blue),
               ElevatedButton(onPressed: () {}, child: const Text("Details")),
             ],
           ],

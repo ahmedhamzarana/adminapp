@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () => setState(() => selectedIndex = 2),
                 ),
                 Sidebar(
-                  icon: Icons.watch,
+                  icon: Icons.person,
                   title: "Manage Users",
                   isActive: selectedIndex == 3,
                   onTap: () => setState(() => selectedIndex = 3),

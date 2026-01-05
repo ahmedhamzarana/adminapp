@@ -103,6 +103,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
+                      // context.read<LoginProvider>().formvalidate(context);
                       Navigator.pushReplacementNamed(
                         context,
                         AppRoutes.homeRoute,

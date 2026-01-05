@@ -10,10 +10,46 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<SplashProvider>(context).splashTimer(context);
     return Scaffold(
-      
-      backgroundColor: AppColors.bgcolor,
-      body: Center(
-        child: Text("Admin", style: TextStyle(fontSize: 30, color: AppColors.dark),),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.secondary,
+              AppColors.secondary.withAlpha(10),
+            ],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/mainlogo.png',
+              width: 170,
+              height: 170,
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Watch.Hub',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 1.2,
+              ),
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'Your Time • Your Style',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
