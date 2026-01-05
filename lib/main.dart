@@ -1,0 +1,29 @@
+import 'package:adminapp/providers/home_provider.dart';
+import 'package:adminapp/providers/login_provider.dart';
+import 'package:adminapp/providers/splash_provider.dart';
+import 'package:adminapp/utils/app_routes.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+void main() {
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context)=>SplashProvider()),
+    ChangeNotifierProvider(create: (context)=>LoginProvider()),
+    ChangeNotifierProvider(create: (context)=>HomeProvider()),
+  ],child: MyApp(),));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      initialRoute: AppRoutes.splashRoute,
+      routes: AppRoutes.routes,
+    
+    );
+  }
+}
