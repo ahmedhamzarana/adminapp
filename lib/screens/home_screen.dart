@@ -1,3 +1,4 @@
+import 'package:adminapp/screens/dashboard/add_product.dart';
 import 'package:adminapp/screens/dashboard/main_view.dart';
 import 'package:adminapp/screens/dashboard/order_table_view.dart';
 import 'package:adminapp/reusable/sidebar.dart';
@@ -17,7 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
 
   final List<Widget> screens = [
-    const MainView(), 
+    const MainView(),
+    const AddProduct(),
     const ProductTableView(),
     const OrderTableView(),
     const UsersTableView(),
@@ -28,8 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.bgcolor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.primary,
-        elevation: 2,
         title: const Text(
           "Watches Hub Admin",
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -98,15 +100,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Sidebar(
                   icon: Icons.branding_watermark,
-                  title: "Orders",
+                  title: "Products",
                   isActive: selectedIndex == 2,
                   onTap: () => setState(() => selectedIndex = 2),
                 ),
                 Sidebar(
-                  icon: Icons.person,
-                  title: "Manage Users",
+                  icon: Icons.branding_watermark,
+                  title: "Orders",
                   isActive: selectedIndex == 3,
                   onTap: () => setState(() => selectedIndex = 3),
+                ),
+                Sidebar(
+                  icon: Icons.person,
+                  title: "Manage Users",
+                  isActive: selectedIndex == 4,
+                  onTap: () => setState(() => selectedIndex = 4),
                 ),
 
                 const Spacer(),

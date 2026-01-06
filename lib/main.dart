@@ -1,16 +1,25 @@
+import 'package:adminapp/providers/add_product_provider.dart';
 import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/providers/login_provider.dart';
+import 'package:adminapp/providers/products_view_provider.dart';
 import 'package:adminapp/providers/splash_provider.dart';
 import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context)=>SplashProvider()),
-    ChangeNotifierProvider(create: (context)=>LoginProvider()),
-    ChangeNotifierProvider(create: (context)=>HomeProvider()),
-  ],child: MyApp(),));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SplashProvider()),
+        ChangeNotifierProvider(create: (context) => LoginProvider()),
+        ChangeNotifierProvider(create: (context) => HomeProvider()),
+        ChangeNotifierProvider(create: (context) => AddProductProvider()),
+        ChangeNotifierProvider(create: (context) => ProductsViewProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +32,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: AppRoutes.splashRoute,
       routes: AppRoutes.routes,
-    
     );
   }
 }
