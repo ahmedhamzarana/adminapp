@@ -24,7 +24,7 @@ class Sidebar extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           // Change color based on selection
-          color: isActive ? Colors.white.withOpacity(0.2) : Colors.transparent,
+          color: isActive ? Colors.white.withAlpha(2) : Colors.transparent,
         ),
         child: Row(
           children: [

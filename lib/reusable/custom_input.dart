@@ -1,3 +1,4 @@
+import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomInput extends StatelessWidget {
@@ -13,7 +14,7 @@ class CustomInput extends StatelessWidget {
     this.description,
     this.maxLines = 1,
     required this.controller,
-    required this.errorText
+    required this.errorText,
   });
 
   @override
@@ -22,13 +23,11 @@ class CustomInput extends StatelessWidget {
       controller: controller,
       maxLines: maxLines,
       decoration: InputDecoration(
+        fillColor: AppColors.primary,
         labelText: labelText,
         errorText: errorText,
         helperText: description, // shown only if not null
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-        
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
       ),
     );
   }

@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 hintText: "Search...",
                 hintStyle: const TextStyle(color: Colors.white70),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.15),
+                fillColor: Colors.white.withAlpha(5),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
