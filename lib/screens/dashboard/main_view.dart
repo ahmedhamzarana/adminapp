@@ -136,8 +136,8 @@ class MainView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
               color: status == "Success"
-                  ? Colors.green.withOpacity(0.1)
-                  : Colors.orange.withOpacity(0.1),
+                  ? Colors.green.withAlpha(100)
+                  : Colors.orange.withAlpha(100),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

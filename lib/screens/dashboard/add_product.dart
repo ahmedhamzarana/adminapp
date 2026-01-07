@@ -192,7 +192,7 @@ class AddProduct extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 18),
                         backgroundColor: AppColors.primary,
                         elevation: 6,
-                        shadowColor: AppColors.primary.withOpacity(0.4),
+                        shadowColor: AppColors.primary.withAlpha(100),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),

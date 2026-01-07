@@ -35,7 +35,7 @@ class OrdersTableView extends StatelessWidget {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withAlpha(100),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(

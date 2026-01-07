@@ -39,7 +39,7 @@ class ResponsiveTableView extends StatelessWidget {
             border: Border.all(color: Colors.grey.shade200),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withAlpha(100),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -133,7 +133,7 @@ class ResponsiveTableView extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: data.length,
-      separatorBuilder: (_, __) =>
+      separatorBuilder: (context, acontext) =>
           Divider(height: 1, color: Colors.grey.shade100),
       itemBuilder: (context, index) {
         final item = data[index];
