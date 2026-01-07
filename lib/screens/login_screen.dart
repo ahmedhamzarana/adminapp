@@ -53,9 +53,7 @@ class LoginScreen extends StatelessWidget {
                 // Username
                 TextField(
                   controller: authProvider.usernamecontroller,
-                  style: const TextStyle(
-                    color: AppColors.secondary,
-                  ),
+                  style: const TextStyle(color: AppColors.bgcolor),
                   cursorColor: AppColors.secondary,
                   decoration: InputDecoration(
                     labelText: "Username",
@@ -82,7 +80,10 @@ class LoginScreen extends StatelessWidget {
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(color: AppColors.secondary, width: 2),
+                      borderSide: const BorderSide(
+                        color: AppColors.secondary,
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),
@@ -93,9 +94,7 @@ class LoginScreen extends StatelessWidget {
                 TextField(
                   controller: authProvider.passwordcontroller,
                   obscureText: authProvider.obsecureText,
-                  style: const TextStyle(
-                    color: AppColors.secondary,
-                  ),
+                  style: const TextStyle(color: AppColors.bgcolor),
                   cursorColor: AppColors.secondary,
                   decoration: InputDecoration(
                     labelText: "Password",
@@ -116,9 +115,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(
-                        color: AppColors.secondary,
-                      ),
+                      borderSide: const BorderSide(color: AppColors.secondary),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -133,7 +130,10 @@ class LoginScreen extends StatelessWidget {
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(color: AppColors.secondary, width: 2),
+                      borderSide: const BorderSide(
+                        color: AppColors.secondary,
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),
@@ -146,7 +146,7 @@ class LoginScreen extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -161,7 +161,7 @@ class LoginScreen extends StatelessWidget {
                     child: const Text(
                       "Sign In",
                       style: TextStyle(
-                        color: AppColors.secondary,
+                        color: AppColors.bgcolor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
