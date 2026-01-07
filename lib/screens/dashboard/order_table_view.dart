@@ -31,8 +31,24 @@ class OrdersTableView extends StatelessWidget {
         headers: const ['Order ID', 'Customer', 'Date', 'Total', 'Status'],
         rowBuilder: (context, header, value, item) {
           if (header == 'Status') {
-            return _buildStatusChip(value);
+            final Color color = value == 'Delivered' ? Colors.green : Colors.orange;
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                value,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
           }
+          
           if (header == 'Total') {
             return Text(
               value,
@@ -42,27 +58,9 @@ class OrdersTableView extends StatelessWidget {
               ),
             );
           }
+          
           return Text(value.toString());
         },
-      ),
-    );
-  }
-
-  Widget _buildStatusChip(String status) {
-    Color color = status == 'Delivered' ? Colors.green : Colors.orange;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        status,
-        style: TextStyle(
-          color: color,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
       ),
     );
   }

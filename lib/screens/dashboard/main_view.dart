@@ -21,7 +21,7 @@ class MainView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Horology Suite", // Elegant brand name
+                      "Watches Hub", // Elegant brand name
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,

@@ -26,30 +26,26 @@ class UsersTableView extends StatelessWidget {
       child: ResponsiveTableView(
         title: "User Management",
         data: usersData,
-        headers: const ['User', 'Role', 'Status'],
+        headers: const ['Avatar', 'Name', 'Email', 'Role', 'Status'],
         rowBuilder: (context, header, value, item) {
-          if (header == 'User') {
-            return Row(
-              children: [
-                CircleAvatar(radius: 14, child: Text(value[0])),
-                const SizedBox(width: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      value,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      item['email'],
-                      style: const TextStyle(fontSize: 10, color: Colors.grey),
-                    ),
-                  ],
-                ),
-              ],
+          if (header == 'Avatar') {
+            return CircleAvatar(radius: 14, child: Text(item['user'][0]));
+          }
+
+          if (header == 'Name') {
+            return Text(
+              item['user'],
+              style: const TextStyle(fontWeight: FontWeight.bold),
             );
           }
+
+          if (header == 'Email') {
+            return Text(
+              item['email'],
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            );
+          }
+
           return Text(value.toString());
         },
       ),

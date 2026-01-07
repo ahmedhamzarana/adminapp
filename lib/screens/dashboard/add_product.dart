@@ -84,8 +84,20 @@ class AddProduct extends StatelessWidget {
                       const SizedBox(width: 20),
                       ElevatedButton.icon(
                         onPressed: () {},
-                        icon: const Icon(Icons.upload),
-                        label: const Text("Upload Image"),
+                        icon: const Icon(
+                          Icons.upload,
+                          color: AppColors.secondary,
+                        ),
+                        label: const Text(
+                          "Upload Image",
+                          style: TextStyle(color: AppColors.secondary),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -148,33 +160,44 @@ class AddProduct extends StatelessWidget {
 
                   const SizedBox(height: 32),
 
-                  /// Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // Validate form
-                          bool isValid = proProvider.proValidateform(context);
-                          if (isValid) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Product added successfully!"),
-                              ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          backgroundColor:
-                              AppColors.primary, // Optional custom color
-                        ),
-                        child: const Text(
-                          "Add Product",
-                          style: TextStyle(color: AppColors.bgcolor),
+                  /// Improved Button UI
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        bool isValid = proProvider.proValidateform(context);
+                        if (isValid) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Product added successfully!"),
+                            ),
+                          );
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.add_circle_outline,
+                        size: 22,
+                        color: Colors.white,
+                      ),
+                      label: const Text(
+                        "Add Product",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          letterSpacing: 0.4,
                         ),
                       ),
-                    ],
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        backgroundColor: AppColors.primary,
+                        elevation: 6,
+                        shadowColor: AppColors.primary.withOpacity(0.4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

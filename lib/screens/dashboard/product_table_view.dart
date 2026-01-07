@@ -1,43 +1,21 @@
 import 'package:adminapp/reusable/custom_table.dart';
+import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
-// Import your ResponsiveTableView file here
 
 class ProductsTableView extends StatelessWidget {
   const ProductsTableView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Luxury Watch Inventory Data
     final List<Map<String, dynamic>> productsData = [
       {
-        'product': 'Rolex Submariner',
+        'name': 'Rolex Submariner',
         'image':
             'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80&w=200',
         'brand': 'Rolex',
-        'category': 'Diver',
         'price': '₹9,50,000',
-        'stock': 4, // Low stock example
-        'sku': 'RLX-001',
-      },
-      {
-        'product': 'Omega Seamaster',
-        'image':
-            'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=200',
-        'brand': 'Omega',
-        'category': 'Sport',
-        'price': '₹4,20,000',
-        'stock': 15,
-        'sku': 'OMG-052',
-      },
-      {
-        'product': 'Patek Philippe Nautilus',
-        'image':
-            'https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=200',
-        'brand': 'Patek',
-        'category': 'Luxury',
-        'price': '₹24,00,000',
-        'stock': 1,
-        'sku': 'PTK-099',
+        'stock': 4,
+        'description': 'Iconic diving watch with exceptional water resistance',
       },
     ];
 
@@ -48,7 +26,9 @@ class ProductsTableView extends StatelessWidget {
         data: productsData,
         headerActions: [
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.addProductRoute);
+            },
             icon: const Icon(Icons.add, size: 18),
             label: const Text("Add New Watch"),
             style: ElevatedButton.styleFrom(
@@ -62,15 +42,62 @@ class ProductsTableView extends StatelessWidget {
             ),
           ),
         ],
-        headers: const ['Product', 'Brand', 'Price', 'Stock', 'SKU', 'Actions'],
-        // Customizing the cells for a professional look
+        headers: const [
+          'Image',
+          'Name',
+          'Brand',
+          'Price',
+          'Stock',
+          'Description',
+          'Actions',
+        ],
         rowBuilder: (context, header, value, item) {
-          if (header == 'Product') {
-            return _buildProductCell(item);
+          if (header == 'Image') {
+            return Container(
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: NetworkImage(item['image']),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
           }
+
+          if (header == 'Name') {
+            return Text(
+              item['name'],
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            );
+          }
+
           if (header == 'Stock') {
-            return _buildStockCell(value);
+            final bool isLow = value < 5;
+            return Row(
+              children: [
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isLow ? Colors.red : Colors.green,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  "$value units",
+                  style: TextStyle(
+                    color: isLow ? Colors.red : Colors.black87,
+                    fontWeight: isLow ? FontWeight.bold : FontWeight.normal,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            );
           }
+
           if (header == 'Price') {
             return Text(
               value,
@@ -80,98 +107,44 @@ class ProductsTableView extends StatelessWidget {
               ),
             );
           }
-          if (header == 'Actions') {
-            return _buildActionButtons();
+
+          if (header == 'Description') {
+            return Text(
+              value,
+              style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
+              softWrap: true,
+            );
           }
+
+          if (header == 'Actions') {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    size: 18,
+                    color: Colors.blueGrey,
+                  ),
+                  onPressed: () {},
+                  tooltip: 'Edit Product',
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    size: 18,
+                    color: Colors.redAccent,
+                  ),
+                  onPressed: () {},
+                  tooltip: 'Delete Product',
+                ),
+              ],
+            );
+          }
+
           return Text(value.toString());
         },
       ),
-    );
-  }
-
-  // Combines Product Image, Name, and Category
-  Widget _buildProductCell(Map<String, dynamic> item) {
-    return Row(
-      children: [
-        Container(
-          width: 45,
-          height: 45,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            image: DecorationImage(
-              image: NetworkImage(item['image']),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              item['product'],
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-            ),
-            Text(
-              item['category'],
-              style: TextStyle(color: Colors.grey.shade500, fontSize: 11),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  // Dynamic stock indicator (Red if low, Green if plenty)
-  Widget _buildStockCell(int stock) {
-    bool isLow = stock < 5;
-    return Row(
-      children: [
-        Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: isLow ? Colors.red : Colors.green,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Text(
-          "$stock units",
-          style: TextStyle(
-            color: isLow ? Colors.red : Colors.black87,
-            fontWeight: isLow ? FontWeight.bold : FontWeight.normal,
-            fontSize: 12,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionButtons() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          icon: const Icon(
-            Icons.edit_outlined,
-            size: 18,
-            color: Colors.blueGrey,
-          ),
-          onPressed: () {},
-          tooltip: 'Edit Product',
-        ),
-        IconButton(
-          icon: const Icon(
-            Icons.delete_outline,
-            size: 18,
-            color: Colors.redAccent,
-          ),
-          onPressed: () {},
-          tooltip: 'Delete Product',
-        ),
-      ],
     );
   }
 }
