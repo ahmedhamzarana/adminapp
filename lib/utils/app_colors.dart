@@ -5,8 +5,9 @@ class AppColors {
   static const Color dark = Colors.black;
   static const Color success = Colors.green;
   static const Color danger = Colors.red;
-  static const Color primary = Colors.blue;
-  static const Color secondary = Colors.grey;
+  static const Color primary = Color(0xFF006039);
+  static const Color secondary = Color(0xFFC1A35F);
   static const Color info = Colors.yellow;
-
+  static const apptextcolor = Color(0xFFECEFF1);
+  static const appstatusbarcolor = Color(0xFF90A4AE);
 }

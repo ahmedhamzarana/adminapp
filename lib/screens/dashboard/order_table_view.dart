@@ -1,128 +1,63 @@
-import 'package:adminapp/utils/app_colors.dart';
+import 'package:adminapp/reusable/custom_table.dart';
 import 'package:flutter/material.dart';
-import '../../reusable/custom_table.dart';
 
-class OrderTableView extends StatelessWidget {
-  const OrderTableView({super.key});
+class OrdersTableView extends StatelessWidget {
+  const OrdersTableView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(30),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// ================= HEADER =================
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 16,
-                ),
-                color: AppColors.primary,
-                child: Row(
-                  children: [
-                    const Text(
-                      "Product List",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Spacer(),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green, // Edit button color
-                        foregroundColor: Colors.white, // Text color
-                      ),
-                      child: Text("Edit"),
-                    ),
-                    SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red, // Delete button color
-                        foregroundColor: Colors.white, // Text color
-                      ),
-                      child: Text("Delete"),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+    final List<Map<String, dynamic>> ordersData = [
+      {
+        'order_id': 'ORD-101',
+        'customer': 'Alice Smith',
+        'date': 'Jan 05',
+        'total': '₹45,000',
+        'status': 'Delivered',
+      },
+      {
+        'order_id': 'ORD-102',
+        'customer': 'Bob Johnson',
+        'date': 'Jan 06',
+        'total': '₹1,20,000',
+        'status': 'Pending',
+      },
+    ];
 
-            /// ================= TABLE BODY =================
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal, // Landscape scroll
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width, // Full width
-                  ),
-                  child: CustomTable(
-                    headers: const [
-                      '',
-                      'Order ID',
-                      'Customer',
-                      'Product',
-                      'Amount',
-                      'Date',
-                      'Status',
-                    ],
-                    rows: [
-                      [
-                        Checkbox(value: false, onChanged: (val) {}),
-                        '#ORD-7721',
-                        'John Doe',
-                        'Rolex Submariner',
-                        '\$5,000',
-                        'Oct 24, 2023',
-                        _buildStatusChip('Delivered', Colors.green),
-                      ],
-                    ],
-                  ),
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: ResponsiveTableView(
+        title: "Order History",
+        data: ordersData,
+        headers: const ['Order ID', 'Customer', 'Date', 'Total', 'Status'],
+        rowBuilder: (context, header, value, item) {
+          if (header == 'Status') {
+            return _buildStatusChip(value);
+          }
+          if (header == 'Total') {
+            return Text(
+              value,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
               ),
-            ),
-          ],
-        ),
+            );
+          }
+          return Text(value.toString());
+        },
       ),
     );
   }
 
-  // Helper method to create a professional-looking Status Badge
-  Widget _buildStatusChip(String label, Color color) {
+  Widget _buildStatusChip(String status) {
+    Color color = status == 'Delivered' ? Colors.green : Colors.orange;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withAlpha(1), // Light background
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color, width: 1),
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        label,
-        textAlign: TextAlign.center,
+        status,
         style: TextStyle(
           color: color,
           fontSize: 12,

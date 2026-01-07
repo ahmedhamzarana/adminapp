@@ -12,18 +12,18 @@ class LoginScreen extends StatelessWidget {
     final authProvider = Provider.of<LoginProvider>(context);
 
     return Scaffold(
-      backgroundColor: AppColors.bgcolor,
+      backgroundColor: AppColors.primary,
       body: Center(
         child: SingleChildScrollView(
           child: Container(
             width: 400,
             padding: const EdgeInsets.all(25),
             decoration: BoxDecoration(
-              color: AppColors.secondary,
+              color: AppColors.primary,
               borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withAlpha(15),
+                  color: Colors.black.withAlpha(90),
                   blurRadius: 15,
                   offset: const Offset(0, 8),
                 ),
@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
                 const Icon(
                   Icons.admin_panel_settings,
                   size: 70,
-                  color: Colors.white,
+                  color: AppColors.secondary,
                 ),
                 const SizedBox(height: 15),
 
@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppColors.secondary,
                   ),
                 ),
 
@@ -53,12 +53,36 @@ class LoginScreen extends StatelessWidget {
                 // Username
                 TextField(
                   controller: authProvider.usernamecontroller,
+                  style: const TextStyle(
+                    color: AppColors.secondary,
+                  ),
+                  cursorColor: AppColors.secondary,
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.person),
                     labelText: "Username",
+                    labelStyle: const TextStyle(color: AppColors.secondary),
                     errorText: authProvider.usernameerror,
-                    border: OutlineInputBorder(
+                    prefixIcon: const Icon(
+                      Icons.person,
+                      color: AppColors.secondary,
+                    ),
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: AppColors.secondary),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(
+                        color: AppColors.secondary,
+                        width: 2,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: AppColors.secondary),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: AppColors.secondary, width: 2),
                     ),
                   ),
                 ),
@@ -69,22 +93,47 @@ class LoginScreen extends StatelessWidget {
                 TextField(
                   controller: authProvider.passwordcontroller,
                   obscureText: authProvider.obsecureText,
+                  style: const TextStyle(
+                    color: AppColors.secondary,
+                  ),
+                  cursorColor: AppColors.secondary,
                   decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
+                    labelText: "Password",
+                    labelStyle: const TextStyle(color: AppColors.secondary),
+                    errorText: authProvider.passworderror,
+                    prefixIcon: const Icon(
+                      Icons.lock,
+                      color: AppColors.secondary,
+                    ),
+                    suffixIcon: GestureDetector(
+                      onTap: authProvider.toggleObsecure,
+                      child: Icon(
                         authProvider.obsecureText
                             ? Icons.visibility_off
                             : Icons.visibility,
+                        color: AppColors.secondary,
                       ),
-                      onPressed: () {
-                        authProvider.toggleObsecure();
-                      },
                     ),
-                    labelText: "Password",
-                    errorText: authProvider.passworderror,
-                    border: OutlineInputBorder(
+                    enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(
+                        color: AppColors.secondary,
+                        width: 2,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: AppColors.secondary),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: AppColors.secondary, width: 2),
                     ),
                   ),
                 ),
@@ -97,7 +146,7 @@ class LoginScreen extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.bgcolor,
+                      backgroundColor: AppColors.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -112,6 +161,7 @@ class LoginScreen extends StatelessWidget {
                     child: const Text(
                       "Sign In",
                       style: TextStyle(
+                        color: AppColors.secondary,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),

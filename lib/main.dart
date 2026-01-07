@@ -1,7 +1,6 @@
 import 'package:adminapp/providers/add_product_provider.dart';
 import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/providers/login_provider.dart';
-import 'package:adminapp/providers/products_view_provider.dart';
 import 'package:adminapp/providers/splash_provider.dart';
 import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ void main() {
         ChangeNotifierProvider(create: (context) => LoginProvider()),
         ChangeNotifierProvider(create: (context) => HomeProvider()),
         ChangeNotifierProvider(create: (context) => AddProductProvider()),
-        ChangeNotifierProvider(create: (context) => ProductsViewProvider()),
       ],
       child: MyApp(),
     ),

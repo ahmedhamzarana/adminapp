@@ -17,8 +17,8 @@ class SplashScreen extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              AppColors.secondary,
-              AppColors.secondary.withAlpha(10),
+              AppColors.primary,
+              AppColors.primary.withAlpha(10),
             ],
           ),
         ),

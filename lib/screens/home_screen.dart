@@ -20,8 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> screens = [
     const MainView(),
     const AddProduct(),
-    const ProductTableView(),
-    const OrderTableView(),
+    const ProductsTableView(),
+    const OrdersTableView(),
     const UsersTableView(),
   ];
 
@@ -34,7 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.primary,
         title: const Text(
           "Watches Hub Admin",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.secondary,
+          ),
         ),
         actions: [
           SizedBox(
@@ -68,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           // SIDEBAR
           Container(
-            width: 260,
+            width: 250,
             height: MediaQuery.of(context).size.height,
             color: AppColors.primary,
             child: Column(
