@@ -6,9 +6,10 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FB), // Subtle off-white background
-      body: SingleChildScrollView(
+    return Align(
+      alignment: Alignment.topLeft,
+      child: SingleChildScrollView(
+        // Padding is correctly placed inside SingleChildScrollView
         padding: const EdgeInsets.all(32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,7 +22,7 @@ class MainView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Watches Hub", // Elegant brand name
+                      "Watches Hub",
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -37,7 +38,6 @@ class MainView extends StatelessWidget {
                     ),
                   ],
                 ),
-                // Premium Action Button
                 ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.add, size: 18),
@@ -96,13 +96,23 @@ class MainView extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            // Recent Orders Section (Table Layout)
+            // Recent Orders Section
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Colors.grey.shade100),
+                // FIXED: Added the boxShadow property name
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(
+                      20,
+                    ), // Reduced alpha for a softer look
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,9 +145,10 @@ class MainView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
+              // Using withAlpha as requested
               color: status == "Success"
-                  ? Colors.green.withAlpha(100)
-                  : Colors.orange.withAlpha(100),
+                  ? Colors.green.withAlpha(40) // Subtle background
+                  : Colors.orange.withAlpha(40),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

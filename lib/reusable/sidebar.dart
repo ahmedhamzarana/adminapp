@@ -1,3 +1,4 @@
+import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class Sidebar extends StatelessWidget {
@@ -24,20 +25,22 @@ class Sidebar extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           // Change color based on selection
-          color: isActive ? Colors.white.withAlpha(2) : Colors.transparent,
+          color: isActive
+              ? AppColors.secondary.withAlpha(50)
+              : Colors.transparent,
         ),
         child: Row(
           children: [
             Icon(
               icon,
-              color: isActive ? Colors.white : Colors.white70,
+              color: isActive ? AppColors.secondary : AppColors.secondary,
               size: 22,
             ),
             const SizedBox(width: 15),
             Text(
               title,
               style: TextStyle(
-                color: isActive ? Colors.white : Colors.white70,
+                color: isActive ? AppColors.secondary : AppColors.secondary,
                 fontSize: 16,
                 fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
               ),

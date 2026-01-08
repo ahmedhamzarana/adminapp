@@ -41,19 +41,45 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           SizedBox(
-            width: 220,
+            width: 250, // Slightly wider for better usability
             height: 40,
             child: TextField(
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white, fontSize: 14),
+              cursorColor: AppColors.secondary, // Added for consistency
               decoration: InputDecoration(
                 hintText: "Search...",
-                hintStyle: const TextStyle(color: Colors.white70),
+                hintStyle: const TextStyle(color: Colors.white54),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Colors.white70,
+                  size: 18,
+                ), // Added search icon
                 filled: true,
-                fillColor: Colors.white.withAlpha(5),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                fillColor: Colors.white.withAlpha(
+                  30,
+                ), // Increased alpha for better visibility
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 0,
+                ),
+
+                // Removed the duplicate 'border' property and streamlined the styles
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: AppColors.secondary.withAlpha(50),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(
+                    color: AppColors.secondary,
+                    width: 1.5,
+                  ),
                 ),
               ),
             ),
@@ -61,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(width: 10),
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.logout, color: Colors.white),
+            icon: const Icon(Icons.logout, color: AppColors.secondary),
           ),
           const SizedBox(width: 20),
         ],

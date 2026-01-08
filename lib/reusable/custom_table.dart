@@ -73,7 +73,7 @@ class ResponsiveTableView extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
-              color: AppColors.secondary,
+              color: AppColors.bgcolor,
             ),
           ),
           const Spacer(),
