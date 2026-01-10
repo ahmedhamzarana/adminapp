@@ -1,6 +1,5 @@
 import 'package:adminapp/providers/login_provider.dart';
 import 'package:adminapp/utils/app_colors.dart';
-import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +18,7 @@ class LoginScreen extends StatelessWidget {
             width: 400,
             padding: const EdgeInsets.all(25),
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: AppColors.primary.withAlpha(100),
               borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
@@ -52,13 +51,13 @@ class LoginScreen extends StatelessWidget {
 
                 // Username
                 TextField(
-                  controller: authProvider.usernamecontroller,
+                  controller: authProvider.usernameController,
                   style: const TextStyle(color: AppColors.bgcolor),
                   cursorColor: AppColors.secondary,
                   decoration: InputDecoration(
                     labelText: "Username",
                     labelStyle: const TextStyle(color: AppColors.secondary),
-                    errorText: authProvider.usernameerror,
+                    errorText: authProvider.usernameError,
                     prefixIcon: const Icon(
                       Icons.person,
                       color: AppColors.secondary,
@@ -92,22 +91,22 @@ class LoginScreen extends StatelessWidget {
 
                 // Password
                 TextField(
-                  controller: authProvider.passwordcontroller,
-                  obscureText: authProvider.obsecureText,
+                  controller: authProvider.passwordController,
+                  obscureText: authProvider.obscureText,
                   style: const TextStyle(color: AppColors.bgcolor),
                   cursorColor: AppColors.secondary,
                   decoration: InputDecoration(
                     labelText: "Password",
                     labelStyle: const TextStyle(color: AppColors.secondary),
-                    errorText: authProvider.passworderror,
+                    errorText: authProvider.passwordError,
                     prefixIcon: const Icon(
                       Icons.lock,
                       color: AppColors.secondary,
                     ),
                     suffixIcon: GestureDetector(
-                      onTap: authProvider.toggleObsecure,
+                      onTap: authProvider.toggleObscure,
                       child: Icon(
-                        authProvider.obsecureText
+                        authProvider.obscureText
                             ? Icons.visibility_off
                             : Icons.visibility,
                         color: AppColors.secondary,
@@ -144,29 +143,27 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.secondary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                    onPressed: () {
-                      // context.read<LoginProvider>().formvalidate(context);
-                      Navigator.pushReplacementNamed(
-                        context,
-                        AppRoutes.homeRoute,
-                      );
-                    },
-                    child: const Text(
-                      "Sign In",
-                      style: TextStyle(
-                        color: AppColors.bgcolor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  child: authProvider.isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.secondary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          onPressed: () {
+                            context.read<LoginProvider>().adminLogin(context);
+                          },
+                          child: const Text(
+                            "Sign In",
+                            style: TextStyle(
+                              color: AppColors.bgcolor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                 ),
               ],
             ),

@@ -5,8 +5,13 @@ import 'package:adminapp/providers/splash_provider.dart';
 import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  await Supabase.initialize(
+    url: 'https://euiiocpsflqmdxazktxc.supabase.co',
+    anonKey: 'sb_publishable_SgLBnHBK4JPPwQLtpsp0WQ_lKQExzvW',
+  );
   runApp(
     MultiProvider(
       providers: [

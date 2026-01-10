@@ -74,16 +74,27 @@ class AddProduct extends StatelessWidget {
                           color: Colors.grey.shade100,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.grey.withAlpha(80)),
+                          image: proProvider.selectedImage != null
+                              ? DecorationImage(
+                                  image: FileImage(proProvider.selectedImage!),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
                         ),
-                        child: const Icon(
-                          Icons.image_outlined,
-                          size: 50,
-                          color: Colors.grey,
-                        ),
+                        child: proProvider.selectedImage == null
+                            ? const Icon(
+                                Icons.image_outlined,
+                                size: 50,
+                                color: Colors.grey,
+                              )
+                            : null,
                       ),
                       const SizedBox(width: 20),
                       ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          // Yahan function call karein
+                          proProvider.pickImage();
+                        },
                         icon: const Icon(
                           Icons.upload,
                           color: AppColors.secondary,
@@ -91,12 +102,6 @@ class AddProduct extends StatelessWidget {
                         label: const Text(
                           "Upload Image",
                           style: TextStyle(color: AppColors.secondary),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
                         ),
                       ),
                     ],

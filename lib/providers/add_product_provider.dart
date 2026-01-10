@@ -1,12 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddProductProvider extends ChangeNotifier {
   final TextEditingController proNamecontroller = TextEditingController();
   final TextEditingController proCategorycontroller = TextEditingController();
   final TextEditingController proPricecontroller = TextEditingController();
   final TextEditingController pronStockcontroller = TextEditingController();
-  final TextEditingController proDescriptioncontroller =
-      TextEditingController();
+  final TextEditingController proDescriptioncontroller = TextEditingController();
 
   String proNameerror = "";
   String proCategoryerror = "";
@@ -35,5 +37,17 @@ class AddProductProvider extends ChangeNotifier {
     }
     notifyListeners();
     return isvalid;
+  }
+
+  File? selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    
+    if (image != null) {
+      selectedImage = File(image.path);
+      notifyListeners(); 
+    }
   }
 }
