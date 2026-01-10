@@ -4,6 +4,7 @@ import 'package:adminapp/screens/dashboard/main_view.dart';
 import 'package:adminapp/screens/dashboard/order_table_view.dart';
 import 'package:adminapp/reusable/sidebar.dart';
 import 'package:adminapp/screens/dashboard/product_table_view.dart';
+import 'package:adminapp/screens/dashboard/review_table_view.dart';
 import 'package:adminapp/screens/dashboard/users_table_view.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
     const AddProduct(),
     const ProductsTableView(),
     const OrdersTableView(),
+    const ReviewsTableView(),
     const UsersTableView(),
   ];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppColors.bgcolor,
       appBar: AppBar(
@@ -146,11 +147,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Sidebar(
                   icon: Icons.person,
-                  title: "Manage Users",
+                  title: "Review",
                   isActive: selectedIndex == 4,
                   onTap: () => setState(() => selectedIndex = 4),
                 ),
-
+                Sidebar(
+                  icon: Icons.person,
+                  title: "Manage Users",
+                  isActive: selectedIndex == 5,
+                  onTap: () => setState(() => selectedIndex = 5),
+                ),
                 const Spacer(),
                 const Padding(
                   padding: EdgeInsets.all(20.0),
