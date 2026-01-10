@@ -50,4 +50,6 @@ class AddProductProvider extends ChangeNotifier {
       notifyListeners(); 
     }
   }
+
+  
 }

@@ -1,3 +1,4 @@
+import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/screens/dashboard/add_product.dart';
 import 'package:adminapp/screens/dashboard/main_view.dart';
 import 'package:adminapp/screens/dashboard/order_table_view.dart';
@@ -6,6 +7,7 @@ import 'package:adminapp/screens/dashboard/product_table_view.dart';
 import 'package:adminapp/screens/dashboard/users_table_view.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppColors.bgcolor,
       appBar: AppBar(
@@ -86,7 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(width: 10),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Provider.of<HomeProvider>(context, listen: false).logout(context);
+            },
             icon: const Icon(Icons.logout, color: AppColors.secondary),
           ),
           const SizedBox(width: 20),

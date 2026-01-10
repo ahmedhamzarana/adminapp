@@ -10,8 +10,7 @@ class ProductsTableView extends StatelessWidget {
     final List<Map<String, dynamic>> productsData = [
       {
         'name': 'Rolex Submariner',
-        'image':
-            'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80&w=200',
+        'image':'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80&w=200',
         'brand': 'Rolex',
         'price': '₹9,50,000',
         'stock': 4,
