@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DashboardCard extends StatelessWidget {
   final String title;
   final String value;
-  final String trend; // New: e.g., "+12%"
+  final String trend; 
   final IconData icon;
   final Color color;
 
@@ -26,7 +26,7 @@ class DashboardCard extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade100),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(100),
+            color: Colors.black.withAlpha(20), // Soft shadow
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -41,7 +41,7 @@ class DashboardCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: color.withAlpha(100),
+                  color: color.withAlpha(40), // Light background for icon
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: color, size: 24),

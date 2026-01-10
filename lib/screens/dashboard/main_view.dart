@@ -1,15 +1,19 @@
+import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/reusable/dashboard_card.dart';
+import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainView extends StatelessWidget {
   const MainView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final homeProvider = Provider.of<HomeProvider>(context);
+
     return Align(
       alignment: Alignment.topLeft,
       child: SingleChildScrollView(
-        // Padding is correctly placed inside SingleChildScrollView
         padding: const EdgeInsets.all(32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +43,8 @@ class MainView extends StatelessWidget {
                   ],
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                  },
                   icon: const Icon(Icons.add, size: 18),
                   label: const Text("Add New Watch"),
                   style: ElevatedButton.styleFrom(
@@ -59,10 +64,10 @@ class MainView extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            // Stats Row
-            const Row(
+            // Stats Row (Is pe const nahi lagega kyunki userCount dynamic hai)
+            Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: DashboardCard(
                     title: "Total Revenue",
                     value: "₹842,500",
@@ -71,8 +76,8 @@ class MainView extends StatelessWidget {
                     color: Colors.blueAccent,
                   ),
                 ),
-                SizedBox(width: 20),
-                Expanded(
+                const SizedBox(width: 20),
+                const Expanded(
                   child: DashboardCard(
                     title: "Luxury Items Sold",
                     value: "124",
@@ -81,11 +86,11 @@ class MainView extends StatelessWidget {
                     color: Colors.orange,
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Expanded(
                   child: DashboardCard(
                     title: "Active Customers",
-                    value: "1,250",
+                    value: "1,500", // Dynamic Value
                     trend: "+12.5%",
                     icon: Icons.people_outline,
                     color: Colors.teal,
@@ -96,19 +101,16 @@ class MainView extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            // Recent Orders Section
+            // Recent Shipments Table
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Colors.grey.shade100),
-                // FIXED: Added the boxShadow property name
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withAlpha(
-                      20,
-                    ), // Reduced alpha for a softer look
+                    color: Colors.black.withAlpha(20),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -145,9 +147,8 @@ class MainView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              // Using withAlpha as requested
               color: status == "Success"
-                  ? Colors.green.withAlpha(40) // Subtle background
+                  ? Colors.green.withAlpha(40)
                   : Colors.orange.withAlpha(40),
               borderRadius: BorderRadius.circular(20),
             ),
