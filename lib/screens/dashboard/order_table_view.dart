@@ -21,6 +21,13 @@ class OrdersTableView extends StatelessWidget {
         'total': '₹1,20,000',
         'status': 'Pending',
       },
+      {
+        'order_id': 'ORD-103',
+        'customer': 'Charlie Brown',
+        'date': 'Jan 07',
+        'total': '₹78,500',
+        'status': 'Shipped',
+      },
     ];
 
     return Padding(
@@ -28,15 +35,37 @@ class OrdersTableView extends StatelessWidget {
       child: ResponsiveTableView(
         title: "Order History",
         data: ordersData,
-        headers: const ['Order ID', 'Customer', 'Date', 'Total', 'Status'],
+        headers: const [
+          'Order ID',
+          'Customer',
+          'Date',
+          'Total',
+          'Status',
+          'Actions',
+        ],
         rowBuilder: (context, header, value, item) {
           if (header == 'Status') {
-            final Color color = value == 'Delivered' ? Colors.green : Colors.orange;
+            Color color;
+            switch (value) {
+              case 'Delivered':
+                color = Colors.green;
+                break;
+              case 'Shipped':
+                color = Colors.blue;
+                break;
+              case 'Pending':
+                color = Colors.orange;
+                break;
+              default:
+                color = Colors.grey;
+            }
+
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: color.withAlpha(100),
+                color: color.withAlpha(30),
                 borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: color.withAlpha(100), width: 1),
               ),
               child: Text(
                 value,
@@ -48,18 +77,50 @@ class OrdersTableView extends StatelessWidget {
               ),
             );
           }
-          
+
           if (header == 'Total') {
             return Text(
               value,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 14,
                 color: Colors.green,
               ),
             );
           }
-          
-          return Text(value.toString());
+
+          if (header == 'Actions') {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    size: 18,
+                    color: Colors.blueGrey,
+                  ),
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => OrderDetail(order: item),));
+                  },
+                  tooltip: 'Edit Product',
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    size: 18,
+                    color: Colors.redAccent,
+                  ),
+                  onPressed: () {},
+                  tooltip: 'Delete Product',
+                ),
+              ],
+            );
+          }
+
+          return Text(
+            value.toString(),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+          );
         },
       ),
     );

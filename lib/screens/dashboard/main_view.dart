@@ -1,14 +1,12 @@
-import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/reusable/dashboard_card.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MainView extends StatelessWidget {
   const MainView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final homeProvider = Provider.of<HomeProvider>(context);
+    // final homeProvider = Provider.of<HomeProvider>(context);
 
     return Align(
       alignment: Alignment.topLeft,
