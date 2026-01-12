@@ -18,7 +18,7 @@ class ResponsiveTableView extends StatelessWidget {
   const ResponsiveTableView({
     super.key,
     required this.title,
-    required this.headers,
+    required this.headers,      
     required this.data,
     this.headerActions = const [],
     this.rowBuilder,

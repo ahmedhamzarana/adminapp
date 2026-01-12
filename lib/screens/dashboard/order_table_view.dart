@@ -1,4 +1,5 @@
 import 'package:adminapp/reusable/custom_table.dart';
+import 'package:adminapp/screens/dashboard/order_detail.dart';
 import 'package:flutter/material.dart';
 
 class OrdersTableView extends StatelessWidget {
@@ -100,7 +101,15 @@ class OrdersTableView extends StatelessWidget {
                     color: Colors.blueGrey,
                   ),
                   onPressed: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => OrderDetail(order: item),));
+                    // Example usage:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrderDetailPage(
+                          order: OrderDetailDemoData.demoOrders[0],
+                        ),
+                      ),
+                    );
                   },
                   tooltip: 'Edit Product',
                 ),

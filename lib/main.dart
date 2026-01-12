@@ -2,10 +2,10 @@ import 'package:adminapp/providers/add_product_provider.dart';
 import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/providers/login_provider.dart';
 import 'package:adminapp/providers/splash_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
