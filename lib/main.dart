@@ -1,8 +1,8 @@
-import 'package:adminapp/providers/add_product_provider.dart';
+import 'package:adminapp/providers/products/add_product_provider.dart';
 import 'package:adminapp/providers/home_provider.dart';
-import 'package:adminapp/providers/login_provider.dart';
-import 'package:adminapp/providers/splash_provider.dart';
-import 'package:adminapp/providers/view_product_provider.dart';
+import 'package:adminapp/providers/auth/login_provider.dart';
+import 'package:adminapp/providers/auth/splash_provider.dart';
+import 'package:adminapp/providers/products/view_product_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';

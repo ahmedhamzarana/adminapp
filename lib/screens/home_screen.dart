@@ -1,12 +1,12 @@
-import 'package:adminapp/providers/home_provider.dart';
-import 'package:adminapp/screens/dashboard/add_product.dart';
+import 'package:adminapp/screens/dashboard/products/add_product.dart';
+import 'package:adminapp/screens/dashboard/orders/order_table_view.dart';
+import 'package:adminapp/screens/dashboard/products/product_table_view.dart';
+import 'package:adminapp/screens/dashboard/reviews/review_table_view.dart';
+import 'package:adminapp/screens/dashboard/users/users_table_view.dart';
 import 'package:adminapp/screens/dashboard/main_view.dart';
-import 'package:adminapp/screens/dashboard/order_table_view.dart';
-import 'package:adminapp/reusable/sidebar.dart';
-import 'package:adminapp/screens/dashboard/product_table_view.dart';
-import 'package:adminapp/screens/dashboard/review_table_view.dart';
-import 'package:adminapp/screens/dashboard/users_table_view.dart';
+import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/utils/app_colors.dart';
+import 'package:adminapp/reusable/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

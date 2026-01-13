@@ -1,4 +1,4 @@
-import 'package:adminapp/providers/login_provider.dart';
+import 'package:adminapp/providers/auth/login_provider.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

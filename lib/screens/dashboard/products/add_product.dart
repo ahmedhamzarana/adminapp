@@ -1,4 +1,4 @@
-import 'package:adminapp/providers/add_product_provider.dart';
+import 'package:adminapp/providers/products/add_product_provider.dart';
 import 'package:adminapp/reusable/custom_input.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';

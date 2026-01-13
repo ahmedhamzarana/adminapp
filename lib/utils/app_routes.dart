@@ -1,7 +1,7 @@
-import 'package:adminapp/screens/dashboard/add_product.dart';
+import 'package:adminapp/screens/dashboard/products/add_product.dart';
 import 'package:adminapp/screens/home_screen.dart';
-import 'package:adminapp/screens/login_screen.dart';
-import 'package:adminapp/screens/splash_screen.dart';
+import 'package:adminapp/screens/auth/login_screen.dart';
+import 'package:adminapp/screens/auth/splash_screen.dart';
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
