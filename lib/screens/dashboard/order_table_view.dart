@@ -105,9 +105,7 @@ class OrdersTableView extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => OrderDetailPage(
-                          order: OrderDetailDemoData.demoOrders[0],
-                        ),
+                        builder: (context) => OrderDetail(),
                       ),
                     );
                   },

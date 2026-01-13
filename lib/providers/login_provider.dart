@@ -1,14 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginProvider extends ChangeNotifier {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final FlutterSecureStorage storage = FlutterSecureStorage();
   String usernameError = "";
   String passwordError = "";
   bool obscureText = true;
@@ -54,6 +55,8 @@ class LoginProvider extends ChangeNotifier {
         email: usernameController.text,
         password: passwordController.text,
       );
+      storage.write(key: "useremail", value: usernameController.text);
+      isLoading = false;
       notifyListeners();
       usernameController.text = "";
       passwordController.text = "";

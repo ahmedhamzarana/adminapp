@@ -11,9 +11,10 @@ class AddProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     final proProvider = Provider.of<AddProductProvider>(context);
 
-    return SafeArea(
-      child: Align(
-        alignment: Alignment.topLeft,
+    return Align(
+      alignment: Alignment.topLeft,
+
+      child: SingleChildScrollView(
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -80,27 +81,49 @@ class AddProduct extends StatelessWidget {
                             border: Border.all(
                               color: Colors.grey.withAlpha(80),
                             ),
-                            image: proProvider.selectedImage != null
-                                ? DecorationImage(
-                                    image: FileImage(
-                                      proProvider.selectedImage!,
-                                    ),
-                                    fit: BoxFit.cover,
-                                  )
-                                : null,
                           ),
-                          child: proProvider.selectedImage == null
-                              ? const Icon(
+                          child: proProvider.selectedImage != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.network(
+                                    proProvider.selectedImage!.path,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(
+                                        Icons.broken_image,
+                                        size: 50,
+                                        color: Colors.grey,
+                                      );
+                                    },
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                          if (loadingProgress == null)
+                                            return child;
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value:
+                                                  loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        },
+                                  ),
+                                )
+                              : const Icon(
                                   Icons.image_outlined,
                                   size: 50,
                                   color: Colors.grey,
-                                )
-                              : null,
+                                ),
                         ),
                         const SizedBox(width: 20),
                         ElevatedButton.icon(
                           onPressed: () {
-                            // Yahan function call karein
                             proProvider.pickImage();
                           },
                           icon: const Icon(
@@ -130,8 +153,8 @@ class AddProduct extends StatelessWidget {
                         const SizedBox(width: 16),
                         Expanded(
                           child: CustomInput(
-                            controller: proProvider.proCategorycontroller,
-                            labelText: "Category",
+                            controller: proProvider.proBrandcontroller,
+                            labelText: "Brand",
                             errorText: proProvider.proCategoryerror,
                           ),
                         ),
@@ -173,28 +196,56 @@ class AddProduct extends StatelessWidget {
 
                     const SizedBox(height: 32),
 
-                    /// Improved Button UI
+                    /// Add Product Button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
-                        onPressed: () {
-                          bool isValid = proProvider.proValidateform(context);
-                          if (isValid) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Product added successfully!"),
+                        onPressed: proProvider.isLoading
+                            ? null
+                            : () async {
+                                bool isValid = proProvider.proValidateform(
+                                  context,
+                                );
+                                if (isValid) {
+                                  bool success = await proProvider.addProduct();
+                                  if (success && context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Product added successfully!",
+                                        ),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                  } else if (!success && context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Failed to add product. Please try again.",
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                        icon: proProvider.isLoading
+                            ? const SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2.5,
+                                ),
+                              )
+                            : const Icon(
+                                Icons.add_circle_outline,
+                                size: 22,
+                                color: Colors.white,
                               ),
-                            );
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.add_circle_outline,
-                          size: 22,
-                          color: Colors.white,
-                        ),
-                        label: const Text(
-                          "Add Product",
-                          style: TextStyle(
+                        label: Text(
+                          proProvider.isLoading ? "Adding..." : "Add Product",
+                          style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
