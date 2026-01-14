@@ -1,8 +1,8 @@
 import 'package:adminapp/reusable/dashboard_card.dart';
 import 'package:flutter/material.dart';
 
-class MainView extends StatelessWidget {
-  const MainView({super.key});
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

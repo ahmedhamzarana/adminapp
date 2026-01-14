@@ -3,7 +3,7 @@ import 'package:adminapp/screens/dashboard/orders/order_table_view.dart';
 import 'package:adminapp/screens/dashboard/products/product_table_view.dart';
 import 'package:adminapp/screens/dashboard/reviews/review_table_view.dart';
 import 'package:adminapp/screens/dashboard/users/users_table_view.dart';
-import 'package:adminapp/screens/dashboard/main_view.dart';
+import 'package:adminapp/screens/dashboard/dashboard_screen.dart';
 import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:adminapp/reusable/sidebar.dart';
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
 
   final List<Widget> screens = [
-    const MainView(),
+    const DashboardScreen(),
     const AddProduct(),
     const ProductsTableView(),
     const OrdersTableView(),

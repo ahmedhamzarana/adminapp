@@ -13,42 +13,40 @@ class UsersTableView extends StatelessWidget {
         'role': 'Admin',
         'status': 'Active',
       },
-      {
-        'user': 'Sarah King',
-        'email': 'sarah@watch.com',
-        'role': 'Editor',
-        'status': 'Active',
-      },
     ];
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: ResponsiveTableView(
-          title: "User Management",
-          data: usersData,
-          headers: const ['Avatar', 'Name', 'Email', 'Role', 'Status'],
-          rowBuilder: (context, header, value, item) {
-            if (header == 'Avatar') {
-              return CircleAvatar(radius: 14, child: Text(item['user'][0]));
-            }
-      
-            if (header == 'Name') {
-              return Text(
-                item['user'],
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              );
-            }
-      
-            if (header == 'Email') {
-              return Text(
-                item['email'],
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              );
-            }
-      
-            return Text(value.toString());
-          },
+    return Align(
+      alignment: Alignment.topLeft,
+
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: ResponsiveTableView(
+            title: "User Management",
+            data: usersData,
+            headers: const ['Avatar', 'Name', 'Email', 'Role', 'Status'],
+            rowBuilder: (context, header, value, item) {
+              if (header == 'Avatar') {
+                return CircleAvatar(radius: 14, child: Text(item['user'][0]));
+              }
+
+              if (header == 'Name') {
+                return Text(
+                  item['user'],
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                );
+              }
+
+              if (header == 'Email') {
+                return Text(
+                  item['email'],
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                );
+              }
+
+              return Text(value.toString());
+            },
+          ),
         ),
       ),
     );

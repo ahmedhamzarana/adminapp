@@ -31,7 +31,7 @@ class ViewProductProvider extends ChangeNotifier {
       isLoading = false;
       errorMessage = 'Failed to load products';
       notifyListeners();
-      print('Error fetching products: $e');
+      debugPrint('Error fetching products: $e');
     }
   }
 
@@ -44,7 +44,7 @@ class ViewProductProvider extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      print('Error deleting product: $e');
+      debugPrint('Error deleting product: $e');
       return false;
     }
   }

@@ -97,8 +97,9 @@ class AddProduct extends StatelessWidget {
                                     },
                                     loadingBuilder:
                                         (context, child, loadingProgress) {
-                                          if (loadingProgress == null)
+                                          if (loadingProgress == null) {
                                             return child;
+                                          }
                                           return Center(
                                             child: CircularProgressIndicator(
                                               value:
@@ -254,9 +255,9 @@ class AddProduct extends StatelessWidget {
                         ),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 18),
-                          backgroundColor: AppColors.primary,
+                          backgroundColor: AppColors.secondary,
                           elevation: 6,
-                          shadowColor: AppColors.primary.withAlpha(100),
+                          shadowColor: AppColors.secondary.withAlpha(100),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),

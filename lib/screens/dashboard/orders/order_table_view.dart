@@ -31,105 +31,114 @@ class OrdersTableView extends StatelessWidget {
       },
     ];
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: ResponsiveTableView(
-          title: "Order History",
-          data: ordersData,
-          headers: const [
-            'Order ID',
-            'Customer',
-            'Date',
-            'Total',
-            'Status',
-            'Actions',
-          ],
-          rowBuilder: (context, header, value, item) {
-            if (header == 'Status') {
-              Color color;
-              switch (value) {
-                case 'Delivered':
-                  color = Colors.green;
-                  break;
-                case 'Shipped':
-                  color = Colors.blue;
-                  break;
-                case 'Pending':
-                  color = Colors.orange;
-                  break;
-                default:
-                  color = Colors.grey;
+    return Align(
+      alignment: Alignment.topLeft,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: ResponsiveTableView(
+            title: "Order History",
+            data: ordersData,
+            headers: const [
+              'Order ID',
+              'Customer',
+              'Date',
+              'Total',
+              'Status',
+              'Actions',
+            ],
+            rowBuilder: (context, header, value, item) {
+              if (header == 'Status') {
+                Color color;
+                switch (value) {
+                  case 'Delivered':
+                    color = Colors.green;
+                    break;
+                  case 'Shipped':
+                    color = Colors.blue;
+                    break;
+                  case 'Pending':
+                    color = Colors.orange;
+                    break;
+                  default:
+                    color = Colors.grey;
+                }
+
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.withAlpha(30),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: color.withAlpha(100), width: 1),
+                  ),
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
               }
-      
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: color.withAlpha(30),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: color.withAlpha(100), width: 1),
-                ),
-                child: Text(
+
+              if (header == 'Total') {
+                return Text(
                   value,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 12,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Colors.green,
                   ),
-                ),
-              );
-            }
-      
-            if (header == 'Total') {
+                );
+              }
+
+              if (header == 'Actions') {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.edit_outlined,
+                        size: 18,
+                        color: Colors.blueGrey,
+                      ),
+                      onPressed: () {
+                        // Example usage:
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetails(),
+                          ),
+                        );
+                      },
+                      tooltip: 'Edit Product',
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.delete_outline,
+                        size: 18,
+                        color: Colors.redAccent,
+                      ),
+                      onPressed: () {},
+                      tooltip: 'Delete Product',
+                    ),
+                  ],
+                );
+              }
+
               return Text(
-                value,
+                value.toString(),
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.green,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
                 ),
               );
-            }
-      
-            if (header == 'Actions') {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.edit_outlined,
-                      size: 18,
-                      color: Colors.blueGrey,
-                    ),
-                    onPressed: () {
-                      // Example usage:
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OrderDetail(),
-                        ),
-                      );
-                    },
-                    tooltip: 'Edit Product',
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.delete_outline,
-                      size: 18,
-                      color: Colors.redAccent,
-                    ),
-                    onPressed: () {},
-                    tooltip: 'Delete Product',
-                  ),
-                ],
-              );
-            }
-      
-            return Text(
-              value.toString(),
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-            );
-          },
+            },
+          ),
         ),
       ),
     );
