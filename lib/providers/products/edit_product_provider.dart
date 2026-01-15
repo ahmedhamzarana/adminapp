@@ -13,8 +13,7 @@ class EditProductProvider extends ChangeNotifier {
   final TextEditingController proBrandcontroller = TextEditingController();
   final TextEditingController proPricecontroller = TextEditingController();
   final TextEditingController pronStockcontroller = TextEditingController();
-  final TextEditingController proDescriptioncontroller =
-      TextEditingController();
+  final TextEditingController proDescriptioncontroller = TextEditingController();
 
   String proNameerror = "";
   String proCategoryerror = "";
@@ -32,7 +31,6 @@ class EditProductProvider extends ChangeNotifier {
         product['prod_id']?.toString() ??
         product['product_id']?.toString();
 
-    // Debug ke liye print karo
     debugPrint('🔍 Loading product data:');
     debugPrint('Product Map: $product');
     debugPrint('Product ID: $currentProductId');

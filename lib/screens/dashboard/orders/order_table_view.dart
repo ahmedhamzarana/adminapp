@@ -1,4 +1,4 @@
-import 'package:adminapp/reusable/custom_dailog.dart';
+import 'package:adminapp/screens/dashboard/orders/order_detail_dailog.dart';
 import 'package:adminapp/reusable/custom_table.dart';
 import 'package:flutter/material.dart';
 
@@ -88,7 +88,7 @@ class OrdersTableView extends StatelessWidget {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (_) => CustomDailog(order: item),
+                      builder: (_) => OrderDetailDailog(order: item),
                     );
                   },
                 );
