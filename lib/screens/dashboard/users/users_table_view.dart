@@ -1,54 +1,116 @@
-import 'package:adminapp/reusable/custom_table.dart';
+import 'package:adminapp/providers/users/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:adminapp/reusable/custom_table.dart';
 
-class UsersTableView extends StatelessWidget {
+class UsersTableView extends StatefulWidget {
   const UsersTableView({super.key});
 
   @override
+  State<UsersTableView> createState() => _UsersTableViewState();
+}
+
+class _UsersTableViewState extends State<UsersTableView> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<UsersProvider>().fetchUsers();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> usersData = [
-      {
-        'user': 'John Doe',
-        'email': 'john@watch.com',
-        'role': 'Admin',
-        'status': 'Active',
-      },
-    ];
+    return Consumer<UsersProvider>(
+      builder: (context, provider, _) {
+        if (provider.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    return Align(
-      alignment: Alignment.topLeft,
+        if (provider.users.isEmpty) {
+          return const Center(child: Text("No users found"));
+        }
 
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: ResponsiveTableView(
-            title: "User Management",
-            data: usersData,
-            headers: const ['Avatar', 'Name', 'Email', 'Role', 'Status'],
-            rowBuilder: (context, header, value, item) {
-              if (header == 'Avatar') {
-                return CircleAvatar(radius: 14, child: Text(item['user'][0]));
-              }
+        return Align(
+          alignment: Alignment.topLeft,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: ResponsiveTableView(
+                title: "User Management",
+                data: provider.users,
+                headers: const ['Avatar', 'Name', 'Email', 'Role', 'Status'],
+                rowBuilder: (context, header, value, item) {
+                  // ---------------- AVATAR ----------------
+                  if (header == 'Avatar') {
+                    final String name = item['name'] ?? '';
+                    final String? imageUrl = item['image_url'];
 
-              if (header == 'Name') {
-                return Text(
-                  item['user'],
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                );
-              }
+                    if (imageUrl != null && imageUrl.isNotEmpty) {
+                      return CircleAvatar(
+                        radius: 14,
+                        backgroundImage: NetworkImage(imageUrl),
+                      );
+                    }
 
-              if (header == 'Email') {
-                return Text(
-                  item['email'],
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                );
-              }
+                    return CircleAvatar(
+                      radius: 14,
+                      child: Text(
+                        name.isNotEmpty
+                            ? name[0].toUpperCase()
+                            : '?',
+                      ),
+                    );
+                  }
 
-              return Text(value.toString());
-            },
+                  // ---------------- NAME ----------------
+                  if (header == 'Name') {
+                    return Text(
+                      item['name'] ?? '',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    );
+                  }
+
+                  // ---------------- EMAIL ----------------
+                  if (header == 'Email') {
+                    return Text(
+                      item['email'] ?? '',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    );
+                  }
+
+                  // ---------------- ROLE ----------------
+                  if (header == 'Role') {
+                    return Text(item['role'] ?? '-');
+                  }
+
+                  // ---------------- STATUS ----------------
+                  if (header == 'Status') {
+                    final String status = item['status'] ?? 'Inactive';
+
+                    return Text(
+                      status,
+                      style: TextStyle(
+                        color: status == 'Active'
+                            ? Colors.green
+                            : Colors.red,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    );
+                  }
+
+                  return const SizedBox();
+                },
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
+

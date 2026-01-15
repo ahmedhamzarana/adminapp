@@ -3,6 +3,7 @@ import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/providers/auth/login_provider.dart';
 import 'package:adminapp/providers/auth/splash_provider.dart';
 import 'package:adminapp/providers/products/view_product_provider.dart';
+import 'package:adminapp/providers/users/user_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => HomeProvider()),
         ChangeNotifierProvider(create: (context) => AddProductProvider()),
         ChangeNotifierProvider(create: (context) => ViewProductProvider()),
+        ChangeNotifierProvider(create: (context) => UsersProvider()),
       ],
       child: MyApp(),
     ),

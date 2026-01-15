@@ -1,5 +1,6 @@
 import 'package:adminapp/providers/products/view_product_provider.dart';
 import 'package:adminapp/reusable/custom_table.dart';
+import 'package:adminapp/screens/dashboard/products/product_edit_dailog.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,16 @@ class _ProductsTableViewState extends State<ProductsTableView> {
             'brand': product.prodBrand,
             'price': '₹${product.prodPrice.toStringAsFixed(2)}',
             'stock': product.prodStock,
+            // Edit dialog ke liye pura product data
+            'product_obj': {
+              'id': product.id,
+              'prod_name': product.prodName,
+              'prod_img': product.prodImg,
+              'prod_brand': product.prodBrand,
+              'prod_price': product.prodPrice,
+              'prod_stock': product.prodStock,
+              'prod_description': product.prodDescription,
+            },
           },
         )
         .toList();
@@ -118,8 +129,7 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child:
-                        imageUrl.isNotEmpty &&
+                    child: imageUrl.isNotEmpty &&
                             imageUrl != 'https://via.placeholder.com/200'
                         ? Image.network(
                             imageUrl,
@@ -148,9 +158,11 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                                   strokeWidth: 2,
                                   value:
                                       loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                      : null,
+                                          ? loadingProgress
+                                                  .cumulativeBytesLoaded /
+                                              loadingProgress
+                                                  .expectedTotalBytes!
+                                          : null,
                                 ),
                               );
                             },
@@ -229,7 +241,29 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                         size: 18,
                         color: AppColors.success,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        // Product ka pura data pass karo
+                        final result = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => ProductEditDialog(
+                            product: item['product_obj']
+                                as Map<String, dynamic>,
+                          ),
+                        );
+
+                        // Agar successfully update hua toh refresh karo
+                        if (result == true && context.mounted) {
+                          await productProvider.refreshProducts();
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Product updated successfully'),
+                                backgroundColor: AppColors.success,
+                              ),
+                            );
+                          }
+                        }
+                      },
                       tooltip: 'Edit Product',
                     ),
                     IconButton(

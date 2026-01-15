@@ -1,5 +1,5 @@
+import 'package:adminapp/reusable/custom_dailog.dart';
 import 'package:adminapp/reusable/custom_table.dart';
-import 'package:adminapp/screens/dashboard/orders/order_detail.dart';
 import 'package:flutter/material.dart';
 
 class OrdersTableView extends StatelessWidget {
@@ -11,6 +11,8 @@ class OrdersTableView extends StatelessWidget {
       {
         'order_id': 'ORD-101',
         'customer': 'Alice Smith',
+        'email': 'alice@gmail.com',
+        'address': '221B Baker Street, London',
         'date': 'Jan 05',
         'total': '₹45,000',
         'status': 'Delivered',
@@ -18,16 +20,11 @@ class OrdersTableView extends StatelessWidget {
       {
         'order_id': 'ORD-102',
         'customer': 'Bob Johnson',
+        'email': 'bob@gmail.com',
+        'address': 'MG Road, Bengaluru',
         'date': 'Jan 06',
         'total': '₹1,20,000',
         'status': 'Pending',
-      },
-      {
-        'order_id': 'ORD-103',
-        'customer': 'Charlie Brown',
-        'date': 'Jan 07',
-        'total': '₹78,500',
-        'status': 'Shipped',
       },
     ];
 
@@ -54,34 +51,23 @@ class OrdersTableView extends StatelessWidget {
                   case 'Delivered':
                     color = Colors.green;
                     break;
-                  case 'Shipped':
-                    color = Colors.blue;
-                    break;
                   case 'Pending':
                     color = Colors.orange;
                     break;
                   default:
-                    color = Colors.grey;
+                    color = Colors.blueGrey;
                 }
 
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: color.withAlpha(30),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: color.withAlpha(100), width: 1),
-                  ),
-                  child: Text(
+                return Chip(
+                  label: Text(
                     value,
                     style: TextStyle(
                       color: color,
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+                  backgroundColor: color.withAlpha(12),
                 );
               }
 
@@ -97,45 +83,20 @@ class OrdersTableView extends StatelessWidget {
               }
 
               if (header == 'Actions') {
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.edit_outlined,
-                        size: 18,
-                        color: Colors.blueGrey,
-                      ),
-                      onPressed: () {
-                        // Example usage:
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OrderDetails(),
-                          ),
-                        );
-                      },
-                      tooltip: 'Edit Product',
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.delete_outline,
-                        size: 18,
-                        color: Colors.redAccent,
-                      ),
-                      onPressed: () {},
-                      tooltip: 'Delete Product',
-                    ),
-                  ],
+                return IconButton(
+                  icon: const Icon(Icons.edit, size: 18),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => CustomDailog(order: item),
+                    );
+                  },
                 );
               }
 
               return Text(
                 value.toString(),
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: const TextStyle(fontSize: 13),
               );
             },
           ),
