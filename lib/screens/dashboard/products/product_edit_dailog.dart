@@ -1,3 +1,4 @@
+import 'package:adminapp/models/product_model.dart';
 import 'package:adminapp/providers/products/edit_product_provider.dart';
 import 'package:adminapp/reusable/custom_input.dart';
 import 'package:adminapp/utils/app_colors.dart';
@@ -5,21 +6,36 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
-class ProductEditDialog extends StatelessWidget {
-  final Map<String, dynamic> product;
+class ProductEditDialog extends StatefulWidget {
+  final Product product; // Add product parameter
 
   const ProductEditDialog({super.key, required this.product});
 
   @override
+  State<ProductEditDialog> createState() => _ProductEditDialogState();
+}
+
+class _ProductEditDialogState extends State<ProductEditDialog> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize provider with existing product data
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<EditProductProvider>(context, listen: false);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final proProvider = Provider.of<EditProductProvider>(context);
+
     return AlertDialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.all(24),
       contentPadding: EdgeInsets.zero,
       content: SingleChildScrollView(
         child: Container(
-          width: 600,
+          width: 630,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(14),
@@ -61,7 +77,6 @@ class ProductEditDialog extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// Image
                     const Text(
                       "Product Image",
                       style: TextStyle(
@@ -96,6 +111,8 @@ class ProductEditDialog extends StatelessWidget {
                                   child: Image.network(
                                     proProvider.existingImageUrl!,
                                     fit: BoxFit.cover,
+                                    errorBuilder: (context, e, s) =>
+                                        const Icon(Icons.broken_image),
                                   ),
                                 )
                               : const Icon(
@@ -118,7 +135,6 @@ class ProductEditDialog extends StatelessWidget {
 
                     const SizedBox(height: 30),
 
-                    /// Name & Brand
                     Row(
                       children: [
                         Expanded(
@@ -133,7 +149,7 @@ class ProductEditDialog extends StatelessWidget {
                           child: CustomInput(
                             controller: proProvider.proBrandcontroller,
                             labelText: "Brand",
-                            errorText: proProvider.proCategoryerror,
+                            errorText: proProvider.proBranderror,
                           ),
                         ),
                       ],
@@ -141,7 +157,6 @@ class ProductEditDialog extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    /// Price & Stock
                     Row(
                       children: [
                         Expanded(
@@ -154,7 +169,7 @@ class ProductEditDialog extends StatelessWidget {
                         const SizedBox(width: 16),
                         Expanded(
                           child: CustomInput(
-                            controller: proProvider.pronStockcontroller,
+                            controller: proProvider.proStockcontroller,
                             labelText: "Stock Quantity",
                             errorText: proProvider.proStockerror,
                           ),
@@ -164,7 +179,6 @@ class ProductEditDialog extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    /// Description
                     CustomInput(
                       controller: proProvider.proDescriptioncontroller,
                       labelText: "Product Description",
@@ -174,7 +188,6 @@ class ProductEditDialog extends StatelessWidget {
 
                     const SizedBox(height: 30),
 
-                    /// Action Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -187,10 +200,7 @@ class ProductEditDialog extends StatelessWidget {
                           onPressed: proProvider.isLoading
                               ? null
                               : () async {
-                                  bool valid = proProvider.proValidateform(
-                                    context,
-                                  );
-                                  if (valid) {
+                                  if (proProvider.proValidateform(context)) {
                                     bool success = await proProvider
                                         .updateProduct();
                                     if (context.mounted && success) {

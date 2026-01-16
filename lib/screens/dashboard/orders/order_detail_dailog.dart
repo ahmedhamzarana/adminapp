@@ -31,26 +31,21 @@ class _OrderDetailDailogState extends State<OrderDetailDailog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      titlePadding: EdgeInsets.zero,
       title: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: const BoxDecoration(
           color: AppColors.primary,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
         ),
-        child: Row(
-          children: const [
-            Icon(Icons.receipt_long, color: AppColors.secondary),
-            SizedBox(width: 8),
-            Text(
-              'Order Details',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppColors.secondary,
-                fontSize: 16,
-              ),
-            ),
-          ],
+        child: const Text(
+          "Order Detail",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
       ),
 
@@ -90,7 +85,6 @@ class _OrderDetailDailogState extends State<OrderDetailDailog> {
                 setState(() => selectedStatus = value!);
               },
               decoration: InputDecoration(
-                labelStyle: const TextStyle(color: AppColors.secondary),
                 filled: true,
                 fillColor: AppColors.bgcolor,
                 contentPadding: const EdgeInsets.symmetric(
@@ -98,7 +92,6 @@ class _OrderDetailDailogState extends State<OrderDetailDailog> {
                   vertical: 14,
                 ),
                 border: OutlineInputBorder(
-                  borderSide: const BorderSide(color: AppColors.secondary),
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
@@ -106,6 +99,7 @@ class _OrderDetailDailogState extends State<OrderDetailDailog> {
           ],
         ),
       ),
+
       actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       actions: [
         TextButton(

@@ -6,20 +6,21 @@ class ViewProductProvider extends ChangeNotifier {
   final supabase = Supabase.instance.client;
 
   List<Product> products = [];
-  bool isLoading = false; 
+  bool isLoading = false;
   String errorMessage = '';
 
-  // Sare products fetch karna
+  // Fetch all products
   Future<void> fetchProducts() async {
     try {
       isLoading = true;
       errorMessage = '';
       notifyListeners();
 
+      // FIXED: Added 'id' to the select query
       final data = await supabase
           .from('tbl_products')
           .select(
-            'prod_img, prod_name, prod_brand, prod_price, prod_stock',
+            'id, prod_img, prod_name, prod_brand, prod_price, prod_stock, prod_description',
           )
           .order('created_at', ascending: false);
 
@@ -35,19 +36,27 @@ class ViewProductProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> deleteProduct(int productId) async {
+  // Delete product
+  Future<bool> deleteProduct(dynamic productId) async {
+    if (productId == null) {
+      debugPrint('Error: Product ID is null');
+      return false;
+    }
+    
     try {
+      // 1. Delete from Supabase
       await supabase.from('tbl_products').delete().eq('id', productId);
 
+      // 2. Update local list and UI
       products.removeWhere((product) => product.id == productId);
       notifyListeners();
-
       return true;
     } catch (e) {
       debugPrint('Error deleting product: $e');
       return false;
     }
   }
+
   Future<void> refreshProducts() async {
     await fetchProducts();
   }

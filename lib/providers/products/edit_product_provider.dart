@@ -1,3 +1,4 @@
+import 'package:adminapp/models/product_model.dart'; // Import your model
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -6,17 +7,18 @@ class EditProductProvider extends ChangeNotifier {
   final supabase = Supabase.instance.client;
   bool isLoading = false;
 
-  String? currentProductId;
+  dynamic currentProductId; // Changed to dynamic to support int or String IDs
   String? existingImageUrl;
 
   final TextEditingController proNamecontroller = TextEditingController();
   final TextEditingController proBrandcontroller = TextEditingController();
   final TextEditingController proPricecontroller = TextEditingController();
-  final TextEditingController pronStockcontroller = TextEditingController();
-  final TextEditingController proDescriptioncontroller = TextEditingController();
+  final TextEditingController proStockcontroller = TextEditingController();
+  final TextEditingController proDescriptioncontroller =
+      TextEditingController();
 
   String proNameerror = "";
-  String proCategoryerror = "";
+  String proBranderror = "";
   String proPriceerror = "";
   String proStockerror = "";
   String proDescriptionerror = "";
@@ -24,33 +26,33 @@ class EditProductProvider extends ChangeNotifier {
   XFile? selectedImage;
   final ImagePicker _picker = ImagePicker();
 
-  void loadProductData(Map<String, dynamic> product) {
-    // ID ko properly set karo - different field names try karo
-    currentProductId =
-        product['id']?.toString() ??
-        product['prod_id']?.toString() ??
-        product['product_id']?.toString();
+  /// 🔹 NEW: Initialize method to fill the form
+  void initializeProduct(Product product) {
+    currentProductId = product.id;
+    existingImageUrl = product.prodImg;
 
-    debugPrint('🔍 Loading product data:');
-    debugPrint('Product Map: $product');
-    debugPrint('Product ID: $currentProductId');
+    proNamecontroller.text = product.prodName;
+    proBrandcontroller.text = product.prodBrand;
+    proPricecontroller.text = product.prodPrice.toString();
+    proStockcontroller.text = product.prodStock.toString();
+    proDescriptioncontroller.text = product.prodDescription;
 
-    proNamecontroller.text = product['prod_name'] ?? '';
-    proBrandcontroller.text = product['prod_brand'] ?? '';
-    proPricecontroller.text = product['prod_price']?.toString() ?? '';
-    pronStockcontroller.text = product['prod_stock']?.toString() ?? '';
-    proDescriptioncontroller.text = product['prod_description'] ?? '';
-    existingImageUrl = product['prod_img'];
-    selectedImage = null;
+    selectedImage = null; // Reset any previous selection
+
+    // Clear errors when opening a new product
+    proNameerror = "";
+    proBranderror = "";
+    proPriceerror = "";
+    proStockerror = "";
+    proDescriptionerror = "";
 
     notifyListeners();
   }
 
   bool proValidateform(BuildContext context) {
     bool isvalid = true;
-
     proNameerror = "";
-    proCategoryerror = "";
+    proBranderror = "";
     proPriceerror = "";
     proStockerror = "";
     proDescriptionerror = "";
@@ -60,14 +62,14 @@ class EditProductProvider extends ChangeNotifier {
       isvalid = false;
     }
     if (proBrandcontroller.text.isEmpty) {
-      proCategoryerror = "Product Brand is required";
+      proBranderror = "Product Brand is required";
       isvalid = false;
     }
     if (proPricecontroller.text.isEmpty) {
       proPriceerror = "Product Price is required";
       isvalid = false;
     }
-    if (pronStockcontroller.text.isEmpty) {
+    if (proStockcontroller.text.isEmpty) {
       proStockerror = "Product Stock is required";
       isvalid = false;
     }
@@ -82,7 +84,6 @@ class EditProductProvider extends ChangeNotifier {
 
   Future<void> pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
     if (image != null) {
       selectedImage = image;
       notifyListeners();
@@ -101,9 +102,9 @@ class EditProductProvider extends ChangeNotifier {
 
       String imageUrl = existingImageUrl ?? '';
 
-      // Agar naya image select kiya hai toh upload karo
       if (selectedImage != null) {
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+        final fileName =
+            'products/${DateTime.now().millisecondsSinceEpoch}.jpg';
         final bytes = await selectedImage!.readAsBytes();
 
         await supabase.storage
@@ -119,7 +120,6 @@ class EditProductProvider extends ChangeNotifier {
             .getPublicUrl(fileName);
       }
 
-      // Product update karo with .eq() clause
       await supabase
           .from('tbl_products')
           .update({
@@ -127,12 +127,10 @@ class EditProductProvider extends ChangeNotifier {
             'prod_img': imageUrl,
             'prod_brand': proBrandcontroller.text,
             'prod_price': double.tryParse(proPricecontroller.text) ?? 0.0,
-            'prod_stock': int.tryParse(pronStockcontroller.text) ?? 0,
+            'prod_stock': int.tryParse(proStockcontroller.text) ?? 0,
             'prod_description': proDescriptioncontroller.text,
           })
           .eq('id', currentProductId!);
-
-      clearForm();
 
       isLoading = false;
       notifyListeners();
@@ -140,7 +138,7 @@ class EditProductProvider extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       notifyListeners();
-      debugPrint('Error: $e');
+      debugPrint('Error Updating: $e');
       return false;
     }
   }
@@ -149,18 +147,11 @@ class EditProductProvider extends ChangeNotifier {
     proNamecontroller.clear();
     proBrandcontroller.clear();
     proPricecontroller.clear();
-    pronStockcontroller.clear();
+    proStockcontroller.clear();
     proDescriptioncontroller.clear();
     selectedImage = null;
     currentProductId = null;
     existingImageUrl = null;
-
-    proNameerror = "";
-    proCategoryerror = "";
-    proPriceerror = "";
-    proStockerror = "";
-    proDescriptionerror = "";
-
     notifyListeners();
   }
 
@@ -169,7 +160,7 @@ class EditProductProvider extends ChangeNotifier {
     proNamecontroller.dispose();
     proBrandcontroller.dispose();
     proPricecontroller.dispose();
-    pronStockcontroller.dispose();
+    proStockcontroller.dispose();
     proDescriptioncontroller.dispose();
     super.dispose();
   }

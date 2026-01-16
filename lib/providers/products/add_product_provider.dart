@@ -9,11 +9,11 @@ class AddProductProvider extends ChangeNotifier {
   final TextEditingController proNamecontroller = TextEditingController();
   final TextEditingController proBrandcontroller = TextEditingController();
   final TextEditingController proPricecontroller = TextEditingController();
-  final TextEditingController pronStockcontroller = TextEditingController();
+  final TextEditingController proStockcontroller = TextEditingController();
   final TextEditingController proDescriptioncontroller = TextEditingController();
 
   String proNameerror = "";
-  String proCategoryerror = "";
+  String proBranderror = "";
   String proPriceerror = "";
   String proStockerror = "";
   String proDescriptionerror = "";
@@ -25,7 +25,7 @@ class AddProductProvider extends ChangeNotifier {
     bool isvalid = true;
 
     proNameerror = "";
-    proCategoryerror = "";
+    proBranderror = "";
     proPriceerror = "";
     proStockerror = "";
     proDescriptionerror = "";
@@ -35,14 +35,14 @@ class AddProductProvider extends ChangeNotifier {
       isvalid = false;
     }
     if (proBrandcontroller.text.isEmpty) {
-      proCategoryerror = "Product Brand is required";
+      proBranderror = "Product Brand is required";
       isvalid = false;
     }
     if (proPricecontroller.text.isEmpty) {
       proPriceerror = "Product Price is required";
       isvalid = false;
     }
-    if (pronStockcontroller.text.isEmpty) {
+    if (proStockcontroller.text.isEmpty) {
       proStockerror = "Product Stock is required";
       isvalid = false;
     }
@@ -90,7 +90,7 @@ class AddProductProvider extends ChangeNotifier {
         'prod_img': imageUrl,
         'prod_brand': proBrandcontroller.text,
         'prod_price': double.tryParse(proPricecontroller.text) ?? 0.0,
-        'prod_stock': int.tryParse(pronStockcontroller.text) ?? 0,
+        'prod_stock': int.tryParse(proStockcontroller.text) ?? 0,
         'prod_description': proDescriptioncontroller.text,
       });
 
@@ -111,12 +111,12 @@ class AddProductProvider extends ChangeNotifier {
     proNamecontroller.clear();
     proBrandcontroller.clear();
     proPricecontroller.clear();
-    pronStockcontroller.clear();
+    proStockcontroller.clear();
     proDescriptioncontroller.clear();
     selectedImage = null;
     
     proNameerror = "";
-    proCategoryerror = "";
+    proBranderror = "";
     proPriceerror = "";
     proStockerror = "";
     proDescriptionerror = "";
@@ -129,7 +129,7 @@ class AddProductProvider extends ChangeNotifier {
     proNamecontroller.dispose();
     proBrandcontroller.dispose();
     proPricecontroller.dispose();
-    pronStockcontroller.dispose();
+    proStockcontroller.dispose();
     proDescriptioncontroller.dispose();
     super.dispose();
   }

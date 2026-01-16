@@ -17,7 +17,6 @@ class _ProductsTableViewState extends State<ProductsTableView> {
   @override
   void initState() {
     super.initState();
-    // Fetch products when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ViewProductProvider>(context, listen: false).fetchProducts();
     });
@@ -53,22 +52,13 @@ class _ProductsTableViewState extends State<ProductsTableView> {
     final productsData = productProvider.products
         .map(
           (product) => {
-            'id': product.id,
+            'id': product.id, // This is now available because of the fix in Provider
             'name': product.prodName,
             'image': product.prodImg,
             'brand': product.prodBrand,
             'price': '₹${product.prodPrice.toStringAsFixed(2)}',
             'stock': product.prodStock,
-            // Edit dialog ke liye pura product data
-            'product_obj': {
-              'id': product.id,
-              'prod_name': product.prodName,
-              'prod_img': product.prodImg,
-              'prod_brand': product.prodBrand,
-              'prod_price': product.prodPrice,
-              'prod_stock': product.prodStock,
-              'prod_description': product.prodDescription,
-            },
+            'product_obj': product, // Pass the whole object directly
           },
         )
         .toList();
@@ -134,70 +124,26 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                         ? Image.network(
                             imageUrl,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              debugPrint('❌ Image failed to load: $imageUrl');
-                              debugPrint('Error: $error');
-                              return Container(
-                                color: Colors.grey.shade100,
-                                child: const Icon(
-                                  Icons.broken_image,
-                                  size: 24,
-                                  color: Colors.grey,
-                                ),
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) {
-                                debugPrint(
-                                  '✅ Image loaded successfully: $imageUrl',
-                                );
-                                return child;
-                              }
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  value:
-                                      loadingProgress.expectedTotalBytes != null
-                                          ? loadingProgress
-                                                  .cumulativeBytesLoaded /
-                                              loadingProgress
-                                                  .expectedTotalBytes!
-                                          : null,
-                                ),
-                              );
-                            },
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.broken_image, color: Colors.grey),
                           )
-                        : Container(
-                            color: Colors.grey.shade100,
-                            child: const Icon(
-                              Icons.image_outlined,
-                              size: 24,
-                              color: Colors.grey,
-                            ),
-                          ),
+                        : const Icon(Icons.image_outlined, color: Colors.grey),
                   ),
                 );
               }
 
               if (header == 'Name') {
-                return Text(
-                  item['name'] ?? 'N/A',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                  ),
-                );
+                return Text(item['name'] ?? 'N/A',
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13));
               }
 
               if (header == 'Brand') {
-                return Text(
-                  item['brand'] ?? 'N/A',
-                  style: const TextStyle(fontSize: 13),
-                );
+                return Text(item['brand'] ?? 'N/A', style: const TextStyle(fontSize: 13));
               }
 
               if (header == 'Stock') {
-                final bool isLow = value < 5;
+                final int stockValue = value is int ? value : 0;
+                final bool isLow = stockValue < 5;
                 return Row(
                   children: [
                     Container(
@@ -209,26 +155,14 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      "$value units",
-                      style: TextStyle(
-                        color: isLow ? AppColors.danger : AppColors.dark,
-                        fontWeight: isLow ? FontWeight.bold : FontWeight.normal,
-                        fontSize: 12,
-                      ),
-                    ),
+                    Text("$stockValue units"),
                   ],
                 );
               }
 
               if (header == 'Price') {
-                return Text(
-                  value ?? '₹0.00',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.success,
-                  ),
-                );
+                return Text(value ?? '₹0.00',
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.success));
               }
 
               if (header == 'Actions') {
@@ -236,50 +170,27 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: const Icon(
-                        Icons.edit_outlined,
-                        size: 18,
-                        color: AppColors.success,
-                      ),
+                      icon: const Icon(Icons.edit_outlined, color: AppColors.success, size: 18),
                       onPressed: () async {
-                        // Product ka pura data pass karo
                         final result = await showDialog<bool>(
                           context: context,
                           builder: (context) => ProductEditDialog(
-                            product: item['product_obj']
-                                as Map<String, dynamic>,
+                            product: item['product_obj'],
                           ),
                         );
-
-                        // Agar successfully update hua toh refresh karo
                         if (result == true && context.mounted) {
-                          await productProvider.refreshProducts();
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Product updated successfully'),
-                                backgroundColor: AppColors.success,
-                              ),
-                            );
-                          }
+                          productProvider.refreshProducts();
                         }
                       },
-                      tooltip: 'Edit Product',
                     ),
                     IconButton(
-                      icon: const Icon(
-                        Icons.delete_outline,
-                        size: 18,
-                        color: AppColors.danger,
-                      ),
+                      icon: const Icon(Icons.delete_outline, color: AppColors.danger, size: 18),
                       onPressed: () async {
                         final confirm = await showDialog<bool>(
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text('Delete Product'),
-                            content: const Text(
-                              'Are you sure you want to delete this product?',
-                            ),
+                            content: const Text('Are you sure you want to delete this product?'),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context, false),
@@ -287,42 +198,26 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                               ),
                               TextButton(
                                 onPressed: () => Navigator.pop(context, true),
-                                child: const Text(
-                                  'Delete',
-                                  style: TextStyle(color: AppColors.danger),
-                                ),
+                                child: const Text('Delete', style: TextStyle(color: AppColors.danger)),
                               ),
                             ],
                           ),
                         );
 
                         if (confirm == true && context.mounted) {
-                          final success = await productProvider.deleteProduct(
-                            item['id'],
-                          );
+                          // item['id'] will now have a valid value
+                          final success = await productProvider.deleteProduct(item['id']);
                           if (success && context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Product deleted successfully'),
-                                backgroundColor: AppColors.success,
-                              ),
-                            );
-                          } else if (!success && context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Failed to delete product'),
-                                backgroundColor: AppColors.danger,
-                              ),
+                              const SnackBar(content: Text('Product deleted successfully'), backgroundColor: AppColors.success),
                             );
                           }
                         }
                       },
-                      tooltip: 'Delete Product',
                     ),
                   ],
                 );
               }
-
               return Text(value.toString());
             },
           ),

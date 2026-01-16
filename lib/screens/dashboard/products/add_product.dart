@@ -156,7 +156,7 @@ class AddProduct extends StatelessWidget {
                           child: CustomInput(
                             controller: proProvider.proBrandcontroller,
                             labelText: "Brand",
-                            errorText: proProvider.proCategoryerror,
+                            errorText: proProvider.proBranderror,
                           ),
                         ),
                       ],
@@ -177,7 +177,7 @@ class AddProduct extends StatelessWidget {
                         const SizedBox(width: 16),
                         Expanded(
                           child: CustomInput(
-                            controller: proProvider.pronStockcontroller,
+                            controller: proProvider.proStockcontroller,
                             labelText: "Stock Quantity",
                             errorText: proProvider.proStockerror,
                           ),
