@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
             width: 400,
             padding: const EdgeInsets.all(25),
             decoration: BoxDecoration(
-              color: AppColors.primary.withAlpha(190),
+              color: AppColors.primary.withAlpha(100),
               borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
@@ -144,7 +144,11 @@ class LoginScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 50,
                   child: authProvider.isLoading
-                      ? Center(child: CircularProgressIndicator())
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.success,
+                          ),
+                        )
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.secondary,
