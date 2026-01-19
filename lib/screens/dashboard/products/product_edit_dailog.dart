@@ -1,14 +1,13 @@
+import 'dart:io';
 import 'package:adminapp/models/product_model.dart';
 import 'package:adminapp/providers/products/edit_product_provider.dart';
 import 'package:adminapp/reusable/custom_input.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 
 class ProductEditDialog extends StatefulWidget {
-  final Product product; // Add product parameter
-
+  final Product product;
   const ProductEditDialog({super.key, required this.product});
 
   @override
@@ -19,9 +18,9 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
   @override
   void initState() {
     super.initState();
-    // Initialize provider with existing product data
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<EditProductProvider>(context, listen: false);
+      Provider.of<EditProductProvider>(context, listen: false)
+          .initializeProduct(widget.product);
     });
   }
 
@@ -31,212 +30,127 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
 
     return AlertDialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.all(24),
-      contentPadding: EdgeInsets.zero,
       content: SingleChildScrollView(
         child: Container(
           width: 630,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(14),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.dark.withAlpha(15),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
-              ),
-            ],
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// 🔹 Header
+              // Header
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 16,
-                ),
+                padding: const EdgeInsets.all(20),
                 decoration: const BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
                 ),
-                child: const Text(
-                  "Edit Product",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                child: const Text("Edit Product", 
+                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
               ),
 
-              /// 🔹 Body
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Product Image",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-
+                    // Image Section
                     Row(
                       children: [
                         Container(
-                          width: 140,
-                          height: 140,
+                          width: 120, height: 120,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: proProvider.selectedImage != null
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.file(
-                                    File(proProvider.selectedImage!.path),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                              : (proProvider.existingImageUrl != null &&
-                                    proProvider.existingImageUrl!.isNotEmpty)
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    proProvider.existingImageUrl!,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, e, s) =>
-                                        const Icon(Icons.broken_image),
-                                  ),
-                                )
-                              : const Icon(
-                                  Icons.image_outlined,
-                                  size: 50,
-                                  color: Colors.grey,
-                                ),
+                              ? Image.file(File(proProvider.selectedImage!.path), fit: BoxFit.cover)
+                              : Image.network(proProvider.existingImageUrl ?? '', 
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (c, e, s) => const Icon(Icons.image)),
                         ),
-                        const SizedBox(width: 20),
-                        ElevatedButton.icon(
-                          onPressed: proProvider.pickImage,
-                          icon: const Icon(Icons.upload),
-                          label: const Text("Upload Image"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.secondary,
-                          ),
-                        ),
+                        const SizedBox(width: 15),
+                        ElevatedButton(onPressed: proProvider.pickImage, child: const Text("Change Image")),
                       ],
                     ),
 
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 25),
+
+                    // 🔹 FORM FIELDS WITH ERROR TEXT
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: CustomInput(
+                          controller: proProvider.proNamecontroller, 
+                          labelText: "Product Name",
+                          errorText: proProvider.proNameerror, // Shows error from provider
+                        )),
+                        const SizedBox(width: 10),
+                        Expanded(child: CustomInput(
+                          controller: proProvider.proBrandcontroller, 
+                          labelText: "Brand",
+                          errorText: proProvider.proBranderror,
+                        )),
+                      ],
+                    ),
+
+                    const SizedBox(height: 15),
 
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: CustomInput(
-                            controller: proProvider.proNamecontroller,
-                            labelText: "Product Name",
-                            errorText: proProvider.proNameerror,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CustomInput(
-                            controller: proProvider.proBrandcontroller,
-                            labelText: "Brand",
-                            errorText: proProvider.proBranderror,
-                          ),
-                        ),
+                        Expanded(child: CustomInput(
+                          controller: proProvider.proPricecontroller, 
+                          labelText: "Price",
+                          errorText: proProvider.proPriceerror,
+                        )),
+                        const SizedBox(width: 10),
+                        Expanded(child: CustomInput(
+                          controller: proProvider.proStockcontroller, 
+                          labelText: "Stock",
+                          errorText: proProvider.proStockerror,
+                        )),
                       ],
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
 
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomInput(
-                            controller: proProvider.proPricecontroller,
-                            labelText: "Price",
-                            errorText: proProvider.proPriceerror,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: CustomInput(
-                            controller: proProvider.proStockcontroller,
-                            labelText: "Stock Quantity",
-                            errorText: proProvider.proStockerror,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 20),
-
+                    // Description Field
                     CustomInput(
                       controller: proProvider.proDescriptioncontroller,
                       labelText: "Product Description",
-                      maxLines: 4,
+                      maxLines: 3,
                       errorText: proProvider.proDescriptionerror,
                     ),
 
                     const SizedBox(height: 30),
 
+                    // Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text("Cancel"),
-                        ),
-                        const SizedBox(width: 12),
+                        TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+                        const SizedBox(width: 10),
                         ElevatedButton(
-                          onPressed: proProvider.isLoading
-                              ? null
-                              : () async {
-                                  if (proProvider.proValidateform(context)) {
-                                    bool success = await proProvider
-                                        .updateProduct();
-                                    if (context.mounted && success) {
-                                      Navigator.pop(context, true);
-                                    }
-                                  }
-                                },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.secondary,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 14,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: proProvider.isLoading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text(
-                                  "Update Product",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
+                          onPressed: proProvider.isLoading ? null : () async {
+                            // 🔹 Trigger validation before updating
+                            if (proProvider.proValidateform()) {
+                              bool success = await proProvider.updateProduct();
+                              if (context.mounted && success) {
+                                Navigator.pop(context, true);
+                              }
+                            }
+                          },
+                          child: proProvider.isLoading 
+                            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)) 
+                            : const Text("Update Product"),
                         ),
                       ],
-                    ),
+                    )
                   ],
                 ),
-              ),
+              )
             ],
           ),
         ),
