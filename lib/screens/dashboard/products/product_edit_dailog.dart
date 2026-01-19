@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:adminapp/models/product_model.dart';
 import 'package:adminapp/providers/products/edit_product_provider.dart';
-import 'package:adminapp/reusable/custom_input.dart';
+import 'package:adminapp/widget/custom_input.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,4 +1,4 @@
-import 'package:adminapp/reusable/info_row.dart';
+import 'package:adminapp/widget/info_row.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 

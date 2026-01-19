@@ -1,7 +1,7 @@
 import 'package:adminapp/providers/users/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:adminapp/reusable/custom_table.dart';
+import 'package:adminapp/widget/custom_table.dart';
 
 class UsersTableView extends StatefulWidget {
   const UsersTableView({super.key});

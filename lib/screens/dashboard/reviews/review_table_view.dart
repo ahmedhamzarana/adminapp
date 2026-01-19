@@ -1,4 +1,4 @@
-import 'package:adminapp/reusable/custom_table.dart';
+import 'package:adminapp/widget/custom_table.dart';
 import 'package:flutter/material.dart';
 
 class ReviewsTableView extends StatelessWidget {

@@ -7,7 +7,7 @@ import 'package:adminapp/screens/dashboard/users/users_table_view.dart';
 import 'package:adminapp/screens/dashboard/dashboard_screen.dart';
 import 'package:adminapp/providers/home_provider.dart';
 import 'package:adminapp/utils/app_colors.dart';
-import 'package:adminapp/reusable/sidebar.dart';
+import 'package:adminapp/widget/sidebar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,5 +1,5 @@
 import 'package:adminapp/screens/dashboard/orders/order_detail_dailog.dart';
-import 'package:adminapp/reusable/custom_table.dart';
+import 'package:adminapp/widget/custom_table.dart';
 import 'package:flutter/material.dart';
 
 class OrdersTableView extends StatelessWidget {

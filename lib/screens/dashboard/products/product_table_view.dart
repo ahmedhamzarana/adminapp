@@ -1,5 +1,5 @@
 import 'package:adminapp/providers/products/view_product_provider.dart';
-import 'package:adminapp/reusable/custom_table.dart';
+import 'package:adminapp/widget/custom_table.dart';
 import 'package:adminapp/screens/dashboard/products/product_edit_dailog.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:adminapp/utils/app_routes.dart';
