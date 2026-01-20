@@ -1,3 +1,4 @@
+// lib/providers/products/view_product_provider.dart
 import 'package:adminapp/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,22 +10,29 @@ class ViewProductProvider extends ChangeNotifier {
   bool isLoading = false;
   String errorMessage = '';
 
-  // Fetch all products
   Future<void> fetchProducts() async {
     try {
       isLoading = true;
       errorMessage = '';
       notifyListeners();
 
-      // FIXED: Added 'id' to the select query
       final data = await supabase
           .from('tbl_products')
-          .select(
-            'id, prod_img, prod_name, prod_brand, prod_price, prod_stock, prod_description',
-          )
+          .select('id, prod_img, prod_name, prod_brand, prod_price, prod_stock, prod_description')
           .order('created_at', ascending: false);
 
-      products = (data as List).map((item) => Product.fromJson(item)).toList();
+      products = (data as List).map((item) {
+        final Map<String, dynamic> productData = {
+          'id': item['id'],
+          'prod_img': item['prod_img'],
+          'prod_name': item['prod_name'],
+          'prod_brand': item['prod_brand'],
+          'prod_price': item['prod_price'],
+          'prod_stock': item['prod_stock'],
+          'prod_description': item['prod_description'],
+        };
+        return Product.fromJson(productData);
+      }).toList();
 
       isLoading = false;
       notifyListeners();
@@ -36,18 +44,15 @@ class ViewProductProvider extends ChangeNotifier {
     }
   }
 
-  // Delete product
   Future<bool> deleteProduct(dynamic productId) async {
     if (productId == null) {
       debugPrint('Error: Product ID is null');
       return false;
     }
-    
+
     try {
-      // 1. Delete from Supabase
       await supabase.from('tbl_products').delete().eq('id', productId);
 
-      // 2. Update local list and UI
       products.removeWhere((product) => product.id == productId);
       notifyListeners();
       return true;

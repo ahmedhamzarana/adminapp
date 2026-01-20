@@ -1,11 +1,25 @@
+// lib/screens/dashboard/products/add_product_screen.dart
 import 'package:adminapp/providers/products/add_product_provider.dart';
 import 'package:adminapp/widget/custom_input.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddProduct extends StatelessWidget {
+class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
+
+  @override
+  State<AddProduct> createState() => _AddProductState();
+}
+
+class _AddProductState extends State<AddProduct> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AddProductProvider>(context, listen: false).fetchBrands();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +28,6 @@ class AddProduct extends StatelessWidget {
     return Scaffold(
       body: Align(
         alignment: Alignment.topLeft,
-
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
@@ -89,33 +102,26 @@ class AddProduct extends StatelessWidget {
                                     child: Image.network(
                                       proProvider.selectedImage!.path,
                                       fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return const Icon(
-                                              Icons.broken_image,
-                                              size: 50,
-                                              color: Colors.grey,
-                                            );
-                                          },
-                                      loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                            if (loadingProgress == null) {
-                                              return child;
-                                            }
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                value:
-                                                    loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null
-                                                    ? loadingProgress
-                                                              .cumulativeBytesLoaded /
-                                                          loadingProgress
-                                                              .expectedTotalBytes!
-                                                    : null,
-                                              ),
-                                            );
-                                          },
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return const Icon(
+                                          Icons.broken_image,
+                                          size: 50,
+                                          color: Colors.grey,
+                                        );
+                                      },
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress.expectedTotalBytes != null
+                                                ? loadingProgress.cumulativeBytesLoaded /
+                                                    loadingProgress.expectedTotalBytes!
+                                                : null,
+                                          ),
+                                        );
+                                      },
                                     ),
                                   )
                                 : const Icon(
@@ -143,7 +149,7 @@ class AddProduct extends StatelessWidget {
 
                       const SizedBox(height: 32),
 
-                      /// Product Name & Category
+                      /// Product Name & Brand Dropdown
                       Row(
                         children: [
                           Expanded(
@@ -155,10 +161,60 @@ class AddProduct extends StatelessWidget {
                           ),
                           const SizedBox(width: 16),
                           Expanded(
-                            child: CustomInput(
-                              controller: proProvider.proBrandcontroller,
-                              labelText: "Brand",
-                              errorText: proProvider.proBranderror,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                DropdownButtonFormField<String>(
+                                  value: proProvider.selectedBrand?.brandName,
+                                  decoration: InputDecoration(
+                                    labelText: "Select Brand",
+                                    errorText: proProvider.proBranderror.isEmpty
+                                        ? null
+                                        : proProvider.proBranderror,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 16,
+                                    ),
+                                  ),
+                                  items: proProvider.brandList.map((brand) {
+                                    return DropdownMenuItem<String>(
+                                      value: brand.brandName,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(4),
+                                              border: Border.all(color: Colors.grey.shade300),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(4),
+                                              child: Image.network(
+                                                brand.brandImgUrl,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error, stackTrace) {
+                                                  return const Icon(Icons.image, size: 16);
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(brand.brandName),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    final brand = proProvider.brandList
+                                        .firstWhere((b) => b.brandName == value);
+                                    proProvider.setSelectedBrand(brand);
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -206,31 +262,22 @@ class AddProduct extends StatelessWidget {
                           onPressed: proProvider.isLoading
                               ? null
                               : () async {
-                                  bool isValid = proProvider.proValidateform(
-                                    context,
-                                  );
+                                  bool isValid = proProvider.proValidateform(context);
                                   if (isValid) {
-                                    bool success = await proProvider
-                                        .addProduct();
+                                    bool success = await proProvider.addProduct();
                                     if (success && context.mounted) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
+                                      ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
-                                          content: Text(
-                                            "Product added successfully!",
-                                          ),
+                                          content: Text("Product added successfully!"),
                                           backgroundColor: Colors.green,
                                         ),
                                       );
+                                      proProvider.clearForm();
                                     } else if (!success && context.mounted) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
+                                      ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                           content: Text(
-                                            "Failed to add product. Please try again.",
-                                          ),
+                                              "Failed to add product. Please try again."),
                                           backgroundColor: Colors.red,
                                         ),
                                       );

@@ -1,8 +1,9 @@
+// lib/models/product_model.dart
 class Product {
   final int? id;
   final String prodName;
   final String prodImg;
-  final String prodBrand;
+  final String prodBrand; // Brand name as text
   final double prodPrice;
   final int prodStock;
   final String prodDescription;
@@ -17,22 +18,21 @@ class Product {
     required this.prodDescription,
   });
 
-  // Supabase se data ko Product object me convert karna
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
+      id: json['id'] as int?,
       prodName: json['prod_name'] ?? '',
       prodImg: json['prod_img'] ?? '',
       prodBrand: json['prod_brand'] ?? '',
-      prodPrice: (json['prod_price'] ?? 0.0).toDouble(),
+      prodPrice: (json['prod_price'] ?? 0).toDouble(),
       prodStock: json['prod_stock'] ?? 0,
       prodDescription: json['prod_description'] ?? '',
     );
   }
 
-  // Product object ko Supabase ke liye JSON me convert karna
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'prod_name': prodName,
       'prod_img': prodImg,
       'prod_brand': prodBrand,

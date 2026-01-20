@@ -1,3 +1,6 @@
+// lib/screens/home_screen.dart
+import 'package:adminapp/screens/dashboard/brands/add_brand_screen.dart';
+import 'package:adminapp/screens/dashboard/brands/view_brand_screen.dart';
 import 'package:adminapp/screens/dashboard/chats/inchatapp_screen.dart';
 import 'package:adminapp/screens/dashboard/products/add_product.dart';
 import 'package:adminapp/screens/dashboard/orders/order_table_view.dart';
@@ -25,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
     DashboardScreen(),
     AddProduct(),
     ProductsTableView(),
+    AddBrandScreen(),        // Brand Add Screen
+    ViewBrandScreen(),       // Brand View Screen
     OrdersTableView(),
     ReviewsTableView(),
     UsersTableView(),
@@ -106,10 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
 
-      // ================= BODY =================
       body: Row(
         children: [
-          // ================= SIDEBAR =================
           Container(
             width: 250,
             height: MediaQuery.of(context).size.height,
@@ -147,6 +150,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   isActive: selectedIndex == 0,
                   onTap: () => setState(() => selectedIndex = 0),
                 ),
+                
+                // Products Section Header
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
+                  child: Text(
+                    "PRODUCTS",
+                    style: TextStyle(
+                      color: Colors.white60,
+                      fontSize: 10,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
                 Sidebar(
                   icon: Icons.add_box_outlined,
                   title: "Add Product",
@@ -155,33 +172,62 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Sidebar(
                   icon: Icons.inventory_2_outlined,
-                  title: "Products",
+                  title: "View Products",
                   isActive: selectedIndex == 2,
                   onTap: () => setState(() => selectedIndex = 2),
                 ),
+                
+                // Brands Section Header
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
+                  child: Text(
+                    "BRANDS",
+                    style: TextStyle(
+                      color: Colors.white60,
+                      fontSize: 10,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
                 Sidebar(
-                  icon: Icons.shopping_cart_outlined,
-                  title: "Orders",
+                  icon: Icons.branding_watermark_outlined,
+                  title: "Add Brand",
                   isActive: selectedIndex == 3,
                   onTap: () => setState(() => selectedIndex = 3),
                 ),
                 Sidebar(
-                  icon: Icons.rate_review_outlined,
-                  title: "Review",
+                  icon: Icons.label_outline,
+                  title: "View Brands",
                   isActive: selectedIndex == 4,
                   onTap: () => setState(() => selectedIndex = 4),
                 ),
+                
+                const Divider(color: Colors.white24, thickness: 0.5),
+                
                 Sidebar(
-                  icon: Icons.group_outlined,
-                  title: "Manage Users",
+                  icon: Icons.shopping_cart_outlined,
+                  title: "Orders",
                   isActive: selectedIndex == 5,
                   onTap: () => setState(() => selectedIndex = 5),
                 ),
                 Sidebar(
-                  icon: Icons.chat_bubble_outline,
-                  title: "In Chats App",
+                  icon: Icons.rate_review_outlined,
+                  title: "Reviews",
                   isActive: selectedIndex == 6,
                   onTap: () => setState(() => selectedIndex = 6),
+                ),
+                Sidebar(
+                  icon: Icons.group_outlined,
+                  title: "Manage Users",
+                  isActive: selectedIndex == 7,
+                  onTap: () => setState(() => selectedIndex = 7),
+                ),
+                Sidebar(
+                  icon: Icons.chat_bubble_outline,
+                  title: "In Chats App",
+                  isActive: selectedIndex == 8,
+                  onTap: () => setState(() => selectedIndex = 8),
                 ),
 
                 const Spacer(),
@@ -200,7 +246,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // ================= MAIN CONTENT =================
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(20),

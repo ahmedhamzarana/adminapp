@@ -1,8 +1,8 @@
+// lib/screens/dashboard/products/product_table_view.dart
 import 'package:adminapp/providers/products/view_product_provider.dart';
-import 'package:adminapp/widget/custom_table.dart';
 import 'package:adminapp/screens/dashboard/products/product_edit_dailog.dart';
+import 'package:adminapp/widget/custom_table.dart';
 import 'package:adminapp/utils/app_colors.dart';
-import 'package:adminapp/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -52,13 +52,13 @@ class _ProductsTableViewState extends State<ProductsTableView> {
     final productsData = productProvider.products
         .map(
           (product) => {
-            'id': product.id, // This is now available because of the fix in Provider
+            'id': product.id,
             'name': product.prodName,
             'image': product.prodImg,
             'brand': product.prodBrand,
             'price': '₹${product.prodPrice.toStringAsFixed(2)}',
             'stock': product.prodStock,
-            'product_obj': product, // Pass the whole object directly
+            'product_obj': product,
           },
         )
         .toList();
@@ -76,26 +76,6 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                 onPressed: () => productProvider.refreshProducts(),
                 icon: const Icon(Icons.refresh, color: AppColors.secondary),
                 tooltip: 'Refresh',
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.addProductRoute,
-                  ).then((_) => productProvider.refreshProducts());
-                },
-                icon: const Icon(Icons.add, size: 18),
-                label: const Text("Add New Product"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.bgcolor,
-                  foregroundColor: AppColors.dark,
-                  elevation: 0,
-                  side: const BorderSide(color: Colors.black12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
               ),
             ],
             headers: const [
@@ -125,20 +105,30 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                             imageUrl,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>
-                                const Icon(Icons.broken_image, color: Colors.grey),
+                                const Icon(Icons.broken_image,
+                                    color: Colors.grey),
                           )
-                        : const Icon(Icons.image_outlined, color: Colors.grey),
+                        : const Icon(Icons.image_outlined,
+                            color: Colors.grey),
                   ),
                 );
               }
 
               if (header == 'Name') {
-                return Text(item['name'] ?? 'N/A',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13));
+                return Text(
+                  item['name'] ?? 'N/A',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                );
               }
 
               if (header == 'Brand') {
-                return Text(item['brand'] ?? 'N/A', style: const TextStyle(fontSize: 13));
+                return Text(
+                  item['brand'] ?? 'N/A',
+                  style: const TextStyle(fontSize: 13),
+                );
               }
 
               if (header == 'Stock') {
@@ -161,8 +151,13 @@ class _ProductsTableViewState extends State<ProductsTableView> {
               }
 
               if (header == 'Price') {
-                return Text(value ?? '₹0.00',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.success));
+                return Text(
+                  value ?? '₹0.00',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.success,
+                  ),
+                );
               }
 
               if (header == 'Actions') {
@@ -170,7 +165,11 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.edit_outlined, color: AppColors.success, size: 18),
+                      icon: const Icon(
+                        Icons.edit_outlined,
+                        color: AppColors.success,
+                        size: 18,
+                      ),
                       onPressed: () async {
                         final result = await showDialog<bool>(
                           context: context,
@@ -184,13 +183,19 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                       },
                     ),
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: AppColors.danger, size: 18),
+                      icon: const Icon(
+                        Icons.delete_outline,
+                        color: AppColors.danger,
+                        size: 18,
+                      ),
                       onPressed: () async {
                         final confirm = await showDialog<bool>(
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text('Delete Product'),
-                            content: const Text('Are you sure you want to delete this product?'),
+                            content: const Text(
+                              'Are you sure you want to delete this product?',
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context, false),
@@ -198,18 +203,24 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                               ),
                               TextButton(
                                 onPressed: () => Navigator.pop(context, true),
-                                child: const Text('Delete', style: TextStyle(color: AppColors.danger)),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: AppColors.danger,
+                                ),
+                                child: const Text('Delete'),
                               ),
                             ],
                           ),
                         );
 
                         if (confirm == true && context.mounted) {
-                          // item['id'] will now have a valid value
-                          final success = await productProvider.deleteProduct(item['id']);
+                          final success = await productProvider
+                              .deleteProduct(item['id']);
                           if (success && context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Product deleted successfully'), backgroundColor: AppColors.success),
+                              const SnackBar(
+                                content: Text('Product deleted successfully'),
+                                backgroundColor: AppColors.success,
+                              ),
                             );
                           }
                         }
