@@ -1,4 +1,3 @@
-// lib/screens/dashboard/products/add_product_screen.dart
 import 'package:adminapp/providers/products/add_product_provider.dart';
 import 'package:adminapp/widget/custom_input.dart';
 import 'package:adminapp/utils/app_colors.dart';

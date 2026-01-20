@@ -59,169 +59,176 @@ class _ViewBrandScreenState extends State<ViewBrandScreen> {
         )
         .toList();
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: ResponsiveTableView(
-          title: 'Brands',
-          data: brandsData,
-          headerActions: [
-            OutlinedButton.icon(
-              onPressed: () => brandProvider.refreshBrands(),
-              icon: const Icon(Icons.refresh, size: 18),
-              label: const Text('Refresh'),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
+    return Align(
+      alignment: AlignmentGeometry.topLeft,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: ResponsiveTableView(
+            title: 'Brands',
+            data: brandsData,
+            headerActions: [
+              OutlinedButton.icon(
+                onPressed: () => brandProvider.refreshBrands(),
+                icon: const Icon(Icons.refresh, size: 18),
+                label: const Text('Refresh'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
                 ),
               ),
-            ),
-          ],
-          headers: const ['Image', 'Name', 'Actions'],
-          rowBuilder: (context, header, value, item) {
-            if (header == 'Image') {
-              final imageUrl = item['image'] ?? '';
+            ],
+            headers: const ['Image', 'Name', 'Actions'],
+            rowBuilder: (context, header, value, item) {
+              if (header == 'Image') {
+                final imageUrl = item['image'] ?? '';
 
-              return Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(color: const Color(0xFFe5e7eb)),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: imageUrl.isNotEmpty
-                      ? Image.network(
-                          imageUrl,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: const Color(0xFFf3f4f6),
-                              child: const Icon(
-                                Icons.image,
-                                size: 20,
-                                color: Color(0xFF9ca3af),
-                              ),
-                            );
-                          },
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return const Center(
-                              child: SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              ),
-                            );
-                          },
-                        )
-                      : Container(
-                          color: const Color(0xFFf3f4f6),
-                          child: const Icon(
-                            Icons.image,
-                            size: 20,
-                            color: Color(0xFF9ca3af),
-                          ),
-                        ),
-                ),
-              );
-            }
-
-            if (header == 'Name') {
-              return Text(
-                item['name'] ?? 'N/A',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
-              );
-            }
-
-            if (header == 'Actions') {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, size: 18),
-                    onPressed: () async {
-                      final result = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => EditBrandDialog(
-                          brand: item['brand_obj'],
-                        ),
-                      );
-                      if (result == true && context.mounted) {
-                        brandProvider.refreshBrands();
-                      }
-                    },
-                    tooltip: 'Edit',
-                    splashRadius: 20,
+                return Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: const Color(0xFFe5e7eb)),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 18),
-                    color: const Color(0xFFef4444),
-                    onPressed: () async {
-                      final confirm = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Delete Brand'),
-                          content: const Text(
-                            'Are you sure you want to delete this brand?',
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: imageUrl.isNotEmpty
+                        ? Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: const Color(0xFFf3f4f6),
+                                child: const Icon(
+                                  Icons.image,
+                                  size: 20,
+                                  color: Color(0xFF9ca3af),
+                                ),
+                              );
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              return const Center(
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : Container(
+                            color: const Color(0xFFf3f4f6),
+                            child: const Icon(
+                              Icons.image,
+                              size: 20,
+                              color: Color(0xFF9ca3af),
+                            ),
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              style: TextButton.styleFrom(
-                                foregroundColor: const Color(0xFFef4444),
-                              ),
-                              child: const Text('Delete'),
-                            ),
-                          ],
-                        ),
-                      );
+                  ),
+                );
+              }
 
-                      if (confirm == true && context.mounted) {
-                        final success = await brandProvider.deleteBrand(
-                          item['id'],
+              if (header == 'Name') {
+                return Text(
+                  item['name'] ?? 'N/A',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                );
+              }
+
+              if (header == 'Actions') {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit, size: 18),
+                      onPressed: () async {
+                        final result = await showDialog<bool>(
+                          context: context,
+                          builder: (context) =>
+                              EditBrandDialog(brand: item['brand_obj']),
                         );
-                        if (success && context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Brand deleted'),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
-                        } else if (!success && context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                brandProvider.errorMessage.isEmpty
-                                    ? 'Failed to delete brand'
-                                    : brandProvider.errorMessage,
-                              ),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
+                        if (result == true && context.mounted) {
+                          brandProvider.refreshBrands();
                         }
-                      }
-                    },
-                    tooltip: 'Delete',
-                    splashRadius: 20,
-                  ),
-                ],
-              );
-            }
+                      },
+                      tooltip: 'Edit',
+                      splashRadius: 20,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete, size: 18),
+                      color: const Color(0xFFef4444),
+                      onPressed: () async {
+                        final confirm = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Delete Brand'),
+                            content: const Text(
+                              'Are you sure you want to delete this brand?',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: const Color(0xFFef4444),
+                                ),
+                                child: const Text('Delete'),
+                              ),
+                            ],
+                          ),
+                        );
 
-            return Text(value.toString());
-          },
+                        if (confirm == true && context.mounted) {
+                          final success = await brandProvider.deleteBrand(
+                            item['id'],
+                          );
+                          if (success && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Brand deleted'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          } else if (!success && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  brandProvider.errorMessage.isEmpty
+                                      ? 'Failed to delete brand'
+                                      : brandProvider.errorMessage,
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      tooltip: 'Delete',
+                      splashRadius: 20,
+                    ),
+                  ],
+                );
+              }
+
+              return Text(value.toString());
+            },
+          ),
         ),
       ),
     );

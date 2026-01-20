@@ -22,9 +22,7 @@ class AddBrandScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(15),
-              boxShadow: [
-                BoxShadow(color: Colors.black12, blurRadius: 10)
-              ],
+              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +99,10 @@ class AddBrandScreen extends StatelessWidget {
                       if (brandProvider.imageError.isNotEmpty)
                         Text(
                           brandProvider.imageError,
-                          style: const TextStyle(color: Colors.red, fontSize: 12),
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                          ),
                         ),
                       TextButton.icon(
                         onPressed: () => brandProvider.pickImage(),
@@ -129,7 +130,7 @@ class AddBrandScreen extends StatelessWidget {
                   height: 55,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

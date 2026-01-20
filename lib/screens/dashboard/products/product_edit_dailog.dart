@@ -1,4 +1,3 @@
-// lib/screens/dashboard/products/product_edit_dialog.dart
 import 'dart:io';
 import 'package:adminapp/models/product_model.dart';
 import 'package:adminapp/providers/products/edit_product_provider.dart';
