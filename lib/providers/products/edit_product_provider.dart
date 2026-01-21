@@ -1,4 +1,3 @@
-// lib/providers/products/edit_product_provider.dart
 import 'package:adminapp/models/brand_model.dart';
 import 'package:adminapp/models/product_model.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +6,17 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditProductProvider extends ChangeNotifier {
   final supabase = Supabase.instance.client;
+
   bool isLoading = false;
 
-  dynamic currentProductId;
+  int? currentProductId;
   String? existingImageUrl;
 
   final TextEditingController proNamecontroller = TextEditingController();
   final TextEditingController proPricecontroller = TextEditingController();
   final TextEditingController proStockcontroller = TextEditingController();
-  final TextEditingController proDescriptioncontroller = TextEditingController();
+  final TextEditingController proDescriptioncontroller =
+      TextEditingController();
 
   String proNameerror = "";
   String proBranderror = "";
@@ -31,6 +32,7 @@ class EditProductProvider extends ChangeNotifier {
   Brand? selectedBrand;
   bool isFetchingBrands = false;
 
+  // ================= FETCH BRANDS =================
   Future<void> fetchBrands() async {
     try {
       isFetchingBrands = true;
@@ -39,9 +41,11 @@ class EditProductProvider extends ChangeNotifier {
       final data = await supabase
           .from('tbl_brand')
           .select('id, brand_name, brand_img_url')
-          .order('brand_name', ascending: true);
+          .order('brand_name');
 
-      brandList = (data as List).map((item) => Brand.fromJson(item)).toList();
+      brandList = (data as List)
+          .map((item) => Brand.fromJson(item))
+          .toList();
 
       isFetchingBrands = false;
       notifyListeners();
@@ -52,13 +56,14 @@ class EditProductProvider extends ChangeNotifier {
     }
   }
 
-  void setSelectedBrand(Brand? brand) {
+  void setSelectedBrand(Brand brand) {
     selectedBrand = brand;
     proBranderror = "";
     notifyListeners();
   }
 
-  void initializeProduct(Product product) async {
+  // ================= INITIALIZE PRODUCT =================
+  Future<void> initializeProduct(Product product) async {
     currentProductId = product.id;
     existingImageUrl = product.prodImg;
 
@@ -69,11 +74,10 @@ class EditProductProvider extends ChangeNotifier {
 
     await fetchBrands();
 
-    // Find brand by name
+    // 🔥 IMPORTANT FIX (brand id se match)
     selectedBrand = brandList.firstWhere(
-      // ignore: unrelated_type_equality_checks
-      (b) => b.brandName == product.prodBrandId,
-      orElse: () => brandList.isNotEmpty ? brandList.first : Brand(brandName: '', brandImgUrl: ''),
+      (b) => b.id == product.prodBrandId,
+      orElse: () => brandList.first,
     );
 
     selectedImage = null;
@@ -89,6 +93,7 @@ class EditProductProvider extends ChangeNotifier {
     proDescriptionerror = "";
   }
 
+  // ================= VALIDATION =================
   bool proValidateform() {
     bool isvalid = true;
     _clearErrors();
@@ -118,14 +123,17 @@ class EditProductProvider extends ChangeNotifier {
     return isvalid;
   }
 
+  // ================= IMAGE PICK =================
   Future<void> pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? image =
+        await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       selectedImage = image;
       notifyListeners();
     }
   }
 
+  // ================= UPDATE PRODUCT =================
   Future<bool> updateProduct() async {
     try {
       isLoading = true;
@@ -134,23 +142,31 @@ class EditProductProvider extends ChangeNotifier {
       String imageUrl = existingImageUrl ?? '';
 
       if (selectedImage != null) {
-        final fileName = 'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
+        final fileName =
+            'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
         final bytes = await selectedImage!.readAsBytes();
+
         await supabase.storage.from('product_images').uploadBinary(
               fileName,
               bytes,
-              fileOptions: const FileOptions(contentType: 'image/jpeg'),
+              fileOptions:
+                  const FileOptions(contentType: 'image/jpeg'),
             );
-        imageUrl = supabase.storage.from('product_images').getPublicUrl(fileName);
+
+        imageUrl =
+            supabase.storage.from('product_images').getPublicUrl(fileName);
       }
 
       await supabase.from('tbl_products').update({
         'prod_name': proNamecontroller.text.trim(),
         'prod_img': imageUrl,
-        'prod_brand': selectedBrand!.brandName, // Store brand name as text
-        'prod_price': double.tryParse(proPricecontroller.text) ?? 0.0,
-        'prod_stock': int.tryParse(proStockcontroller.text) ?? 0,
-        'prod_description': proDescriptioncontroller.text.trim(),
+        'prod_brand': selectedBrand!.id, // ✅ FIXED (BIGINT)
+        'prod_price':
+            double.tryParse(proPricecontroller.text) ?? 0.0,
+        'prod_stock':
+            int.tryParse(proStockcontroller.text) ?? 0,
+        'prod_description':
+            proDescriptioncontroller.text.trim(),
       }).eq('id', currentProductId!);
 
       isLoading = false;

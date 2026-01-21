@@ -139,6 +139,7 @@ class _AddProductState extends State<AddProduct> {
                           const SizedBox(width: 16),
                           Expanded(
                             child: DropdownButtonFormField<Brand>(
+                              // ignore: deprecated_member_use
                               value: proProvider.selectedBrand,
                               decoration: InputDecoration(
                                 labelText: "Select Brand",

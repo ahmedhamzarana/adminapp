@@ -116,6 +116,7 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: DropdownButtonFormField<String>(
+                            // ignore: deprecated_member_use
                             value: proProvider.selectedBrand?.brandName,
                             decoration: InputDecoration(
                               labelText: "Select Brand",
