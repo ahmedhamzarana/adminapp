@@ -28,8 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
     DashboardScreen(),
     AddProduct(),
     ProductsTableView(),
-    AddBrandScreen(),        // Brand Add Screen
-    ViewBrandScreen(),       // Brand View Screen
+    AddBrandScreen(),        
+    ViewBrandScreen(),       
     OrdersTableView(),
     ReviewsTableView(),
     UsersTableView(),

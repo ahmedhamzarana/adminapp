@@ -1,8 +1,8 @@
-// lib/providers/products/add_product_provider.dart
 import 'package:adminapp/models/brand_model.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
 
 class AddProductProvider extends ChangeNotifier {
   final supabase = Supabase.instance.client;
@@ -20,6 +20,7 @@ class AddProductProvider extends ChangeNotifier {
   String proDescriptionerror = "";
 
   XFile? selectedImage;
+  Uint8List? selectedImageBytes; // For web preview
   final ImagePicker _picker = ImagePicker();
 
   // Brand dropdown
@@ -54,7 +55,7 @@ class AddProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool proValidateform(BuildContext context) {
+  bool proValidateform() {
     bool isvalid = true;
 
     proNameerror = "";
@@ -90,9 +91,9 @@ class AddProductProvider extends ChangeNotifier {
 
   Future<void> pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
     if (image != null) {
       selectedImage = image;
+      selectedImageBytes = await image.readAsBytes();
       notifyListeners();
     }
   }
@@ -106,11 +107,9 @@ class AddProductProvider extends ChangeNotifier {
 
       if (selectedImage != null) {
         final fileName = 'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
-        final bytes = await selectedImage!.readAsBytes();
-
         await supabase.storage.from('product_images').uploadBinary(
               fileName,
-              bytes,
+              selectedImageBytes!,
               fileOptions: const FileOptions(contentType: 'image/jpeg'),
             );
 
@@ -120,7 +119,7 @@ class AddProductProvider extends ChangeNotifier {
       await supabase.from('tbl_products').insert({
         'prod_name': proNamecontroller.text.trim(),
         'prod_img': imageUrl,
-        'prod_brand': selectedBrand!.brandName, // Store brand name as text
+        'prod_brand': selectedBrand!.id, // Store brand ID (bigint)
         'prod_price': double.tryParse(proPricecontroller.text) ?? 0.0,
         'prod_stock': int.tryParse(proStockcontroller.text) ?? 0,
         'prod_description': proDescriptioncontroller.text.trim(),
@@ -134,7 +133,7 @@ class AddProductProvider extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       notifyListeners();
-      debugPrint('Error: $e');
+      debugPrint('Error adding product: $e');
       return false;
     }
   }
@@ -145,6 +144,7 @@ class AddProductProvider extends ChangeNotifier {
     proStockcontroller.clear();
     proDescriptioncontroller.clear();
     selectedImage = null;
+    selectedImageBytes = null;
     selectedBrand = null;
 
     proNameerror = "";

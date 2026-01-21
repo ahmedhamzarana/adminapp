@@ -71,7 +71,8 @@ class EditProductProvider extends ChangeNotifier {
 
     // Find brand by name
     selectedBrand = brandList.firstWhere(
-      (b) => b.brandName == product.prodBrand,
+      // ignore: unrelated_type_equality_checks
+      (b) => b.brandName == product.prodBrandId,
       orElse: () => brandList.isNotEmpty ? brandList.first : Brand(brandName: '', brandImgUrl: ''),
     );
 
