@@ -15,7 +15,6 @@ class ViewProductProvider extends ChangeNotifier {
       errorMessage = '';
       notifyListeners();
 
-      // Query includes 'id' inside 'tbl_brand' to satisfy your model's factory
       final data = await supabase
           .from('tbl_products')
           .select('''
@@ -29,7 +28,6 @@ class ViewProductProvider extends ChangeNotifier {
           .order('created_at', ascending: false);
 
       products = (data as List).map((item) {
-        // Fallback agar tbl_brand null ho (Data integrity ke liye)
         final rawItem = Map<String, dynamic>.from(item);
         if (rawItem['tbl_brand'] == null) {
           rawItem['tbl_brand'] = {'id': 0, 'brand_name': 'No Brand'};

@@ -1,21 +1,21 @@
-import 'package:adminapp/models/brand_model.dart';
-import 'package:adminapp/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:adminapp/models/product_model.dart';
+import 'package:adminapp/models/brand_model.dart';
 
 class EditProductProvider extends ChangeNotifier {
   final supabase = Supabase.instance.client;
 
   bool isLoading = false;
-
   int? currentProductId;
   String? existingImageUrl;
 
-  final TextEditingController proNamecontroller = TextEditingController();
-  final TextEditingController proPricecontroller = TextEditingController();
-  final TextEditingController proStockcontroller = TextEditingController();
-  final TextEditingController proDescriptioncontroller =
+  final proNamecontroller = TextEditingController();
+  final proPricecontroller = TextEditingController();
+  final proStockcontroller = TextEditingController();
+  final proDescriptioncontroller =
       TextEditingController();
 
   String proNameerror = "";
@@ -27,33 +27,39 @@ class EditProductProvider extends ChangeNotifier {
   XFile? selectedImage;
   final ImagePicker _picker = ImagePicker();
 
-  // Brand dropdown
   List<Brand> brandList = [];
   Brand? selectedBrand;
-  bool isFetchingBrands = false;
 
-  // ================= FETCH BRANDS =================
+  // INIT
+  Future<void> initializeProduct(Product product) async {
+    currentProductId = product.id;
+    existingImageUrl = product.prodImg;
+
+    proNamecontroller.text = product.prodName;
+    proPricecontroller.text = product.prodPrice.toString();
+    proStockcontroller.text = product.prodStock.toString();
+    proDescriptioncontroller.text =
+        product.prodDescription;
+
+    await fetchBrands();
+    selectedBrand = brandList.firstWhere(
+      (b) => b.id == product.prodBrandId,
+      orElse: () => brandList.first,
+    );
+
+    _clearErrors();
+    notifyListeners();
+  }
+
+  // FETCH BRANDS
   Future<void> fetchBrands() async {
-    try {
-      isFetchingBrands = true;
-      notifyListeners();
+    final data = await supabase
+        .from('tbl_brand')
+        .select()
+        .order('brand_name');
 
-      final data = await supabase
-          .from('tbl_brand')
-          .select('id, brand_name, brand_img_url')
-          .order('brand_name');
-
-      brandList = (data as List)
-          .map((item) => Brand.fromJson(item))
-          .toList();
-
-      isFetchingBrands = false;
-      notifyListeners();
-    } catch (e) {
-      isFetchingBrands = false;
-      debugPrint('Error fetching brands: $e');
-      notifyListeners();
-    }
+    brandList =
+        (data as List).map((e) => Brand.fromJson(e)).toList();
   }
 
   void setSelectedBrand(Brand brand) {
@@ -62,27 +68,42 @@ class EditProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ================= INITIALIZE PRODUCT =================
-  Future<void> initializeProduct(Product product) async {
-    currentProductId = product.id;
-    existingImageUrl = product.prodImg;
-
-    proNamecontroller.text = product.prodName;
-    proPricecontroller.text = product.prodPrice.toString();
-    proStockcontroller.text = product.prodStock.toString();
-    proDescriptioncontroller.text = product.prodDescription;
-
-    await fetchBrands();
-
-    // 🔥 IMPORTANT FIX (brand id se match)
-    selectedBrand = brandList.firstWhere(
-      (b) => b.id == product.prodBrandId,
-      orElse: () => brandList.first,
-    );
-
-    selectedImage = null;
+  // VALIDATION
+  bool proValidateform() {
+    bool valid = true;
     _clearErrors();
+
+    if (proNamecontroller.text.trim().isEmpty) {
+      proNameerror = "Product name required";
+      valid = false;
+    }
+
+    if (selectedBrand == null) {
+      proBranderror = "Select brand";
+      valid = false;
+    }
+
+    final price =
+        double.tryParse(proPricecontroller.text.trim());
+    if (price == null || price <= 0) {
+      proPriceerror = "Enter valid price";
+      valid = false;
+    }
+
+    final stock =
+        int.tryParse(proStockcontroller.text.trim());
+    if (stock == null || stock < 0) {
+      proStockerror = "Enter valid stock";
+      valid = false;
+    }
+
+    if (proDescriptioncontroller.text.trim().isEmpty) {
+      proDescriptionerror = "Description required";
+      valid = false;
+    }
+
     notifyListeners();
+    return valid;
   }
 
   void _clearErrors() {
@@ -93,47 +114,14 @@ class EditProductProvider extends ChangeNotifier {
     proDescriptionerror = "";
   }
 
-  // ================= VALIDATION =================
-  bool proValidateform() {
-    bool isvalid = true;
-    _clearErrors();
-
-    if (proNamecontroller.text.trim().isEmpty) {
-      proNameerror = "Product Name is required";
-      isvalid = false;
-    }
-    if (selectedBrand == null) {
-      proBranderror = "Brand is required";
-      isvalid = false;
-    }
-    if (proPricecontroller.text.trim().isEmpty) {
-      proPriceerror = "Price is required";
-      isvalid = false;
-    }
-    if (proStockcontroller.text.trim().isEmpty) {
-      proStockerror = "Stock is required";
-      isvalid = false;
-    }
-    if (proDescriptioncontroller.text.trim().isEmpty) {
-      proDescriptionerror = "Description is required";
-      isvalid = false;
-    }
-
-    notifyListeners();
-    return isvalid;
-  }
-
-  // ================= IMAGE PICK =================
+  // IMAGE
   Future<void> pickImage() async {
-    final XFile? image =
+    selectedImage =
         await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      selectedImage = image;
-      notifyListeners();
-    }
+    notifyListeners();
   }
 
-  // ================= UPDATE PRODUCT =================
+  // UPDATE
   Future<bool> updateProduct() async {
     try {
       isLoading = true;
@@ -146,25 +134,23 @@ class EditProductProvider extends ChangeNotifier {
             'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
         final bytes = await selectedImage!.readAsBytes();
 
-        await supabase.storage.from('product_images').uploadBinary(
-              fileName,
-              bytes,
-              fileOptions:
-                  const FileOptions(contentType: 'image/jpeg'),
-            );
+        await supabase.storage
+            .from('product_images')
+            .uploadBinary(fileName, bytes);
 
-        imageUrl =
-            supabase.storage.from('product_images').getPublicUrl(fileName);
+        imageUrl = supabase.storage
+            .from('product_images')
+            .getPublicUrl(fileName);
       }
 
       await supabase.from('tbl_products').update({
         'prod_name': proNamecontroller.text.trim(),
         'prod_img': imageUrl,
-        'prod_brand': selectedBrand!.id, // ✅ FIXED (BIGINT)
+        'prod_brand': selectedBrand!.id,
         'prod_price':
-            double.tryParse(proPricecontroller.text) ?? 0.0,
+            double.parse(proPricecontroller.text),
         'prod_stock':
-            int.tryParse(proStockcontroller.text) ?? 0,
+            int.parse(proStockcontroller.text),
         'prod_description':
             proDescriptioncontroller.text.trim(),
       }).eq('id', currentProductId!);
@@ -175,7 +161,6 @@ class EditProductProvider extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       notifyListeners();
-      debugPrint('Error updating product: $e');
       return false;
     }
   }
@@ -189,3 +174,4 @@ class EditProductProvider extends ChangeNotifier {
     super.dispose();
   }
 }
+    

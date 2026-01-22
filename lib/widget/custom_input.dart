@@ -1,50 +1,72 @@
-import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:adminapp/utils/app_colors.dart';
 
 class CustomInput extends StatelessWidget {
+  final TextEditingController controller;
   final String labelText;
-  final String? description; // optional
+  final String? errorText;
   final int maxLines;
-  final String errorText;
-  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomInput({
     super.key,
-    required this.labelText,
-    this.description,
-    this.maxLines = 1,
     required this.controller,
-    required this.errorText,
+    required this.labelText,
+    this.errorText,
+    this.maxLines = 1,
+    this.keyboardType,
+    this.inputFormatters,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      maxLines: maxLines,
-      decoration: InputDecoration(
-        labelStyle: const TextStyle(color: AppColors.secondary),
-        labelText: labelText,
-        errorText: errorText,
-        helperText: description, // shown only if not null
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.secondary),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: controller,
+          maxLines: maxLines,
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          decoration: InputDecoration(
+            labelText: labelText,
+            errorText: errorText?.isEmpty == true ? null : errorText,
+
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.secondary),
+            ),
+
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(
+                color: AppColors.secondary,
+                width: 2,
+              ),
+            ),
+
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: AppColors.secondary),
+            ),
+
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(
+                color: AppColors.secondary,
+                width: 2,
+              ),
+            ),
+
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 16,
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.secondary, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.secondary),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(color: AppColors.secondary, width: 2),
-        ),
-      ),
+      ],
     );
   }
 }

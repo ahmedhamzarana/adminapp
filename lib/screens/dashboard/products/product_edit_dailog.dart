@@ -1,18 +1,21 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
 import 'package:adminapp/models/product_model.dart';
 import 'package:adminapp/providers/products/edit_product_provider.dart';
 import 'package:adminapp/widget/custom_input.dart';
 import 'package:adminapp/utils/app_colors.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ProductEditDialog extends StatefulWidget {
   final Product product;
   const ProductEditDialog({super.key, required this.product});
 
   @override
-  State<ProductEditDialog> createState() => _ProductEditDialogState();
+  State<ProductEditDialog> createState() =>
+      _ProductEditDialogState();
 }
 
 class _ProductEditDialogState extends State<ProductEditDialog> {
@@ -20,14 +23,16 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<EditProductProvider>(context, listen: false)
-          .initializeProduct(widget.product);
+      Provider.of<EditProductProvider>(
+        context,
+        listen: false,
+      ).initializeProduct(widget.product);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final proProvider = Provider.of<EditProductProvider>(context);
+    final provider = Provider.of<EditProductProvider>(context);
 
     return AlertDialog(
       backgroundColor: Colors.transparent,
@@ -40,21 +45,21 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
           ),
           child: Column(
             children: [
-              // Header
+              // HEADER
               Container(
-                width: double.infinity,
                 padding: const EdgeInsets.all(20),
+                width: double.infinity,
                 decoration: const BoxDecoration(
                   color: AppColors.primary,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(14)),
                 ),
                 child: const Text(
                   "Edit Product",
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
 
@@ -62,39 +67,40 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    // Image Section
+                    // IMAGE
                     Row(
                       children: [
                         Container(
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
+                            border:
+                                Border.all(color: Colors.grey.shade300),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
-                            child: proProvider.selectedImage != null
+                            child: provider.selectedImage != null
                                 ? (kIsWeb
                                     ? Image.network(
-                                        proProvider.selectedImage!.path,
+                                        provider.selectedImage!.path,
                                         fit: BoxFit.cover,
                                       )
                                     : Image.file(
-                                        File(proProvider.selectedImage!.path),
+                                        File(provider.selectedImage!.path),
                                         fit: BoxFit.cover,
                                       ))
                                 : Image.network(
-                                    proProvider.existingImageUrl ?? '',
+                                    provider.existingImageUrl ?? '',
                                     fit: BoxFit.cover,
-                                    errorBuilder: (c, e, s) =>
+                                    errorBuilder: (_, __, ___) =>
                                         const Icon(Icons.image),
                                   ),
                           ),
                         ),
                         const SizedBox(width: 15),
                         ElevatedButton(
-                          onPressed: proProvider.pickImage,
+                          onPressed: provider.pickImage,
                           child: const Text("Change Image"),
                         ),
                       ],
@@ -102,71 +108,44 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
 
                     const SizedBox(height: 25),
 
-                    // Product Name & Brand Dropdown
+                    // NAME + BRAND
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: CustomInput(
-                            controller: proProvider.proNamecontroller,
+                            controller: provider.proNamecontroller,
                             labelText: "Product Name",
-                            errorText: proProvider.proNameerror,
+                            errorText: provider.proNameerror,
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: DropdownButtonFormField<String>(
-                            // ignore: deprecated_member_use
-                            value: proProvider.selectedBrand?.brandName,
+                            value:
+                                provider.selectedBrand?.brandName,
                             decoration: InputDecoration(
                               labelText: "Select Brand",
-                              errorText: proProvider.proBranderror.isEmpty
-                                  ? null
-                                  : proProvider.proBranderror,
+                              errorText:
+                                  provider.proBranderror.isEmpty
+                                      ? null
+                                      : provider.proBranderror,
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 16,
-                              ),
+                                  borderRadius:
+                                      BorderRadius.circular(8)),
                             ),
-                            items: proProvider.brandList.map((brand) {
-                              return DropdownMenuItem<String>(
-                                value: brand.brandName,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        border: Border.all(
-                                            color: Colors.grey.shade300),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: Image.network(
-                                          brand.brandImgUrl,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return const Icon(Icons.image,
-                                                size: 14);
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(brand.brandName),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
+                            items: provider.brandList
+                                .map(
+                                  (b) => DropdownMenuItem(
+                                    value: b.brandName,
+                                    child: Text(b.brandName),
+                                  ),
+                                )
+                                .toList(),
                             onChanged: (value) {
-                              final brand = proProvider.brandList
-                                  .firstWhere((b) => b.brandName == value);
-                              proProvider.setSelectedBrand(brand);
+                              final brand = provider.brandList
+                                  .firstWhere(
+                                      (b) => b.brandName == value);
+                              provider.setSelectedBrand(brand);
                             },
                           ),
                         ),
@@ -175,23 +154,38 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
 
                     const SizedBox(height: 15),
 
-                    // Price & Stock
+                    // PRICE + STOCK
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: CustomInput(
-                            controller: proProvider.proPricecontroller,
-                            labelText: "Price",
-                            errorText: proProvider.proPriceerror,
+                            controller:
+                                provider.proPricecontroller,
+                            labelText: "Price (PKR)",
+                            errorText:
+                                provider.proPriceerror,
+                            keyboardType:
+                                TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d*\.?\d*$')),
+                            ],
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: CustomInput(
-                            controller: proProvider.proStockcontroller,
+                            controller:
+                                provider.proStockcontroller,
                             labelText: "Stock",
-                            errorText: proProvider.proStockerror,
+                            errorText:
+                                provider.proStockerror,
+                            keyboardType:
+                                TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter
+                                  .digitsOnly,
+                            ],
                           ),
                         ),
                       ],
@@ -199,59 +193,70 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
 
                     const SizedBox(height: 15),
 
-                    // Description Field
+                    // DESCRIPTION
                     CustomInput(
-                      controller: proProvider.proDescriptioncontroller,
-                      labelText: "Product Description",
+                      controller:
+                          provider.proDescriptioncontroller,
+                      labelText: "Description",
                       maxLines: 3,
-                      errorText: proProvider.proDescriptionerror,
+                      errorText:
+                          provider.proDescriptionerror,
                     ),
 
                     const SizedBox(height: 30),
 
-                    // Buttons
+                    // BUTTONS
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment:
+                          MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () =>
+                              Navigator.pop(context),
                           child: const Text("Cancel"),
                         ),
                         const SizedBox(width: 10),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
+                            backgroundColor:
+                                AppColors.primary,
                           ),
-                          onPressed: proProvider.isLoading
+                          onPressed: provider.isLoading
                               ? null
                               : () async {
-                                  if (proProvider.proValidateform()) {
-                                    bool success =
-                                        await proProvider.updateProduct();
-                                    if (context.mounted && success) {
-                                      Navigator.pop(context, true);
+                                  if (provider
+                                      .proValidateform()) {
+                                    final success =
+                                        await provider
+                                            .updateProduct();
+                                    if (success &&
+                                        context.mounted) {
+                                      Navigator.pop(
+                                          context, true);
                                     }
                                   }
                                 },
-                          child: proProvider.isLoading
+                          child: provider.isLoading
                               ? const SizedBox(
                                   width: 20,
                                   height: 20,
-                                  child: CircularProgressIndicator(
+                                  child:
+                                      CircularProgressIndicator(
                                     strokeWidth: 2,
                                     color: Colors.white,
                                   ),
                                 )
                               : const Text(
                                   "Update Product",
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color: Colors.white),
                                 ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

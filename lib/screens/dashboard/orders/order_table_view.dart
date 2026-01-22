@@ -1,32 +1,46 @@
+import 'package:adminapp/providers/orders/order_view_provider.dart';
 import 'package:adminapp/screens/dashboard/orders/order_detail_dailog.dart';
 import 'package:adminapp/widget/custom_table.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class OrdersTableView extends StatelessWidget {
+class OrdersTableView extends StatefulWidget {
   const OrdersTableView({super.key});
 
   @override
+  State<OrdersTableView> createState() => _OrdersTableViewState();
+}
+
+class _OrdersTableViewState extends State<OrdersTableView> {
+  @override
+  void initState() {
+    super.initState();
+    // Screen load hote hi orders fetch karein
+    Future.delayed(Duration.zero, () {
+      context.read<OrderViewProvider>().fetchOrders();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> ordersData = [
-      {
-        'order_id': 'ORD-101',
-        'customer': 'Alice Smith',
-        'email': 'alice@gmail.com',
-        'address': '221B Baker Street, London',
-        'date': 'Jan 05',
-        'total': '₹45,000',
-        'status': 'Delivered',
-      },
-      {
-        'order_id': 'ORD-102',
-        'customer': 'Bob Johnson',
-        'email': 'bob@gmail.com',
-        'address': 'MG Road, Bengaluru',
-        'date': 'Jan 06',
-        'total': '₹1,20,000',
-        'status': 'Pending',
-      },
-    ];
+    final orderProvider = Provider.of<OrderViewProvider>(context);
+
+    if (orderProvider.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // Supabase data ko Table format ke liye map karna
+    final List<Map<String, dynamic>> ordersData = orderProvider.ordersList.map((order) {
+      return {
+        'id': order['id'],
+        'order_id': '#ORD-${order['id']}',
+        'product': order['tbl_products'] != null ? order['tbl_products']['prod_name'] : 'Unknown',
+        'qty': order['total_item'],
+        'total': '₹${order['total_amount']}',
+        'status': order['status'], // Enum values: pending, delivered etc.
+        'full_item': order, // Dialog ke liye pura object
+      };
+    }).toList();
 
     return Align(
       alignment: Alignment.topLeft,
@@ -34,12 +48,12 @@ class OrdersTableView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(4),
           child: ResponsiveTableView(
-            title: "Order History",
+            title: "Order Inventory",
             data: ordersData,
             headers: const [
               'Order ID',
-              'Customer',
-              'Date',
+              'Product',
+              'Qty',
               'Total',
               'Status',
               'Actions',
@@ -47,57 +61,53 @@ class OrdersTableView extends StatelessWidget {
             rowBuilder: (context, header, value, item) {
               if (header == 'Status') {
                 Color color;
-                switch (value) {
-                  case 'Delivered':
-                    color = Colors.green;
-                    break;
-                  case 'Pending':
-                    color = Colors.orange;
-                    break;
+                switch (value.toString().toLowerCase()) {
+                  case 'delivered': case 'completed':
+                    color = Colors.green; break;
+                  case 'pending':
+                    color = Colors.orange; break;
+                  case 'cancelled':
+                    color = Colors.red; break;
+                  case 'shipping': case 'progressing':
+                    color = Colors.blue; break;
                   default:
                     color = Colors.blueGrey;
                 }
 
-                return Chip(
-                  label: Text(
-                    value,
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: color.withOpacity(0.5)),
                   ),
-                  backgroundColor: color.withAlpha(12),
+                  child: Text(
+                    value.toString().toUpperCase(),
+                    style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold),
+                  ),
                 );
               }
 
               if (header == 'Total') {
                 return Text(
                   value,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: Colors.green,
-                  ),
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
                 );
               }
 
               if (header == 'Actions') {
                 return IconButton(
-                  icon: const Icon(Icons.edit, size: 18),
+                  icon: const Icon(Icons.visibility, size: 20, color: Colors.indigo),
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (_) => OrderDetailDailog(order: item),
+                      builder: (_) => OrderDetailDailog(order: item['full_item']),
                     );
                   },
                 );
               }
 
-              return Text(
-                value.toString(),
-                style: const TextStyle(fontSize: 13),
-              );
+              return Text(value.toString(), style: const TextStyle(fontSize: 13));
             },
           ),
         ),

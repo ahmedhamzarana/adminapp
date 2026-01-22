@@ -41,7 +41,7 @@ class _ProductsTableViewState extends State<ProductsTableView> {
             'name': product.prodName,
             'image': product.prodImg,
             'brand': product.prodBrandName, // Using model property
-            'price': '₹${product.prodPrice.toStringAsFixed(2)}',
+            'price': 'Rs${product.prodPrice.toStringAsFixed(2)}',
             'stock': product.prodStock,
             'product_obj': product,
           },

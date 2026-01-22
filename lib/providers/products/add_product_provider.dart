@@ -18,12 +18,12 @@ class AddProductProvider extends ChangeNotifier {
   String proPriceerror = "";
   String proStockerror = "";
   String proDescriptionerror = "";
+  String proImageerror = ""; // Image validation error
 
   XFile? selectedImage;
-  Uint8List? selectedImageBytes; // For web preview
+  Uint8List? selectedImageBytes; 
   final ImagePicker _picker = ImagePicker();
 
-  // Brand dropdown
   List<Brand> brandList = [];
   Brand? selectedBrand;
   bool isFetchingBrands = false;
@@ -32,19 +32,15 @@ class AddProductProvider extends ChangeNotifier {
     try {
       isFetchingBrands = true;
       notifyListeners();
-
       final data = await supabase
           .from('tbl_brand')
           .select('id, brand_name, brand_img_url')
           .order('brand_name', ascending: true);
-
       brandList = (data as List).map((item) => Brand.fromJson(item)).toList();
-
       isFetchingBrands = false;
       notifyListeners();
     } catch (e) {
       isFetchingBrands = false;
-      debugPrint('Error fetching brands: $e');
       notifyListeners();
     }
   }
@@ -55,33 +51,62 @@ class AddProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // --- Validation Logic ---
   bool proValidateform() {
     bool isvalid = true;
 
+    // Reset Errors
     proNameerror = "";
     proBranderror = "";
     proPriceerror = "";
     proStockerror = "";
     proDescriptionerror = "";
+    proImageerror = "";
 
+    // 1. Image Validation
+    if (selectedImage == null) {
+      proImageerror = "Product image is required";
+      isvalid = false;
+    }
+
+    // 2. Name Validation (Letters only, No numbers)
+    final nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
     if (proNamecontroller.text.trim().isEmpty) {
       proNameerror = "Product Name is required";
       isvalid = false;
+    } else if (!nameRegExp.hasMatch(proNamecontroller.text.trim())) {
+      proNameerror = "Numbers/Symbols not allowed in name";
+      isvalid = false;
     }
+
+    // 3. Brand Validation
     if (selectedBrand == null) {
       proBranderror = "Please select a brand";
       isvalid = false;
     }
-    if (proPricecontroller.text.trim().isEmpty) {
-      proPriceerror = "Product Price is required";
+
+    // 4. Price Validation (No Negative)
+    double? price = double.tryParse(proPricecontroller.text.trim());
+    if (proPricecontroller.text.isEmpty) {
+      proPriceerror = "Price is required";
+      isvalid = false;
+    } else if (price == null || price <= 0) {
+      proPriceerror = "Price must be greater than 0";
       isvalid = false;
     }
-    if (proStockcontroller.text.trim().isEmpty) {
-      proStockerror = "Product Stock is required";
+
+    // 5. Stock Validation (No Negative)
+    int? stock = int.tryParse(proStockcontroller.text.trim());
+    if (proStockcontroller.text.isEmpty) {
+      proStockerror = "Stock is required";
+      isvalid = false;
+    } else if (stock == null || stock < 0) {
+      proStockerror = "Stock cannot be negative";
       isvalid = false;
     }
+
     if (proDescriptioncontroller.text.trim().isEmpty) {
-      proDescriptionerror = "Product Description is required";
+      proDescriptionerror = "Description is required";
       isvalid = false;
     }
 
@@ -94,6 +119,7 @@ class AddProductProvider extends ChangeNotifier {
     if (image != null) {
       selectedImage = image;
       selectedImageBytes = await image.readAsBytes();
+      proImageerror = ""; // Clear error when image picked
       notifyListeners();
     }
   }
@@ -102,9 +128,7 @@ class AddProductProvider extends ChangeNotifier {
     try {
       isLoading = true;
       notifyListeners();
-
       String imageUrl = '';
-
       if (selectedImage != null) {
         final fileName = 'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
         await supabase.storage.from('product_images').uploadBinary(
@@ -112,29 +136,22 @@ class AddProductProvider extends ChangeNotifier {
               selectedImageBytes!,
               fileOptions: const FileOptions(contentType: 'image/jpeg'),
             );
-
         imageUrl = supabase.storage.from('product_images').getPublicUrl(fileName);
       }
-
       await supabase.from('tbl_products').insert({
         'prod_name': proNamecontroller.text.trim(),
         'prod_img': imageUrl,
-        'prod_brand': selectedBrand!.id, // Store brand ID (bigint)
+        'prod_brand': selectedBrand!.id,
         'prod_price': double.tryParse(proPricecontroller.text) ?? 0.0,
         'prod_stock': int.tryParse(proStockcontroller.text) ?? 0,
         'prod_description': proDescriptioncontroller.text.trim(),
       });
-
-      clearForm();
-
-      isLoading = false;
-      notifyListeners();
       return true;
     } catch (e) {
+      return false;
+    } finally {
       isLoading = false;
       notifyListeners();
-      debugPrint('Error adding product: $e');
-      return false;
     }
   }
 
@@ -146,13 +163,7 @@ class AddProductProvider extends ChangeNotifier {
     selectedImage = null;
     selectedImageBytes = null;
     selectedBrand = null;
-
-    proNameerror = "";
-    proBranderror = "";
-    proPriceerror = "";
-    proStockerror = "";
-    proDescriptionerror = "";
-
+    proNameerror = proBranderror = proPriceerror = proStockerror = proDescriptionerror = proImageerror = "";
     notifyListeners();
   }
 
