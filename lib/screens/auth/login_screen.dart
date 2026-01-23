@@ -55,11 +55,11 @@ class LoginScreen extends StatelessWidget {
                   style: const TextStyle(color: AppColors.bgcolor),
                   cursorColor: AppColors.secondary,
                   decoration: InputDecoration(
-                    labelText: "Username",
+                    labelText: "Email",
                     labelStyle: const TextStyle(color: AppColors.secondary),
                     errorText: authProvider.usernameError,
                     prefixIcon: const Icon(
-                      Icons.person,
+                      Icons.email,
                       color: AppColors.secondary,
                     ),
                     enabledBorder: OutlineInputBorder(

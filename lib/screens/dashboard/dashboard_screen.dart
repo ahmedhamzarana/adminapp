@@ -1,3 +1,4 @@
+import 'package:adminapp/screens/dashboard/products/add_product.dart';
 import 'package:adminapp/widget/dashboard_card.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,10 @@ class DashboardScreen extends StatelessWidget {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AddProduct(),
+                    );
                   },
                   icon: const Icon(Icons.add, size: 18),
                   label: const Text("Add New Watch"),
@@ -60,14 +65,12 @@ class DashboardScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 32),
-
-            // Stats Row (Is pe const nahi lagega kyunki userCount dynamic hai)
             Row(
               children: [
                 const Expanded(
                   child: DashboardCard(
                     title: "Total Revenue",
-                    value: "₹842,500",
+                    value: "Rs842,500",
                     trend: "+14.2%",
                     icon: Icons.account_balance_wallet_outlined,
                     color: Colors.blueAccent,
@@ -87,7 +90,7 @@ class DashboardScreen extends StatelessWidget {
                 Expanded(
                   child: DashboardCard(
                     title: "Active Customers",
-                    value: "1,500", // Dynamic Value
+                    value: "1,500",
                     trend: "+12.5%",
                     icon: Icons.people_outline,
                     color: Colors.teal,
@@ -98,7 +101,6 @@ class DashboardScreen extends StatelessWidget {
 
             const SizedBox(height: 32),
 
-            // Recent Shipments Table
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(

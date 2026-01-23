@@ -15,7 +15,6 @@ class _OrdersTableViewState extends State<OrdersTableView> {
   @override
   void initState() {
     super.initState();
-    // Screen load hote hi orders fetch karein
     Future.delayed(Duration.zero, () {
       context.read<OrderViewProvider>().fetchOrders();
     });
@@ -30,15 +29,19 @@ class _OrdersTableViewState extends State<OrdersTableView> {
     }
 
     // Supabase data ko Table format ke liye map karna
-    final List<Map<String, dynamic>> ordersData = orderProvider.ordersList.map((order) {
+    final List<Map<String, dynamic>> ordersData = orderProvider.ordersList.map((
+      order,
+    ) {
       return {
         'id': order['id'],
         'order_id': '#ORD-${order['id']}',
-        'product': order['tbl_products'] != null ? order['tbl_products']['prod_name'] : 'Unknown',
+        'product': order['tbl_products'] != null
+            ? order['tbl_products']['prod_name']
+            : 'Unknown',
         'qty': order['total_item'],
-        'total': '₹${order['total_amount']}',
-        'status': order['status'], // Enum values: pending, delivered etc.
-        'full_item': order, // Dialog ke liye pura object
+        'total': 'Rs${order['total_amount']}',
+        'status': order['status'],
+        'full_item': order,
       };
     }).toList();
 
@@ -62,28 +65,41 @@ class _OrdersTableViewState extends State<OrdersTableView> {
               if (header == 'Status') {
                 Color color;
                 switch (value.toString().toLowerCase()) {
-                  case 'delivered': case 'completed':
-                    color = Colors.green; break;
+                  case 'delivered':
+                  case 'completed':
+                    color = Colors.green;
+                    break;
                   case 'pending':
-                    color = Colors.orange; break;
+                    color = Colors.orange;
+                    break;
                   case 'cancelled':
-                    color = Colors.red; break;
-                  case 'shipping': case 'progressing':
-                    color = Colors.blue; break;
+                    color = Colors.red;
+                    break;
+                  case 'shipping':
+                  case 'progressing':
+                    color = Colors.blue;
+                    break;
                   default:
                     color = Colors.blueGrey;
                 }
 
                 return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withAlpha(1),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: color.withOpacity(0.5)),
+                    border: Border.all(color: color.withAlpha(5)),
                   ),
                   child: Text(
                     value.toString().toUpperCase(),
-                    style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 );
               }
@@ -91,23 +107,34 @@ class _OrdersTableViewState extends State<OrdersTableView> {
               if (header == 'Total') {
                 return Text(
                   value,
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
                 );
               }
 
               if (header == 'Actions') {
                 return IconButton(
-                  icon: const Icon(Icons.visibility, size: 20, color: Colors.indigo),
+                  icon: const Icon(
+                    Icons.visibility,
+                    size: 20,
+                    color: Colors.indigo,
+                  ),
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (_) => OrderDetailDailog(order: item['full_item']),
+                      builder: (_) =>
+                          OrderDetailDailog(order: item['full_item']),
                     );
                   },
                 );
               }
 
-              return Text(value.toString(), style: const TextStyle(fontSize: 13));
+              return Text(
+                value.toString(),
+                style: const TextStyle(fontSize: 13),
+              );
             },
           ),
         ),

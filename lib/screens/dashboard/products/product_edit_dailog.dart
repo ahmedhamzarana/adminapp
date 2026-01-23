@@ -121,7 +121,7 @@ class _ProductEditDialogState extends State<ProductEditDialog> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: DropdownButtonFormField<String>(
-                            value:
+                            initialValue:
                                 provider.selectedBrand?.brandName,
                             decoration: InputDecoration(
                               labelText: "Select Brand",

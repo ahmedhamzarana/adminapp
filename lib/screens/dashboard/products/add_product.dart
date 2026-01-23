@@ -3,7 +3,7 @@ import 'package:adminapp/providers/products/add_product_provider.dart';
 import 'package:adminapp/widget/custom_input.dart';
 import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Formatter ke liye
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddProduct extends StatefulWidget {
@@ -26,15 +26,18 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     final proProvider = Provider.of<AddProductProvider>(context);
 
-    return Scaffold(
+    return AlertDialog(
       backgroundColor: Colors.grey.shade50,
-      body: SingleChildScrollView(
+      contentPadding: EdgeInsets.zero,
+      content: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Container(
+          width: 630,
+
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
+            boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10)],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,13 +50,24 @@ class _AddProductState extends State<AddProduct> {
                   color: AppColors.primary,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 ),
-                child: const Text(
-                  "Add New Product",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Add New Product",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.cancel, color: AppColors.dark),
+                    ),
+                  ],
                 ),
               ),
 
@@ -62,12 +76,12 @@ class _AddProductState extends State<AddProduct> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // --- Image Section ---
                     const Text(
                       "Product Image",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
+
                     Row(
                       children: [
                         Container(
@@ -97,11 +111,12 @@ class _AddProductState extends State<AddProduct> {
                         ),
                         const SizedBox(width: 20),
                         ElevatedButton(
-                          onPressed: () => proProvider.pickImage(),
+                          onPressed: proProvider.pickImage,
                           child: const Text("Select Image"),
                         ),
                       ],
                     ),
+
                     if (proProvider.proImageerror.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
@@ -116,7 +131,6 @@ class _AddProductState extends State<AddProduct> {
 
                     const SizedBox(height: 25),
 
-                    // --- Name & Brand ---
                     Row(
                       children: [
                         Expanded(
@@ -135,37 +149,8 @@ class _AddProductState extends State<AddProduct> {
                               errorText: proProvider.proBranderror.isEmpty
                                   ? null
                                   : proProvider.proBranderror,
-                              enabledBorder: OutlineInputBorder(
+                              border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                  color: AppColors.secondary,
-                                ),
-                              ),
-
-                              // 🔹 FOCUSED BORDER
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                  color: AppColors.secondary,
-                                  width: 2,
-                                ),
-                              ),
-
-                              // 🔹 ERROR BORDER
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                  color: AppColors.secondary,
-                                ),
-                              ),
-
-                              // 🔹 FOCUSED ERROR BORDER
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: const BorderSide(
-                                  color: AppColors.secondary,
-                                  width: 2,
-                                ),
                               ),
                             ),
                             items: proProvider.brandList
@@ -176,8 +161,7 @@ class _AddProductState extends State<AddProduct> {
                                   ),
                                 )
                                 .toList(),
-                            onChanged: (val) =>
-                                proProvider.setSelectedBrand(val),
+                            onChanged: proProvider.setSelectedBrand,
                           ),
                         ),
                       ],
@@ -185,7 +169,6 @@ class _AddProductState extends State<AddProduct> {
 
                     const SizedBox(height: 20),
 
-                    // --- Price & Stock ---
                     Row(
                       children: [
                         Expanded(
@@ -194,7 +177,6 @@ class _AddProductState extends State<AddProduct> {
                             labelText: "Price (Rs)",
                             errorText: proProvider.proPriceerror,
                             keyboardType: TextInputType.number,
-                            // InputFormatter: User minus sign type hi nahi kar payega
                             inputFormatters: [
                               FilteringTextInputFormatter.allow(
                                 RegExp(r'^\d+\.?\d{0,2}'),
@@ -228,7 +210,6 @@ class _AddProductState extends State<AddProduct> {
 
                     const SizedBox(height: 30),
 
-                    // --- Submit Button ---
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -240,12 +221,14 @@ class _AddProductState extends State<AddProduct> {
                             ? null
                             : () async {
                                 if (proProvider.proValidateform()) {
-                                  bool success = await proProvider.addProduct();
+                                  final success = await proProvider
+                                      .addProduct();
                                   if (success && context.mounted) {
                                     proProvider.clearForm();
+                                    Navigator.pop(context);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                        content: Text("Success!"),
+                                        content: Text("Product Added"),
                                         backgroundColor: Colors.green,
                                       ),
                                     );

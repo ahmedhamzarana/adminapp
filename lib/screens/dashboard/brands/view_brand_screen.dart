@@ -1,5 +1,6 @@
 // lib/screens/dashboard/brands/view_brand_screen.dart
 import 'package:adminapp/providers/brands/view_brand_provider.dart';
+import 'package:adminapp/screens/dashboard/brands/add_brand_screen.dart';
 import 'package:adminapp/screens/dashboard/brands/edit_brand_dailog.dart';
 import 'package:adminapp/widget/custom_table.dart';
 import 'package:flutter/material.dart';
@@ -68,19 +69,44 @@ class _ViewBrandScreenState extends State<ViewBrandScreen> {
             title: 'Brands',
             data: brandsData,
             headerActions: [
-              OutlinedButton.icon(
-                onPressed: () => brandProvider.refreshBrands(),
-                icon: const Icon(Icons.refresh, size: 18),
-                label: const Text('Refresh'),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AddBrandScreen(),
+                      );
+                    },
+                    icon: const Icon(Icons.add, size: 18),
+                    label: const Text("Add New Brand"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
+                  IconButton(
+                    onPressed: () => brandProvider.refreshBrands(),
+                    icon: const Icon(Icons.refresh, size: 18),
+                    style: IconButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
             headers: const ['Image', 'Name', 'Actions'],

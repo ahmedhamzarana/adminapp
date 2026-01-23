@@ -1,4 +1,5 @@
 import 'package:adminapp/providers/users/user_provider.dart';
+import 'package:adminapp/screens/dashboard/users/user_detail_dailog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:adminapp/widget/custom_table.dart';
@@ -40,7 +41,14 @@ class _UsersTableViewState extends State<UsersTableView> {
               child: ResponsiveTableView(
                 title: "User Management",
                 data: provider.users,
-                headers: const ['Avatar', 'Name', 'Email', 'Role', 'Status'],
+                headers: const [
+                  'Avatar',
+                  'Name',
+                  'Email',
+                  'Role',
+                  'Status',
+                  'Action',
+                ],
                 rowBuilder: (context, header, value, item) {
                   // ---------------- AVATAR ----------------
                   if (header == 'Avatar') {
@@ -57,9 +65,7 @@ class _UsersTableViewState extends State<UsersTableView> {
                     return CircleAvatar(
                       radius: 14,
                       child: Text(
-                        name.isNotEmpty
-                            ? name[0].toUpperCase()
-                            : '?',
+                        name.isNotEmpty ? name[0].toUpperCase() : '?',
                       ),
                     );
                   }
@@ -76,10 +82,7 @@ class _UsersTableViewState extends State<UsersTableView> {
                   if (header == 'Email') {
                     return Text(
                       item['email'] ?? '',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     );
                   }
 
@@ -95,11 +98,21 @@ class _UsersTableViewState extends State<UsersTableView> {
                     return Text(
                       status,
                       style: TextStyle(
-                        color: status == 'Active'
-                            ? Colors.green
-                            : Colors.red,
+                        color: status == 'Active' ? Colors.green : Colors.red,
                         fontWeight: FontWeight.w500,
                       ),
+                    );
+                  }
+
+                  if (header == 'Action') {
+                    return IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => UserDetailDialog(),
+                        );
+                      },
+                      icon: Icon(Icons.remove_red_eye_outlined),
                     );
                   }
 
@@ -113,4 +126,3 @@ class _UsersTableViewState extends State<UsersTableView> {
     );
   }
 }
-

@@ -10,7 +10,7 @@ class ReviewsTableView extends StatelessWidget {
       {
         'product': 'Rolex Submariner',
         'customer': 'Ahmed Ali',
-        'rating': 5,
+        'rating': 1,
         'comment': 'Excellent quality watch! Worth every penny.',
         'date': 'Jan 08, 2026',
         'status': 'Approved',
@@ -34,7 +34,7 @@ class ReviewsTableView extends StatelessWidget {
     ];
 
     return Align(
-            alignment: Alignment.topLeft,
+      alignment: Alignment.topLeft,
 
       child: SingleChildScrollView(
         child: Padding(
@@ -73,10 +73,13 @@ class ReviewsTableView extends StatelessWidget {
               if (header == 'Product') {
                 return Text(
                   item['product'],
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 );
               }
-        
+
               if (header == 'Rating') {
                 final int rating = value;
                 return Row(
@@ -101,7 +104,7 @@ class ReviewsTableView extends StatelessWidget {
                   ],
                 );
               }
-        
+
               if (header == 'Comment') {
                 return SizedBox(
                   width: 250,
@@ -113,7 +116,7 @@ class ReviewsTableView extends StatelessWidget {
                   ),
                 );
               }
-        
+
               if (header == 'Status') {
                 final Color color = value == 'Approved'
                     ? Colors.green
@@ -121,7 +124,10 @@ class ReviewsTableView extends StatelessWidget {
                     ? Colors.orange
                     : Colors.red;
                 return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: color.withAlpha(100),
                     borderRadius: BorderRadius.circular(12),
@@ -136,16 +142,15 @@ class ReviewsTableView extends StatelessWidget {
                   ),
                 );
               }
-        
+
               if (header == 'Date') {
                 return Text(
                   value,
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
                 );
               }
-        
+
               if (header == 'Actions') {
-                final bool isPending = item['status'] == 'Pending';
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -162,43 +167,19 @@ class ReviewsTableView extends StatelessWidget {
                     ),
                     IconButton(
                       icon: const Icon(
-                        Icons.visibility_outlined,
+                        Icons.check_circle_outline,
                         size: 18,
-                        color: Colors.blueGrey,
+                        color: Colors.green,
                       ),
                       onPressed: () {
                         // View full review details
                       },
                       tooltip: 'View Details',
                     ),
-                    if (isPending) ...[
-                      IconButton(
-                        icon: const Icon(
-                          Icons.check_circle_outline,
-                          size: 18,
-                          color: Colors.green,
-                        ),
-                        onPressed: () {
-                          // Approve review logic
-                        },
-                        tooltip: 'Approve Review',
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.cancel_outlined,
-                          size: 18,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          // Reject review logic
-                        },
-                        tooltip: 'Reject Review',
-                      ),
-                    ],
                   ],
                 );
               }
-        
+
               return Text(value.toString());
             },
           ),

@@ -1,3 +1,4 @@
+import 'package:adminapp/screens/dashboard/products/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:adminapp/providers/products/view_product_provider.dart';
@@ -65,6 +66,27 @@ class _ProductsTableViewState extends State<ProductsTableView> {
               'Actions',
             ],
             headerActions: [
+              ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AddProduct(),
+                  );
+                },
+                icon: const Icon(Icons.add, size: 18),
+                label: const Text("Add New Watch"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
               IconButton(
                 onPressed: () => productProvider.refreshProducts(),
                 icon: const Icon(Icons.refresh, color: AppColors.secondary),
