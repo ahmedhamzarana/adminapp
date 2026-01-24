@@ -24,11 +24,10 @@ class _OrdersTableViewState extends State<OrdersTableView> {
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderViewProvider>(context);
 
-    if (orderProvider.isLoading) {
+    if (orderProvider.isLoading && orderProvider.ordersList.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    // Supabase data ko Table format ke liye map karna
     final List<Map<String, dynamic>> ordersData = orderProvider.ordersList.map((
       order,
     ) {
@@ -38,9 +37,9 @@ class _OrdersTableViewState extends State<OrdersTableView> {
         'product': order['tbl_products'] != null
             ? order['tbl_products']['prod_name']
             : 'Unknown',
-        'qty': order['total_item'],
-        'total': 'Rs${order['total_amount']}',
-        'status': order['status'],
+        'qty': order['total_item'] ?? 0,
+        'total': 'Rs${order['total_amount'] ?? 0}',
+        'status': order['status'] ?? 'pending',
         'full_item': order,
       };
     }).toList();
@@ -124,8 +123,10 @@ class _OrdersTableViewState extends State<OrdersTableView> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (_) =>
-                          OrderDetailDailog(order: item['full_item']),
+                      builder: (_) => ChangeNotifierProvider.value(
+                        value: context.read<OrderViewProvider>(),
+                        child: OrderDetailDailog(order: item['full_item']),
+                      ),
                     );
                   },
                 );

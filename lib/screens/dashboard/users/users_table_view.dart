@@ -45,8 +45,6 @@ class _UsersTableViewState extends State<UsersTableView> {
                   'Avatar',
                   'Name',
                   'Email',
-                  'Role',
-                  'Status',
                   'Action',
                 ],
                 rowBuilder: (context, header, value, item) {
@@ -64,8 +62,10 @@ class _UsersTableViewState extends State<UsersTableView> {
 
                     return CircleAvatar(
                       radius: 14,
+                      backgroundColor: Colors.blue,
                       child: Text(
                         name.isNotEmpty ? name[0].toUpperCase() : '?',
+                        style: const TextStyle(color: Colors.white, fontSize: 12),
                       ),
                     );
                   }
@@ -73,7 +73,7 @@ class _UsersTableViewState extends State<UsersTableView> {
                   // ---------------- NAME ----------------
                   if (header == 'Name') {
                     return Text(
-                      item['name'] ?? '',
+                      item['name'] ?? 'N/A',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     );
                   }
@@ -81,38 +81,28 @@ class _UsersTableViewState extends State<UsersTableView> {
                   // ---------------- EMAIL ----------------
                   if (header == 'Email') {
                     return Text(
-                      item['email'] ?? '',
+                      item['email'] ?? 'N/A',
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     );
                   }
 
-                  // ---------------- ROLE ----------------
-                  if (header == 'Role') {
-                    return Text(item['role'] ?? '-');
-                  }
-
-                  // ---------------- STATUS ----------------
-                  if (header == 'Status') {
-                    final String status = item['status'] ?? 'Inactive';
-
-                    return Text(
-                      status,
-                      style: TextStyle(
-                        color: status == 'Active' ? Colors.green : Colors.red,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    );
-                  }
-
+                  // ---------------- ACTION ----------------
                   if (header == 'Action') {
                     return IconButton(
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) => UserDetailDialog(),
+                          builder: (context) => ChangeNotifierProvider.value(
+                            value: context.read<UsersProvider>(),
+                            child: UserDetailDialog(user: item),
+                          ),
                         );
                       },
-                      icon: Icon(Icons.remove_red_eye_outlined),
+                      icon: const Icon(
+                        Icons.visibility,
+                        size: 20,
+                        color: Colors.indigo,
+                      ),
                     );
                   }
 

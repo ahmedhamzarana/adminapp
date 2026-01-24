@@ -2,52 +2,81 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OrderViewProvider extends ChangeNotifier {
-  final supabase = Supabase.instance.client;
-  List<dynamic> ordersList = [];
+  final SupabaseClient supabase = Supabase.instance.client;
   bool isLoading = false;
+  List<Map<String, dynamic>> ordersList = [];
 
+  /// Fetch Orders
   Future<void> fetchOrders() async {
     try {
       isLoading = true;
       notifyListeners();
 
-      // Table Join: tbl_orders se data aur tbl_products se prod_name
-      final response = await supabase
-          .from('tbl_orders')
-          .select('''
-            *,
-            tbl_products (
-              prod_name
-            )
-          ''')
-          .order('created_at', ascending: false);
+      // Products aur Address ke saath join (foreign keys hain)
+      final ordersResponse = await supabase.from('tbl_orders').select('''
+        *,
+        tbl_products ( prod_name, prod_price, prod_img ),
+        tbl_address ( full_name, phone_number, address_details, city, zip_code )
+      ''').order('created_at', ascending: false);
 
-      ordersList = response as List<dynamic>;
-      isLoading = false;
-      notifyListeners();
+      List<Map<String, dynamic>> orders = List<Map<String, dynamic>>.from(ordersResponse);
+
+      // Users ko manually fetch karo (foreign key nahi hai)
+      for (var order in orders) {
+        if (order['user_id'] != null && order['user_id'].toString().isNotEmpty) {
+          try {
+            final userResponse = await supabase
+                .from('tbl_users')
+                .select('name, email, image_url')
+                .eq('user_id', order['user_id'])
+                .maybeSingle();
+            order['tbl_users'] = userResponse;
+          } catch (e) {
+            debugPrint("⚠️ User not found for order ${order['id']}: $e");
+            order['tbl_users'] = null;
+          }
+        } else {
+          order['tbl_users'] = null;
+        }
+      }
+
+      ordersList = orders;
     } catch (e) {
+      debugPrint("❌ Error Fetching Orders: $e");
+    } finally {
       isLoading = false;
-      debugPrint("Error Fetching Orders: $e");
       notifyListeners();
     }
   }
 
-  // Status update karne ke liye function
-  Future<void> updateStatus(int orderId, String newStatus) async {
+  /// Update Order Status
+  Future<bool> updateStatus(int orderId, String newStatus) async {
     try {
+      isLoading = true;
+      notifyListeners();
+
+      // Lowercase format (enum ke liye)
+      String formattedStatus = newStatus.toLowerCase();
+
       await supabase
           .from('tbl_orders')
-          .update({'status': newStatus})
+          .update({'status': formattedStatus})
           .eq('id', orderId);
-      
-      // List ko locally update karna taaki UI foran change ho jaye
+
+      // Local update for instant UI refresh
       int index = ordersList.indexWhere((element) => element['id'] == orderId);
       if (index != -1) {
-        ordersList[index]['status'] = newStatus;
-        notifyListeners();
+        ordersList[index]['status'] = formattedStatus;
       }
+
+      debugPrint("✅ Status updated successfully: $formattedStatus");
+      return true;
     } catch (e) {
-      debugPrint("Update Error: $e");
+      debugPrint("❌ Error Updating Status: $e");
+      return false;
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 }

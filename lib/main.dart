@@ -1,5 +1,6 @@
 import 'package:adminapp/providers/brands/add_brand_provider.dart';
 import 'package:adminapp/providers/brands/view_brand_provider.dart';
+import 'package:adminapp/providers/dashboard_provider.dart';
 import 'package:adminapp/providers/orders/order_view_provider.dart';
 import 'package:adminapp/providers/products/add_product_provider.dart';
 import 'package:adminapp/providers/home_provider.dart';
@@ -24,6 +25,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => SplashProvider()),
         ChangeNotifierProvider(create: (context) => LoginProvider()),
         ChangeNotifierProvider(create: (context) => HomeProvider()),
+        ChangeNotifierProvider(create: (context) => DashboardProvider()),
         ChangeNotifierProvider(create: (context) => AddProductProvider()),
         ChangeNotifierProvider(create: (context) => ViewProductProvider()),
         ChangeNotifierProvider(create: (context) => EditProductProvider()),

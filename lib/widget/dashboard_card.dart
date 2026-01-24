@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DashboardCard extends StatelessWidget {
   final String title;
   final String value;
-  final String trend; 
+  final String trend;
   final IconData icon;
   final Color color;
 
@@ -19,16 +19,16 @@ class DashboardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade100),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(20), // Soft shadow
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.grey.shade100,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -39,39 +39,39 @@ class DashboardCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withAlpha(40), // Light background for icon
+                  color: color.withAlpha(1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: color, size: 24),
               ),
-              Text(
-                trend,
-                style: const TextStyle(
-                  color: Colors.green,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: 20),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              letterSpacing: -0.5,
-              color: Color(0xFF1A1A1A),
-            ),
-          ),
+          const SizedBox(height: 16),
           Text(
             title,
             style: TextStyle(
-              color: Colors.grey.shade500,
-              fontSize: 13,
+              fontSize: 14,
+              color: Colors.grey.shade600,
               fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1A1A1A),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            trend,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade500,
             ),
           ),
         ],

@@ -1,133 +1,308 @@
+import 'package:adminapp/providers/users/user_provider.dart';
+import 'package:adminapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class UserDetailDialog extends StatelessWidget {
-  const UserDetailDialog({super.key});
+  final Map<String, dynamic> user;
+
+  const UserDetailDialog({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      content: SizedBox(
-        width: 600,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<UsersProvider>().selectUser(user);
+    });
+
+    return Consumer<UsersProvider>(
+      builder: (context, provider, _) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          titlePadding: EdgeInsets.zero,
+          contentPadding: EdgeInsets.zero,
+          title: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // HEADER
-                Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 28,
-                      backgroundImage: NetworkImage(
-                        'https://via.placeholder.com/150',
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "John Doe",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "john.doe@example.com",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                const Divider(height: 24),
-
-                section("User Info"),
-                info("User ID", "123456"),
-                info("Status", "Active"),
-                info("Role", "Admin"),
-
-                const SizedBox(height: 16),
-                section("Address"),
-                info("Phone", "+1 234 567 890"),
-                info("City", "New York"),
-                info("Zip", "10001"),
-                info("Details", "123 Main St, Apt 4B"),
-
-                const SizedBox(height: 16),
-                section("Orders"),
-
-                Column(
-                  children: [
-                    Card(
-                      child: ListTile(
-                        title: const Text("Order #001"),
-                        subtitle: const Text("2026-01-23"),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: const [
-                            Text("Rs 2500"),
-                            Text(
-                              "completed",
-                              style: TextStyle(color: Colors.green),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: const Text("Order #002"),
-                        subtitle: const Text("2026-01-20"),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: const [
-                            Text("Rs 1500"),
-                            Text(
-                              "pending",
-                              style: TextStyle(color: Colors.orange),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("Close"),
+                const Text(
+                  "User Details",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    provider.clearSelection();
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close, color: Colors.white),
                 ),
               ],
             ),
           ),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildUserHeader(user),
+                    const Divider(height: 32),
+                    _buildSection("User Information"),
+                    const SizedBox(height: 8),
+                    _buildInfoCard([
+                      _buildInfoRow("Name", user['name'] ?? 'N/A'),
+                      _buildInfoRow("Email", user['email'] ?? 'N/A'),
+                      _buildInfoRow(
+                        "Joined",
+                        user['created_at'] != null
+                            ? DateFormat(
+                                'MMM dd, yyyy',
+                              ).format(DateTime.parse(user['created_at']))
+                            : 'N/A',
+                      ),
+                    ]),
+                    const SizedBox(height: 20),
+                    _buildSection("Order History"),
+                    const SizedBox(height: 8),
+
+                    if (provider.isLoadingOrders)
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    else if (provider.userOrders.isEmpty)
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "No orders found",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      )
+                    else
+                      Column(
+                        children: provider.userOrders
+                            .map((order) => _buildOrderCard(order))
+                            .toList(),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildUserHeader(Map<String, dynamic> user) {
+    final String name = user['name'] ?? 'Unknown User';
+    final String email = user['email'] ?? '';
+    final String? imageUrl = user['image_url'];
+
+    return Row(
+      children: [
+        imageUrl != null && imageUrl.isNotEmpty
+            ? CircleAvatar(radius: 32, backgroundImage: NetworkImage(imageUrl))
+            : CircleAvatar(
+                radius: 32,
+                backgroundColor: AppColors.primary,
+                child: Text(
+                  name.isNotEmpty ? name[0].toUpperCase() : '?',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                email,
+                style: const TextStyle(color: Colors.grey, fontSize: 14),
+              ),
+            ],
+          ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildSection(String title) {
+    return Text(
+      title,
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget _buildInfoCard(List<Widget> children) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(children: children),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: const TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget section(String title) => Text(
-    title,
-    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  );
+  Widget _buildOrderCard(Map<String, dynamic> order) {
+    final String orderId = "#ORD-${order['id']}";
+    final String productName =
+        order['tbl_products']?['prod_name'] ?? 'Unknown Product';
+    final String date = order['created_at'] != null
+        ? DateFormat('MMM dd, yyyy').format(DateTime.parse(order['created_at']))
+        : 'N/A';
+    final double amount = (order['total_amount'] ?? 0).toDouble();
+    final String status = order['status'] ?? 'pending';
 
-  Widget info(String label, String value) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Row(
-      children: [
-        SizedBox(
-          width: 120,
-          child: Text(label, style: const TextStyle(color: Colors.grey)),
+    Color statusColor;
+    switch (status.toLowerCase()) {
+      case 'delivered':
+      case 'completed':
+        statusColor = Colors.green;
+        break;
+      case 'pending':
+        statusColor = Colors.orange;
+        break;
+      case 'cancelled':
+        statusColor = Colors.red;
+        break;
+      case 'shipping':
+      case 'progressing':
+        statusColor = Colors.blue;
+        break;
+      default:
+        statusColor = Colors.grey;
+    }
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Colors.grey.shade200),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    orderId,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    productName,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    date,
+                    style: const TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "Rs${amount.toStringAsFixed(0)}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.green,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: statusColor.withAlpha(1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: statusColor.withAlpha(3)),
+                  ),
+                  child: Text(
+                    status.toUpperCase(),
+                    style: TextStyle(
+                      color: statusColor,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-        Expanded(child: Text(value)),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }
