@@ -15,8 +15,9 @@ class _OrdersTableViewState extends State<OrdersTableView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      context.read<OrderViewProvider>().fetchOrders();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<OrderViewProvider>(context, listen: false).fetchOrders();
+
     });
   }
 
