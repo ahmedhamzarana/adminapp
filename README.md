@@ -1,6 +1,6 @@
-# Watcheshub Admin Panel
+# Watcheshub Admin Panel (Web)
 
-A comprehensive admin panel built with Flutter to manage the backend operations of the Watcheshub e-commerce application. This dashboard provides administrators with tools to oversee products, brands, orders, users, and reviews.
+A web-based admin panel built with Flutter to manage the backend operations of the Watcheshub e-commerce application. This dashboard runs in any modern browser and provides administrators with tools to oversee products, brands, orders, users, and reviews.
 
 ## Features
 
@@ -14,7 +14,7 @@ A comprehensive admin panel built with Flutter to manage the backend operations 
 
 ## Tech Stack
 
--   **Framework:** [Flutter](https://flutter.dev/)
+-   **Framework:** [Flutter for Web](https://flutter.dev/web)
 -   **Language:** [Dart](https://dart.dev/)
 -   **Backend & Database:** [Supabase](https://supabase.io/)
 -   **State Management:** [Provider](https://pub.dev/packages/provider)
@@ -22,16 +22,15 @@ A comprehensive admin panel built with Flutter to manage the backend operations 
     -   `supabase_flutter`: For integration with Supabase backend.
     -   `provider`: For state management.
     -   `image_picker`: For selecting images from the device gallery.
-    -   `flutter_secure_storage`: For securely storing sensitive data.
-    -   `intl`: For internationalization and formatting.
 
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your development machine:
 
--   [Flutter SDK](https://flutter.dev/docs/get-started/install) (version matching the project's SDK constraint)
+-   [Flutter SDK](https://flutter.dev/docs/get-started/install) (with web support enabled)
 -   [Dart SDK](https://dart.dev/get-dart)
--   A code editor like [VS Code](https://code.visualstudio.com/) or [Android Studio](https://developer.android.com/studio).
+-   A code editor like [VS Code](https://code.visualstudio.com/).
+-   A modern web browser like [Google Chrome](https://www.google.com/chrome/).
 
 ## Installation Steps
 
@@ -69,19 +68,13 @@ This project connects to a Supabase backend. For security and best practices, it
 
 ## Usage / How to Run the Project
 
-You can run the application on an emulator, a physical device, or as a web application.
+This project is intended to be run as a web application.
 
--   **To run the app on a connected device or emulator:**
-    ```sh
-    flutter run
-    ```
-
--   **To run the app on the web (using Chrome):**
+-   **To run the app in a web browser (Google Chrome is recommended):**
     ```sh
     flutter run -d chrome
     ```
-
-Select the desired device from the list of available devices.
+This will start a local web server and open the application in a new browser window.
 
 ## Folder Structure
 
@@ -96,14 +89,13 @@ E:/E-project/adminapp/
 │   ├── screens/              # UI screens and layouts
 │   ├── utils/                # Utility files like AppRoutes and AppColors
 │   └── widget/               # Reusable custom widgets
+├── web/                      # Web-specific files (index.html, etc.)
 ├── assets/                   # Static assets like images and logos
-├── android/                  # Android-specific project files
-├── ios/                      # iOS-specific project files
-├── web/                      # Web-specific project files
 ├── test/                     # Application tests
 ├── pubspec.yaml              # Project metadata and dependencies
 └── README.md                 # This file
 ```
+*(Note: The `android` and `ios` folders are part of the standard Flutter project structure but are not used for this web-only application.)*
 
 ## API Endpoints
 
@@ -111,25 +103,21 @@ Not Applicable. This is a client-side Flutter application. It interacts with the
 
 ## Scripts / Commands
 
-All scripts are standard `flutter` commands.
+All scripts are standard `flutter` commands focused on web development.
 
 -   **Install dependencies:**
     ```sh
     flutter pub get
     ```
--   **Run the application:**
+-   **Run the application for web:**
     ```sh
-    flutter run
+    flutter run -d chrome
     ```
 -   **Run tests:**
     ```sh
     flutter test
     ```
--   **Build a release APK for Android:**
-    ```sh
-    flutter build apk --release
-    ```
--   **Build the web application:**
+-   **Build the web application for production:**
     ```sh
     flutter build web
     ```
@@ -140,12 +128,13 @@ All scripts are standard `flutter` commands.
 
 ## Screenshots / Demo
 
-*(This section is a placeholder. You can add screenshots of the application's main screens, such as the login page, dashboard, product management interface, etc.)*
+*(This section is a placeholder. You can add screenshots of the application running in a web browser, showing the login page, dashboard, etc.)*
 
 ## Common Issues & Troubleshooting
 
 -   **Build fails after pulling changes:** Run `flutter clean` to remove old build artifacts, then `flutter pub get` to ensure all dependencies are up-to-date before trying to build again.
 -   **Supabase connection error:** Double-check that your Supabase URL and anon key are correct and that your Supabase project is active. Ensure your device has an active internet connection.
+-   **Browser compatibility issues:** Test primarily on modern browsers like Chrome, Firefox, and Safari. Some features may not work as expected on older browsers.
 
 ## Future Improvements
 
