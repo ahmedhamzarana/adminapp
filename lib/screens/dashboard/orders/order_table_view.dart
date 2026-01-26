@@ -51,68 +51,71 @@ class _OrdersTableViewState extends State<OrdersTableView> {
       };
     }).toList();
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(6),
-        child: ResponsiveTableView(
-          title: "Order Inventory",
-          data: ordersData,
-          headerActions: [
-            DropdownButton<String>(
-              value: filterStatus,
-              items: const [
-                DropdownMenuItem(value: 'all', child: Text('All Orders')),
-                DropdownMenuItem(value: 'pending', child: Text('Pending')),
-                DropdownMenuItem(value: 'shipping', child: Text('Shipping')),
-                DropdownMenuItem(value: 'progressing', child: Text('Progressing')),
-                DropdownMenuItem(
-                  value: 'delivered',
-                  child: Text('Delivered / Completed'),
-                ),
-                DropdownMenuItem(
-                  value: 'cancelled',
-                  child: Text('Cancelled'),
-                ),
-              ],
-              onChanged: (v) => setState(() => filterStatus = v!),
-            ),
-            const SizedBox(width: 12),
-           ElevatedButton.icon(
-                    onPressed: () => orderProvider.refreshOrders(),
-                    icon: const Icon(Icons.refresh, size: 18),
-                    label: const Text("Refresh"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      elevation: 0,
-                      side: const BorderSide(color: Colors.black12),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+    return Align(
+      alignment: AlignmentGeometry.topCenter,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: ResponsiveTableView(
+            title: "Order Inventory",
+            data: ordersData,
+            headerActions: [
+              DropdownButton<String>(
+                value: filterStatus,
+                items: const [
+                  DropdownMenuItem(value: 'all', child: Text('All Orders')),
+                  DropdownMenuItem(value: 'pending', child: Text('Pending')),
+                  DropdownMenuItem(value: 'shipping', child: Text('Shipping')),
+                  DropdownMenuItem(value: 'progressing', child: Text('Progressing')),
+                  DropdownMenuItem(
+                    value: 'delivered',
+                    child: Text('Delivered / Completed'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'cancelled',
+                    child: Text('Cancelled'),
+                  ),
+                ],
+                onChanged: (v) => setState(() => filterStatus = v!),
+              ),
+              const SizedBox(width: 12),
+             ElevatedButton.icon(
+                      onPressed: () => orderProvider.refreshOrders(),
+                      icon: const Icon(Icons.refresh, size: 18),
+                      label: const Text("Refresh"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        elevation: 0,
+                        side: const BorderSide(color: Colors.black12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
-                  ),
-          ],
-          headers: const [
-            'Order ID',
-            'Product',
-            'Qty',
-            'Total',
-            'Status',
-            'Actions',
-          ],
-          rowBuilder: (context, header, value, item) {
-            if (header == 'Status') {
-              return _buildStatusBadge(value.toString());
-            }
-            if (header == 'Actions') {
-              return _buildActions(context, item);
-            }
-            return Text(value.toString());
-          },
+            ],
+            headers: const [
+              'Order ID',
+              'Product',
+              'Qty',
+              'Total',
+              'Status',
+              'Actions',
+            ],
+            rowBuilder: (context, header, value, item) {
+              if (header == 'Status') {
+                return _buildStatusBadge(value.toString());
+              }
+              if (header == 'Actions') {
+                return _buildActions(context, item);
+              }
+              return Text(value.toString());
+            },
+          ),
         ),
       ),
     );
