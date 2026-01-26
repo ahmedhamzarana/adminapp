@@ -102,7 +102,7 @@ class _OrderDetailDailogState extends State<OrderDetailDailog> {
         ),
       ),
       content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.9,
+        width: 650,
         child: provider.isLoading
             ? const SizedBox(
                 height: 200,
