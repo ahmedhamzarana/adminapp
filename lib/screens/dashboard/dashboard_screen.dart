@@ -58,23 +58,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Row(
                       children: [
                         // Refresh Button
-                        IconButton(
-                          onPressed: dashboardProvider.isLoading
-                              ? null
-                              : () {
-                                  context
-                                      .read<DashboardProvider>()
-                                      .fetchDashboardStats();
-                                },
-                          icon: Icon(
-                            Icons.refresh,
-                            color: dashboardProvider.isLoading
-                                ? Colors.grey
-                                : Colors.black,
-                          ),
-                          tooltip: "Refresh Stats",
-                        ),
-                        const SizedBox(width: 12),
                         ElevatedButton.icon(
                           onPressed: () {
                             showDialog(
@@ -93,6 +76,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        ElevatedButton.icon(
+                          onPressed: dashboardProvider.isLoading
+                              ? null
+                              : () {
+                                  context
+                                      .read<DashboardProvider>()
+                                      .fetchDashboardStats();
+                                },
+                          icon: const Icon(Icons.refresh, size: 18),
+                          label: const Text("Refresh Stats"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            elevation: 0,
+                            side: const BorderSide(color: Colors.black12),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                         ),
@@ -117,9 +125,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Expanded(
                         child: DashboardCard(
                           title: "Total Revenue",
-                          value: dashboardProvider
-                              .formatCurrency(dashboardProvider.totalRevenue),
-                          trend: "From ${dashboardProvider.completedOrders} completed",
+                          value: dashboardProvider.formatCurrency(
+                            dashboardProvider.totalRevenue,
+                          ),
+                          trend:
+                              "From ${dashboardProvider.completedOrders} completed",
                           icon: Icons.account_balance_wallet_outlined,
                           color: Colors.green,
                         ),

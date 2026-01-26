@@ -24,15 +24,16 @@ class ViewProductProvider extends ChangeNotifier {
             prod_price, 
             prod_stock, 
             prod_description,
-            tbl_brand ( id, brand_name)''')
+            tbl_brand ( id, brand_name)
+          ''')
           .order('created_at', ascending: false);
 
       products = (data as List).map((item) {
         final rawItem = Map<String, dynamic>.from(item);
-        if (rawItem['tbl_brand'] == null) {
-          rawItem['tbl_brand'] = {'id': 0, 'brand_name': 'No Brand'};
-        }
-
+        rawItem['tbl_brand'] ??= {
+          'id': 0,
+          'brand_name': 'No Brand',
+        };
         return Product.fromJson(rawItem);
       }).toList();
 
@@ -40,22 +41,32 @@ class ViewProductProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       isLoading = false;
-      errorMessage = 'Failed to load products: $e';
+      errorMessage = 'Failed to load products';
       notifyListeners();
-      debugPrint("Fetch Error: $e");
     }
   }
 
+  // 🔥 FIXED DELETE (same syntax, FK handled)
   Future<bool> deleteProduct(dynamic productId) async {
     try {
       await supabase.from('tbl_products').delete().eq('id', productId);
       products.removeWhere((p) => p.id == productId);
       notifyListeners();
       return true;
+    } on PostgrestException catch (e) {
+      if (e.code == '23503') {
+        errorMessage = 'Product is already in orders';
+      } else {
+        errorMessage = 'Failed to delete product';
+      }
+      notifyListeners();
+      return false;
     } catch (e) {
+      errorMessage = 'Something went wrong';
+      notifyListeners();
       return false;
     }
   }
 
-  Future<void> refreshProducts() async => await fetchProducts();
+  Future<void> refreshProducts() async => fetchProducts();
 }

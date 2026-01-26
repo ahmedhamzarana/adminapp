@@ -26,6 +26,19 @@ class _ProductsTableViewState extends State<ProductsTableView> {
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ViewProductProvider>(context);
 
+    // 🔔 Show error message (only when delete fails)
+    if (productProvider.errorMessage.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(productProvider.errorMessage),
+            backgroundColor: Colors.red,
+          ),
+        );
+        productProvider.errorMessage = '';
+      });
+    }
+
     if (productProvider.isLoading) {
       return const Center(
         child: Padding(
@@ -41,7 +54,7 @@ class _ProductsTableViewState extends State<ProductsTableView> {
             'id': product.id,
             'name': product.prodName,
             'image': product.prodImg,
-            'brand': product.prodBrandName, // Using model property
+            'brand': product.prodBrandName,
             'price': 'Rs${product.prodPrice.toStringAsFixed(2)}',
             'stock': product.prodStock,
             'product_obj': product,
@@ -70,7 +83,7 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => AddProduct(),
+                    builder: (context) => const AddProduct(),
                   );
                 },
                 icon: const Icon(Icons.add, size: 18),
@@ -87,9 +100,23 @@ class _ProductsTableViewState extends State<ProductsTableView> {
                   ),
                 ),
               ),
-              IconButton(
+              ElevatedButton.icon(
                 onPressed: () => productProvider.refreshProducts(),
-                icon: const Icon(Icons.refresh, color: AppColors.secondary),
+                icon: const Icon(Icons.refresh, size: 18),
+                label: const Text("Refresh"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  elevation: 0,
+                  side: const BorderSide(color: Colors.black12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
               ),
             ],
             rowBuilder: (context, header, value, item) {
@@ -136,12 +163,7 @@ class _ProductsTableViewState extends State<ProductsTableView> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(6),
         child: (url != null && url.isNotEmpty)
-            ? Image.network(
-                url,
-                fit: BoxFit.cover,
-                errorBuilder: (c, e, s) =>
-                    const Icon(Icons.error_outline, size: 20),
-              )
+            ? Image.network(url, fit: BoxFit.cover)
             : const Icon(Icons.image, size: 20),
       ),
     );
@@ -180,7 +202,9 @@ class _ProductsTableViewState extends State<ProductsTableView> {
         ),
         IconButton(
           icon: const Icon(Icons.delete, color: Colors.red, size: 20),
-          onPressed: () => provider.deleteProduct(item['id']),
+          onPressed: () async {
+            await provider.deleteProduct(item['id']);
+          },
         ),
       ],
     );

@@ -3,80 +3,102 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OrderViewProvider extends ChangeNotifier {
   final SupabaseClient supabase = Supabase.instance.client;
+
   bool isLoading = false;
   List<Map<String, dynamic>> ordersList = [];
 
-  /// Fetch Orders
+  bool _isDisposed = false;
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (!_isDisposed) super.notifyListeners();
+  }
+
+  // ---------------- FETCH ORDERS ----------------
   Future<void> fetchOrders() async {
     try {
       isLoading = true;
       notifyListeners();
 
-      // Products aur Address ke saath join (foreign keys hain)
-      final ordersResponse = await supabase.from('tbl_orders').select('''
+      final response = await supabase.from('tbl_orders').select('''
         *,
         tbl_products ( prod_name, prod_price, prod_img ),
         tbl_address ( full_name, phone_number, address_details, city, zip_code )
       ''').order('created_at', ascending: false);
 
-      List<Map<String, dynamic>> orders = List<Map<String, dynamic>>.from(ordersResponse);
+      final orders = List<Map<String, dynamic>>.from(response);
 
-      // Users ko manually fetch karo (foreign key nahi hai)
       for (var order in orders) {
-        if (order['user_id'] != null && order['user_id'].toString().isNotEmpty) {
-          try {
-            final userResponse = await supabase
-                .from('tbl_users')
-                .select('name, email, image_url')
-                .eq('user_id', order['user_id'])
-                .maybeSingle();
-            order['tbl_users'] = userResponse;
-          } catch (e) {
-            debugPrint("⚠️ User not found for order ${order['id']}: $e");
-            order['tbl_users'] = null;
-          }
-        } else {
-          order['tbl_users'] = null;
+        if (order['user_id'] != null) {
+          order['tbl_users'] = await supabase
+              .from('tbl_users')
+              .select('name, email, image_url')
+              .eq('user_id', order['user_id'])
+              .maybeSingle();
         }
       }
 
       ordersList = orders;
     } catch (e) {
-      debugPrint("❌ Error Fetching Orders: $e");
+      debugPrint('❌ Fetch Orders Error: $e');
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 
-  /// Update Order Status
+  // ---------------- UPDATE STATUS ----------------
   Future<bool> updateStatus(int orderId, String newStatus) async {
     try {
       isLoading = true;
       notifyListeners();
 
-      // Lowercase format (enum ke liye)
-      String formattedStatus = newStatus.toLowerCase();
-
       await supabase
           .from('tbl_orders')
-          .update({'status': formattedStatus})
+          .update({'status': newStatus.toLowerCase()})
           .eq('id', orderId);
 
-      // Local update for instant UI refresh
-      int index = ordersList.indexWhere((element) => element['id'] == orderId);
+      final index = ordersList.indexWhere((o) => o['id'] == orderId);
       if (index != -1) {
-        ordersList[index]['status'] = formattedStatus;
+        ordersList[index]['status'] = newStatus.toLowerCase();
       }
 
-      debugPrint("✅ Status updated successfully: $formattedStatus");
       return true;
     } catch (e) {
-      debugPrint("❌ Error Updating Status: $e");
+      debugPrint('❌ Update Status Error: $e');
       return false;
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
+
+  // ---------------- DELETE CANCELLED ORDER ----------------
+  Future<bool> deleteOrder(int orderId) async {
+    try {
+      final order = ordersList.firstWhere((o) => o['id'] == orderId);
+
+      if (order['status'].toString().toLowerCase() != 'cancelled') {
+        debugPrint('❌ Cannot delete non-cancelled order');
+        return false;
+      }
+
+      await supabase.from('tbl_orders').delete().eq('id', orderId);
+      ordersList.removeWhere((o) => o['id'] == orderId);
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      debugPrint('❌ Delete Order Error: $e');
+      return false;
+    }
+  }
+
+  Future<void> refreshOrders() => fetchOrders();
 }

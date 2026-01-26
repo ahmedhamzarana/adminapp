@@ -70,8 +70,8 @@ class _ViewBrandScreenState extends State<ViewBrandScreen> {
             data: brandsData,
             headerActions: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Add New Brand Button
                   ElevatedButton.icon(
                     onPressed: () {
                       showDialog(
@@ -84,25 +84,34 @@ class _ViewBrandScreenState extends State<ViewBrandScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => brandProvider.refreshBrands(),
-                    icon: const Icon(Icons.refresh, size: 18),
-                    style: IconButton.styleFrom(
+                      elevation: 0,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 12,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  // Refresh Button
+                  ElevatedButton.icon(
+                    onPressed: () => brandProvider.refreshBrands(),
+                    icon: const Icon(Icons.refresh, size: 18),
+                    label: const Text("Refresh"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      elevation: 0,
+                      side: const BorderSide(color: Colors.black12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),

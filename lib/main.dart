@@ -8,6 +8,7 @@ import 'package:adminapp/providers/auth/login_provider.dart';
 import 'package:adminapp/providers/auth/splash_provider.dart';
 import 'package:adminapp/providers/products/edit_product_provider.dart';
 import 'package:adminapp/providers/products/view_product_provider.dart';
+import 'package:adminapp/providers/reviews/review_provider.dart';
 import 'package:adminapp/providers/users/user_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:adminapp/utils/app_routes.dart';
@@ -31,6 +32,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => EditProductProvider()),
         ChangeNotifierProvider(create: (context) => AddBrandProvider()),
         ChangeNotifierProvider(create: (context) => ViewBrandProvider()),
+        ChangeNotifierProvider(create: (context) => ReviewProvider()),
         ChangeNotifierProvider(create: (context) => OrderViewProvider()),
         ChangeNotifierProvider(create: (context) => UsersProvider()),
       ],
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Watcheshub Admin',
       initialRoute: AppRoutes.splashRoute,
       routes: AppRoutes.routes,
     );

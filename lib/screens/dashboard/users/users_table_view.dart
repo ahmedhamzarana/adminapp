@@ -47,6 +47,7 @@ class _UsersTableViewState extends State<UsersTableView> {
                   'Email',
                   'Action',
                 ],
+                
                 rowBuilder: (context, header, value, item) {
                   // ---------------- AVATAR ----------------
                   if (header == 'Avatar') {

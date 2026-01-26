@@ -33,34 +33,34 @@ class ViewBrandProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> deleteBrand(int brandId) async {
-    try {
-      // Check if brand is used in products
-      final productCheck = await supabase
-          .from('tbl_products')
-          .select('id')
-          .eq('prod_brand', brands.firstWhere((b) => b.id == brandId).brandName)
-          .limit(1);
+ Future<bool> deleteBrand(int brandId) async {
+  try {
+    // Check if brand is used in products
+    final productCheck = await supabase
+        .from('tbl_products')
+        .select('id')
+        .eq('prod_brand', brandId)  // ✅ Use brandId, not brandName
+        .limit(1);
 
-      if (productCheck.isNotEmpty) {
-        errorMessage = 'Cannot delete brand. It is being used by products.';
-        notifyListeners();
-        return false;
-      }
-
-      await supabase.from('tbl_brand').delete().eq('id', brandId);
-
-      brands.removeWhere((brand) => brand.id == brandId);
-      notifyListeners();
-
-      return true;
-    } catch (e) {
-      debugPrint('Error deleting brand: $e');
-      errorMessage = 'Failed to delete brand';
+    if (productCheck.isNotEmpty) {
+      errorMessage = 'Cannot delete brand. It is being used by products.';
       notifyListeners();
       return false;
     }
+
+    await supabase.from('tbl_brand').delete().eq('id', brandId);
+
+    brands.removeWhere((brand) => brand.id == brandId);
+    notifyListeners();
+
+    return true;
+  } catch (e) {
+    debugPrint('Error deleting brand: $e');
+    errorMessage = 'Failed to delete brand';
+    notifyListeners();
+    return false;
   }
+}
 
   Future<void> refreshBrands() async {
     await fetchBrands();
