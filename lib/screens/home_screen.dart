@@ -1,6 +1,6 @@
 // lib/screens/home_screen.dart
 import 'package:adminapp/screens/dashboard/brands/view_brand_screen.dart';
-import 'package:adminapp/screens/dashboard/chats/inchatapp_screen.dart';
+import 'package:adminapp/screens/dashboard/chats/chat_support_screen.dart';
 import 'package:adminapp/screens/dashboard/orders/order_table_view.dart';
 import 'package:adminapp/screens/dashboard/products/product_table_view.dart';
 import 'package:adminapp/screens/dashboard/reviews/review_table_view.dart';
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     OrdersTableView(),
     ReviewsTableView(),
     UsersTableView(),
-    InchatappScreen(),
+    ChatSupportTableView(),
   ];
 
   @override

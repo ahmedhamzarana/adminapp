@@ -1,5 +1,6 @@
 import 'package:adminapp/providers/brands/add_brand_provider.dart';
 import 'package:adminapp/providers/brands/view_brand_provider.dart';
+import 'package:adminapp/providers/chats/chat_support_provider.dart';
 import 'package:adminapp/providers/dashboard_provider.dart';
 import 'package:adminapp/providers/orders/order_view_provider.dart';
 import 'package:adminapp/providers/products/add_product_provider.dart';
@@ -35,6 +36,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => ReviewProvider()),
         ChangeNotifierProvider(create: (context) => OrderViewProvider()),
         ChangeNotifierProvider(create: (context) => UsersProvider()),
+        ChangeNotifierProvider(create: (context) => ChatSupportProvider()),
       ],
       child: MyApp(),
     ),
