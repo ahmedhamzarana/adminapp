@@ -11,8 +11,6 @@ class ChatSupportProvider extends ChangeNotifier {
     try {
       isLoading = true;
       notifyListeners();
-
-      // Step 1: Fetch all chats
       final chatResponse = await supabase
           .from('tbl_chatsupport')
           .select('id, message, created_at, full_name, user_id')
@@ -30,46 +28,30 @@ class ChatSupportProvider extends ChangeNotifier {
         return;
       }
 
-      // Step 2: Extract unique user_ids
       final userIds = chatList
           .map((c) => c['user_id']?.toString().trim())
           .where((id) => id != null && id.isNotEmpty)
           .toSet()
           .toList();
 
-      debugPrint('======== USER IDS ========');
-      debugPrint('$userIds');
-      debugPrint('==========================');
-
       Map<String, dynamic> usersMap = {};
 
-      // Step 3: Fetch users data if user_ids exist
       if (userIds.isNotEmpty) {
         final usersResponse = await supabase
             .from('tbl_users')
             .select('user_id, name, email')
             .inFilter('user_id', userIds);
 
-        debugPrint('======== USERS RESPONSE ========');
-        debugPrint('$usersResponse');
-        debugPrint('================================');
-
-        // Step 4: Create a map with user_id as key (FIX: handle nullable String)
         for (var u in usersResponse as List) {
           final userId = u['user_id']?.toString().trim();
           if (userId != null && userId.isNotEmpty) {
             usersMap[userId] = u;
           }
         }
-
-        debugPrint('======== USERS MAP ========');
-        debugPrint('$usersMap');
-        debugPrint('===========================');
       } else {
         debugPrint('⚠️ No valid user_ids found');
       }
 
-      // Step 5: Merge chat and user data
       chats = chatList.map<Map<String, dynamic>>((c) {
         final userId = c['user_id']?.toString().trim() ?? '';
         final user = userId.isNotEmpty ? usersMap[userId] : null;
@@ -86,13 +68,9 @@ class ChatSupportProvider extends ChangeNotifier {
         };
       }).toList();
 
-      debugPrint('======== FINAL CHATS ========');
-      debugPrint('Total chats: ${chats.length}');
-      debugPrint('$chats');
-      debugPrint('=============================');
+
       
     } catch (e, stackTrace) {
-      debugPrint('❌ Chat fetch error: $e');
       debugPrint('Stack trace: $stackTrace');
       chats = [];
     } finally {
