@@ -4,8 +4,7 @@ import 'package:watchhub/models/address_model.dart';
 import 'package:watchhub/provider/cartprovider.dart';
 import 'package:watchhub/provider/orderprovider.dart';
 import 'package:watchhub/provider/addressprovider.dart';
-import 'package:watchhub/screens/auth-ui/receiptScreen.dart';
-import 'package:watchhub/screens/userpanel/home_screen.dart';
+import 'package:watchhub/screens/auth-ui/receiptscreen.dart';
 import 'package:watchhub/utils/appconstant.dart';
 
 class CheckoutSummaryScreen extends StatefulWidget {

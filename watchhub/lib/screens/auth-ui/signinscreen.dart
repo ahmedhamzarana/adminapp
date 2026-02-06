@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watchhub/provider/signinprovider.dart';
 import 'package:watchhub/utils/app_routes.dart';
-import 'package:watchhub/utils/constants.dart';
 import 'package:watchhub/utils/appconstant.dart';
 
 class Signinscreen extends StatelessWidget {
@@ -35,9 +34,9 @@ class Signinscreen extends StatelessWidget {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
+                        color: Colors.white.withAlpha(38),
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+                        border: Border.all(color: Colors.white.withAlpha(76), width: 2),
                       ),
                       child: const Icon(
                         Icons.watch_rounded,
@@ -61,7 +60,7 @@ class Signinscreen extends StatelessWidget {
                     Text(
                       'Sign in to continue',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withAlpha(204),
                         fontSize: 16,
                       ),
                     ),
@@ -70,9 +69,9 @@ class Signinscreen extends StatelessWidget {
                     // Email Field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withAlpha(25),
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                        border: Border.all(color: Colors.white.withAlpha(51)),
                       ),
                       child: TextField(
                         controller: signinProvider.emailcontroller,
@@ -80,10 +79,10 @@ class Signinscreen extends StatelessWidget {
                         style: const TextStyle(color: Colors.white, fontSize: 16),
                         decoration: InputDecoration(
                           labelText: "Email",
-                          labelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+                          labelStyle: TextStyle(color: Colors.white.withAlpha(204)),
                           hintText: "Enter your email",
-                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
-                          prefixIcon: Icon(Icons.email_outlined, color: Colors.white.withOpacity(0.8)),
+                          hintStyle: TextStyle(color: Colors.white.withAlpha(127)),
+                          prefixIcon: Icon(Icons.email_outlined, color: Colors.white.withAlpha(204)),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         ),
@@ -94,9 +93,9 @@ class Signinscreen extends StatelessWidget {
                     // Password Field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withAlpha(25),
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                        border: Border.all(color: Colors.white.withAlpha(51)),
                       ),
                       child: TextField(
                         controller: signinProvider.passwordcontroller,
@@ -104,10 +103,10 @@ class Signinscreen extends StatelessWidget {
                         style: const TextStyle(color: Colors.white, fontSize: 16),
                         decoration: InputDecoration(
                           labelText: "Password",
-                          labelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+                          labelStyle: TextStyle(color: Colors.white.withAlpha(204)),
                           hintText: "Enter your password",
-                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
-                          prefixIcon: Icon(Icons.lock_outline, color: Colors.white.withOpacity(0.8)),
+                          hintStyle: TextStyle(color: Colors.white.withAlpha(127)),
+                          prefixIcon: Icon(Icons.lock_outline, color: Colors.white.withAlpha(204)),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         ),
@@ -123,7 +122,7 @@ class Signinscreen extends StatelessWidget {
                         child: Text(
                           "Forgot Password?",
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
+                            color: Colors.white.withAlpha(229),
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -139,7 +138,7 @@ class Signinscreen extends StatelessWidget {
                       child: signinProvider.isLoading
                           ? Container(
                               decoration: BoxDecoration(
-                                color: Appconstant.barcolor.withOpacity(0.8),
+                                color: Appconstant.barcolor.withAlpha(204),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: const Center(
@@ -154,7 +153,7 @@ class Signinscreen extends StatelessWidget {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Appconstant.barcolor,
                                 elevation: 5,
-                                shadowColor: Colors.black.withOpacity(0.3),
+                                shadowColor: Colors.black.withAlpha(76),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
                                 ),
@@ -179,7 +178,7 @@ class Signinscreen extends StatelessWidget {
                         Text(
                           "Don't have an account? ",
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.white.withAlpha(204),
                             fontSize: 15,
                           ),
                         ),

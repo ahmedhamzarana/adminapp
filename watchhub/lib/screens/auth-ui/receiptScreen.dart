@@ -1,7 +1,8 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watchhub/provider/cartprovider.dart';
-import 'package:watchhub/provider/orderprovider.dart';
 import 'package:watchhub/screens/userpanel/home_screen.dart';
 import 'package:watchhub/utils/appconstant.dart';
 
@@ -77,7 +78,7 @@ class ReceiptScreen extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       Appconstant.appmaincolor,
-                      Appconstant.appmaincolor.withOpacity(0.8),
+                      Appconstant.appmaincolor.withAlpha(204),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -85,7 +86,7 @@ class ReceiptScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Appconstant.appmaincolor.withOpacity(0.3),
+                      color: Appconstant.appmaincolor.withAlpha(76),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -100,7 +101,7 @@ class ReceiptScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withAlpha(25),
                             blurRadius: 20,
                             offset: const Offset(0, 8),
                           ),
@@ -126,7 +127,7 @@ class ReceiptScreen extends StatelessWidget {
                     Text(
                       "Thank you for shopping with WatchHub",
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withAlpha(229),
                         fontSize: 15,
                       ),
                       textAlign: TextAlign.center,
@@ -138,7 +139,7 @@ class ReceiptScreen extends StatelessWidget {
                         vertical: 10,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withAlpha(51),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -153,7 +154,7 @@ class ReceiptScreen extends StatelessWidget {
                           Text(
                             "Estimated Delivery: 3-5 Days",
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.95),
+                              color: Colors.white.withAlpha(242),
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),
@@ -179,7 +180,7 @@ class ReceiptScreen extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withAlpha(13),
                       blurRadius: 15,
                       offset: const Offset(0, 5),
                     ),
@@ -193,7 +194,7 @@ class ReceiptScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Appconstant.barcolor.withOpacity(0.15),
+                            color: Appconstant.barcolor.withAlpha(38),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(
@@ -287,7 +288,7 @@ class ReceiptScreen extends StatelessWidget {
                                     padding: const EdgeInsets.all(6),
                                     decoration: BoxDecoration(
                                       color: Appconstant.appmaincolor
-                                          .withOpacity(0.1),
+                                          .withAlpha(25),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: const Icon(
@@ -404,7 +405,7 @@ class ReceiptScreen extends StatelessWidget {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.1),
+                            color: Colors.green.withAlpha(25),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: const Text(
@@ -429,7 +430,7 @@ class ReceiptScreen extends StatelessWidget {
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.1),
+                            color: Colors.green.withAlpha(25),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: const Text(
@@ -454,15 +455,15 @@ class ReceiptScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Appconstant.barcolor.withOpacity(0.15),
-                            Appconstant.barcolor.withOpacity(0.05),
+                            Appconstant.barcolor.withAlpha(38),
+                            Appconstant.barcolor.withAlpha(13),
                           ],
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                         ),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: Appconstant.barcolor.withOpacity(0.3),
+                          color: Appconstant.barcolor.withAlpha(76),
                           width: 1.5,
                         ),
                       ),
@@ -495,7 +496,7 @@ class ReceiptScreen extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         Appconstant.appmaincolor,
-                        Appconstant.appmaincolor.withOpacity(0.85),
+                        Appconstant.appmaincolor.withAlpha(216),
                       ],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
@@ -503,7 +504,7 @@ class ReceiptScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(14),
                     boxShadow: [
                       BoxShadow(
-                        color: Appconstant.appmaincolor.withOpacity(0.4),
+                        color: Appconstant.appmaincolor.withAlpha(102),
                         blurRadius: 12,
                         offset: const Offset(0, 6),
                       ),

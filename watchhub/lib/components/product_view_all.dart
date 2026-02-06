@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:watchhub/components/product_detail.dart';
 import 'package:watchhub/utils/appconstant.dart';
 
 

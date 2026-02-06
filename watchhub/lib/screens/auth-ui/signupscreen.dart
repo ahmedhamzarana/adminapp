@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watchhub/provider/signupprovider.dart';
 import 'package:watchhub/utils/app_routes.dart';
-import 'package:watchhub/utils/constants.dart';
 import 'package:watchhub/utils/appconstant.dart';
 
 class Signupscreen extends StatelessWidget {
@@ -35,9 +34,9 @@ class Signupscreen extends StatelessWidget {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
+                        color: Colors.white.withAlpha(38),
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+                        border: Border.all(color: Colors.white.withAlpha(76), width: 2),
                       ),
                       child: const Icon(
                         Icons.watch_rounded,
@@ -61,7 +60,7 @@ class Signupscreen extends StatelessWidget {
                     Text(
                       'Sign up to get started',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withAlpha(204),
                         fontSize: 16,
                       ),
                     ),
@@ -70,19 +69,19 @@ class Signupscreen extends StatelessWidget {
                     // Name Field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withAlpha(25),
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                        border: Border.all(color: Colors.white.withAlpha(51)),
                       ),
                       child: TextField(
                         controller: signupProvider.usernamecontroller,
                         style: const TextStyle(color: Colors.white, fontSize: 16),
                         decoration: InputDecoration(
                           labelText: "Name",
-                          labelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+                          labelStyle: TextStyle(color: Colors.white.withAlpha(204)),
                           hintText: "Enter your name",
-                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
-                          prefixIcon: Icon(Icons.person_outline, color: Colors.white.withOpacity(0.8)),
+                          hintStyle: TextStyle(color: Colors.white.withAlpha(127)),
+                          prefixIcon: Icon(Icons.person_outline, color: Colors.white.withAlpha(204)),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         ),
@@ -93,9 +92,9 @@ class Signupscreen extends StatelessWidget {
                     // Email Field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withAlpha(25),
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                        border: Border.all(color: Colors.white.withAlpha(51)),
                       ),
                       child: TextField(
                         controller: signupProvider.emailcontroller,
@@ -103,10 +102,10 @@ class Signupscreen extends StatelessWidget {
                         style: const TextStyle(color: Colors.white, fontSize: 16),
                         decoration: InputDecoration(
                           labelText: "Email",
-                          labelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+                          labelStyle: TextStyle(color: Colors.white.withAlpha(204)),
                           hintText: "Enter your email",
-                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
-                          prefixIcon: Icon(Icons.email_outlined, color: Colors.white.withOpacity(0.8)),
+                          hintStyle: TextStyle(color: Colors.white.withAlpha(127)),
+                          prefixIcon: Icon(Icons.email_outlined, color: Colors.white.withAlpha(204)),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         ),
@@ -117,9 +116,9 @@ class Signupscreen extends StatelessWidget {
                     // Password Field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Colors.white.withAlpha(25),
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                        border: Border.all(color: Colors.white.withAlpha(51)),
                       ),
                       child: TextField(
                         controller: signupProvider.passwordcontroller,
@@ -127,10 +126,10 @@ class Signupscreen extends StatelessWidget {
                         style: const TextStyle(color: Colors.white, fontSize: 16),
                         decoration: InputDecoration(
                           labelText: "Password",
-                          labelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+                          labelStyle: TextStyle(color: Colors.white.withAlpha(204)),
                           hintText: "Enter your password",
-                          hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
-                          prefixIcon: Icon(Icons.lock_outline, color: Colors.white.withOpacity(0.8)),
+                          hintStyle: TextStyle(color: Colors.white.withAlpha(127)),
+                          prefixIcon: Icon(Icons.lock_outline, color: Colors.white.withAlpha(204)),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         ),
@@ -145,7 +144,7 @@ class Signupscreen extends StatelessWidget {
                       child: signupProvider.isLoading
                           ? Container(
                               decoration: BoxDecoration(
-                                color: Appconstant.barcolor.withOpacity(0.8),
+                                color: Appconstant.barcolor.withAlpha(204),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: const Center(
@@ -160,7 +159,7 @@ class Signupscreen extends StatelessWidget {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Appconstant.barcolor,
                                 elevation: 5,
-                                shadowColor: Colors.black.withOpacity(0.3),
+                                shadowColor: Colors.black.withAlpha(76),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
                                 ),
@@ -185,7 +184,7 @@ class Signupscreen extends StatelessWidget {
                         Text(
                           "Already have an account? ",
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.white.withAlpha(204),
                             fontSize: 15,
                           ),
                         ),

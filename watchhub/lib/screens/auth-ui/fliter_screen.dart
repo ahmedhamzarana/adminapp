@@ -118,9 +118,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
               ),
               onPressed: () {
                 // 🔹 Apply filters logic here
-                print("Selected Brand: $selectedBrand");
-                print("Selected Type: $selectedType");
-                print("Price Range: ${priceRange.start} - ${priceRange.end}");
+                debugPrint("Selected Brand: $selectedBrand");
+                debugPrint("Selected Type: $selectedType");
+                debugPrint("Price Range: ${priceRange.start} - ${priceRange.end}");
                 Navigator.pop(context); // Close filter screen
               },
               child: const Text(

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_underscores
+
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -103,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withAlpha(13),
                   blurRadius: 10,
                   offset: const Offset(0, 2),
                 ),
@@ -175,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withAlpha(25),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -288,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
+                              color: Colors.black.withAlpha(20),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -370,7 +372,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Appconstant.barcolor.withOpacity(0.1),
+              color: Appconstant.barcolor.withAlpha(25),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(

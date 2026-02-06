@@ -1,3 +1,4 @@
+// ignore_for_file: unused_local_variable, unnecessary_underscores
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:watchhub/components/product_detail.dart';

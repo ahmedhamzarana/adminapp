@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -36,7 +38,7 @@ class ProfileProvider extends ChangeNotifier {
         }
       }
     } catch (e) {
-      print('Error loading user data: $e');
+      debugPrint('Error loading user data: $e');
       _isInitialized = false; // Reset flag on error to allow retry
     }
 
@@ -97,7 +99,7 @@ class ProfileProvider extends ChangeNotifier {
         throw Exception("No user email found");
       }
     } catch (e) {
-      print('Error saving profile: $e');
+      debugPrint('Error saving profile: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Error updating profile: ${e.toString()}"),

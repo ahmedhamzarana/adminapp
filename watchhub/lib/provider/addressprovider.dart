@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:watchhub/models/address_model.dart';

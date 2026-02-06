@@ -5,7 +5,6 @@ import 'package:watchhub/provider/profileprovider.dart';
 import 'package:watchhub/screens/auth-ui/address_list_screen.dart';
 import 'package:watchhub/screens/auth-ui/edit_profile_screen.dart';
 import 'package:watchhub/screens/auth-ui/setting_screen.dart';
-import 'package:watchhub/screens/auth-ui/shipping_address_screen.dart';
 import 'package:watchhub/utils/app_routes.dart';
 import 'package:watchhub/utils/appconstant.dart';
 
