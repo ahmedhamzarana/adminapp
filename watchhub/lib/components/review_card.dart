@@ -9,10 +9,10 @@ class ReviewCard extends StatefulWidget {
   final int currentUserId;
 
   const ReviewCard({
-    Key? key,
+    super.key,
     required this.review,
     required this.currentUserId,
-  }) : super(key: key);
+  });
 
   @override
   State<ReviewCard> createState() => _ReviewCardState();

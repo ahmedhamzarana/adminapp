@@ -197,7 +197,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
                             AddressModel address = entry.value;
                             bool isSelected = _selectedAddressIndex == index;
                             return _addressSelectionTile(address, index, isSelected);
-                          }).toList(),
+                          }),
                         ],
                       ),
                     ),
@@ -481,7 +481,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
                               ),
                             ],
                           ),
-                          if (!hasAddress && !cart.cartItems.isEmpty)
+                          if (!hasAddress && cart.cartItems.isNotEmpty)
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: Text(

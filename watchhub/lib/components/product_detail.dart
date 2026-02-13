@@ -1166,7 +1166,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     }
 
     if (context.mounted) {
-      _showActualReviewDialog(context, product, currentUserId!);
+      _showActualReviewDialog(context, product, currentUserId);
     }
   }
 

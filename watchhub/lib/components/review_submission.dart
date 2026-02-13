@@ -10,12 +10,12 @@ class ReviewSubmission extends StatefulWidget {
   final String userName;
 
   const ReviewSubmission({
-    Key? key,
+    super.key,
     required this.productId,
     required this.productName,
     required this.userId,
     required this.userName,
-  }) : super(key: key);
+  });
 
   @override
   State<ReviewSubmission> createState() => _ReviewSubmissionState();

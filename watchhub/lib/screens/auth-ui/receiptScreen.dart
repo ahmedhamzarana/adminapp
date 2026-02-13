@@ -337,7 +337,7 @@ class ReceiptScreen extends StatelessWidget {
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
 
                     const SizedBox(height: 16),
                     Divider(color: Colors.grey[300], thickness: 1),

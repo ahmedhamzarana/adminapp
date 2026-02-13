@@ -306,7 +306,7 @@ class _FeedbackReviewScreenState extends State<FeedbackReviewScreen> {
                         ),
                       ),
                     );
-                  }).toList(),
+                  }),
                   const SizedBox(height: 30),
                 ],
               ],

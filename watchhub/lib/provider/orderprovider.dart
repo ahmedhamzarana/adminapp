@@ -111,9 +111,9 @@ class OrderProvider extends ChangeNotifier {
         }).toList();
 
         debugPrint('Mapped ${_orders.length} orders for user $userId');
-        _orders.forEach((order) {
+        for (var order in _orders) {
           debugPrint('Order ID: ${order.id}, Status: ${order.status}, Product: ${order.productName}');
-        });
+        }
       } else {
         // If user is not logged in, fetch no orders
         _orders = [];

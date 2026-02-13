@@ -410,7 +410,7 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
                         ),
                       ),
                     );
-                  }).toList(),
+                  }),
                   const SizedBox(height: 30),
                 ],
               ],

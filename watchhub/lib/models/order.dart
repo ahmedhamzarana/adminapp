@@ -33,8 +33,8 @@ class Order {
       status: json['status'] ?? 'pending',
       addressId: json['address_id'] ?? json['address'] ?? 0,
       orderDate: json['created_at'] ?? json['order_date'] ?? json['updated_at'] ?? DateTime.now().toIso8601String(),
-      productName: json['product_name'] ?? json['product_name'] ?? null,
-      productImage: json['product_image'] ?? json['image_url'] ?? null,
+      productName: json['product_name'] ?? json['product_name'],
+      productImage: json['product_image'] ?? json['image_url'],
     );
   }
 

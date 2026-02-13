@@ -10,11 +10,11 @@ class ReviewList extends StatefulWidget {
   final String productName;
 
   const ReviewList({
-    Key? key,
+    super.key,
     required this.productId,
     required this.currentUserId,
     required this.productName,
-  }) : super(key: key);
+  });
 
   @override
   State<ReviewList> createState() => _ReviewListState();
@@ -201,7 +201,7 @@ class _ReviewListState extends State<ReviewList> {
           Expanded(
             flex: 2,
             child: DropdownButtonFormField<String>(
-              value: _sortBy,
+              initialValue: _sortBy,
               decoration: const InputDecoration(
                 labelText: 'Sort by',
                 border: OutlineInputBorder(),
@@ -233,7 +233,7 @@ class _ReviewListState extends State<ReviewList> {
           const SizedBox(width: 12),
           Expanded(
             child: DropdownButtonFormField<int?>(
-              value: _filterByRating,
+              initialValue: _filterByRating,
               decoration: const InputDecoration(
                 labelText: 'Filter',
                 border: OutlineInputBorder(),

@@ -9,10 +9,10 @@ class ReviewListScreen extends StatefulWidget {
   final String productName;
 
   const ReviewListScreen({
-    Key? key,
+    super.key,
     required this.productId,
     required this.productName,
-  }) : super(key: key);
+  });
 
   @override
   State<ReviewListScreen> createState() => _ReviewListScreenState();
