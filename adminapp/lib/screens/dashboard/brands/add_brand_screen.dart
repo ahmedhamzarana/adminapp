@@ -68,36 +68,42 @@ class AddBrandScreen extends StatelessWidget {
                     Center(
                       child: Column(
                         children: [
-                          Container(
-                            width: 150,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: brandProvider.imageError.isEmpty
-                                    ? Colors.grey.shade300
-                                    : Colors.red,
-                              ),
-                            ),
-                            child: brandProvider.selectedImage != null
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network(
-                                      brandProvider.selectedImage!.path,
-                                      fit: BoxFit.cover,
-                                      errorBuilder: (_, _, _) => const Icon(
-                                        Icons.broken_image,
-                                        size: 50,
+                          MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: brandProvider.pickImage,
+                              child: Container(
+                                width: 150,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: brandProvider.imageError.isEmpty
+                                        ? Colors.grey.shade300
+                                        : Colors.red,
+                                  ),
+                                ),
+                                child: brandProvider.selectedImage != null
+                                    ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          brandProvider.selectedImage!.path,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, _, _) => const Icon(
+                                            Icons.broken_image,
+                                            size: 50,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      )
+                                    : const Icon(
+                                        Icons.add_a_photo_outlined,
+                                        size: 40,
                                         color: Colors.grey,
                                       ),
-                                    ),
-                                  )
-                                : const Icon(
-                                    Icons.add_a_photo_outlined,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  ),
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 10),
 
@@ -110,10 +116,7 @@ class AddBrandScreen extends StatelessWidget {
                               ),
                             ),
 
-                          ElevatedButton(
-                            onPressed: brandProvider.pickImage,
-                            child: const Text("Select Image"),
-                          ),
+     
                         ],
                       ),
                     ),

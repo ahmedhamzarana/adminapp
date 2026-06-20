@@ -65,7 +65,7 @@ class _AddProductState extends State<AddProduct> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.cancel, color: AppColors.dark),
+                      icon: Icon(Icons.cancel, color: AppColors.secondary),
                     ),
                   ],
                 ),
@@ -84,35 +84,51 @@ class _AddProductState extends State<AddProduct> {
 
                     Row(
                       children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: proProvider.proImageerror.isEmpty
-                                  ? Colors.grey.shade300
-                                  : Colors.red,
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: proProvider.pickImage,
+                            child: Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: proProvider.proImageerror.isEmpty
+                                      ? Colors.grey.shade300
+                                      : Colors.red,
+                                ),
+                              ),
+                              child: proProvider.selectedImageBytes != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.memory(
+                                        proProvider.selectedImageBytes!,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : const Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.add_a_photo_outlined,
+                                          color: Colors.grey,
+                                          size: 35,
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          "Tap to upload",
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
                           ),
-                          child: proProvider.selectedImageBytes != null
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.memory(
-                                    proProvider.selectedImageBytes!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                              : const Icon(
-                                  Icons.add_a_photo_outlined,
-                                  color: Colors.grey,
-                                ),
-                        ),
-                        const SizedBox(width: 20),
-                        ElevatedButton(
-                          onPressed: proProvider.pickImage,
-                          child: const Text("Select Image"),
                         ),
                       ],
                     ),
@@ -150,6 +166,24 @@ class _AddProductState extends State<AddProduct> {
                               errorText: proProvider.proBranderror.isEmpty
                                   ? null
                                   : proProvider.proBranderror,
+
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: AppColors.secondary, // Golden
+                                  width: 1.5,
+                                ),
+                              ),
+
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(
+                                  color: AppColors
+                                      .secondary, // Golden when focused
+                                  width: 2,
+                                ),
+                              ),
+
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
