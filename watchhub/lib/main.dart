@@ -25,7 +25,7 @@ Future<void> main() async {
 
   await Supabase.initialize(
     url: 'https://euiiocpsflqmdxazktxc.supabase.co',
-    anonKey: 'sb_publishable_SgLBnHBK4JPPwQLtpsp0WQ_lKQExzvW',
+    publishableKey: 'sb_publishable_SgLBnHBK4JPPwQLtpsp0WQ_lKQExzvW',
   );
 
   runApp(
@@ -61,12 +61,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final settings = context.watch<SettingsProvider>(); 
-
     return GetMaterialApp(
       title: 'WatchHub',
       debugShowCheckedModeBanner: false,
-
-
       initialRoute: AppRoutes.splashRoute,
       routes: AppRoutes.routes,
     );

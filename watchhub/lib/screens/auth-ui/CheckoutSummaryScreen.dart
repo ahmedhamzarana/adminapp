@@ -64,7 +64,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
               gradient: LinearGradient(
                 colors: [
                   Appconstant.appmaincolor,
-                  Appconstant.appmaincolor.withOpacity(0.7),
+                  Appconstant.appmaincolor.withValues(alpha: 0.7),
                 ],
               ),
             ),
@@ -154,7 +154,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
                                       ),
                                       decoration: BoxDecoration(
                                         color: Appconstant.barcolor
-                                            .withOpacity(0.1),
+                                            .withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
@@ -286,10 +286,10 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: Appconstant.appmaincolor.withOpacity(0.1),
+                              color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                color: Appconstant.appmaincolor.withOpacity(0.3),
+                                color: Appconstant.appmaincolor.withValues(alpha: 0.3),
                               ),
                             ),
                             child: Row(
@@ -339,7 +339,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
+                  color: Colors.black.withValues(alpha: 0.08),
                   blurRadius: 10,
                   offset: const Offset(0, -2),
                 ),
@@ -440,7 +440,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
                           ? null
                           : [
                               BoxShadow(
-                                color: Appconstant.barcolor.withOpacity(0.4),
+                                color: Appconstant.barcolor.withValues(alpha: 0.4),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -511,7 +511,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: isSelected
-            ? Appconstant.appmaincolor.withOpacity(0.08)
+            ? Appconstant.appmaincolor.withValues(alpha: 0.08)
             : Colors.grey[50],
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
@@ -542,7 +542,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Appconstant.appmaincolor.withOpacity(0.1),
+                    color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Row(
@@ -640,7 +640,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 2),
           ),
@@ -654,7 +654,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Appconstant.appmaincolor.withOpacity(0.1),
+                  color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -693,7 +693,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> with Widg
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
       decoration: BoxDecoration(
         color: isTotal
-            ? Appconstant.barcolor.withOpacity(0.08)
+            ? Appconstant.barcolor.withValues(alpha: 0.08)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(10),
       ),

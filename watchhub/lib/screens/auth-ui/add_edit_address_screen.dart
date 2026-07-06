@@ -82,7 +82,7 @@ class _AddEditAddressScreenState extends State<AddEditAddressScreen> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -265,14 +265,14 @@ class _AddEditAddressScreenState extends State<AddEditAddressScreen> {
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [mainColor, mainColor.withOpacity(0.8)],
+                  colors: [mainColor, mainColor.withValues(alpha: 0.8)],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                 ),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: mainColor.withOpacity(0.3),
+                    color: mainColor.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -355,7 +355,7 @@ class _AddEditAddressScreenState extends State<AddEditAddressScreen> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

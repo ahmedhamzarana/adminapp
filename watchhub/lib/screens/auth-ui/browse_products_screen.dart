@@ -107,7 +107,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
         ],
       ),
       body: Consumer<BrowseProductsProvider>(
-        builder: (_, provider, __) {
+        builder: (_, provider, _) {
           if (provider.isLoading) {
             return Center(
               child: Column(
@@ -198,10 +198,10 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Appconstant.appmaincolor.withOpacity(0.05),
+                  color: Appconstant.appmaincolor.withValues(alpha: 0.05),
                   border: Border(
                     bottom: BorderSide(
-                      color: Appconstant.appmaincolor.withOpacity(0.1),
+                      color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                       width: 1,
                     ),
                   ),
@@ -271,7 +271,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -330,7 +330,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withValues(alpha: 0.2),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -421,7 +421,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
     showDialog(
       context: context,
       builder: (_) => Consumer<BrowseProductsProvider>(
-        builder: (_, provider, __) => Dialog(
+        builder: (_, provider, _) => Dialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -435,7 +435,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Appconstant.appmaincolor.withOpacity(0.1),
+                        color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
@@ -462,7 +462,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
                     margin: const EdgeInsets.only(bottom: 8),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Appconstant.appmaincolor.withOpacity(0.05)
+                          ? Appconstant.appmaincolor.withValues(alpha: 0.05)
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
@@ -563,7 +563,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: Appconstant.appmaincolor.withOpacity(0.1),
+                                    color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Icon(
@@ -738,10 +738,10 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
                                     Container(
                                       padding: const EdgeInsets.all(16),
                                       decoration: BoxDecoration(
-                                        color: Appconstant.appmaincolor.withOpacity(0.03),
+                                        color: Appconstant.appmaincolor.withValues(alpha: 0.03),
                                         borderRadius: BorderRadius.circular(16),
                                         border: Border.all(
-                                          color: Appconstant.appmaincolor.withOpacity(0.2),
+                                          color: Appconstant.appmaincolor.withValues(alpha: 0.2),
                                         ),
                                       ),
                                       child: Column(
@@ -759,7 +759,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
                                                   vertical: 4,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: Appconstant.barcolor.withOpacity(0.2),
+                                                  color: Appconstant.barcolor.withValues(alpha: 0.2),
                                                   borderRadius: BorderRadius.circular(12),
                                                 ),
                                                 child: const Text(
@@ -810,7 +810,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
                               color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
+                                  color: Colors.black.withValues(alpha: 0.05),
                                   blurRadius: 10,
                                   offset: const Offset(0, -5),
                                 ),
@@ -945,7 +945,7 @@ class _BrowseProductsScreenState extends State<BrowseProductsScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Appconstant.appmaincolor.withOpacity(0.3)),
+            border: Border.all(color: Appconstant.appmaincolor.withValues(alpha: 0.3)),
           ),
           child: Text(
             'PKR $value',

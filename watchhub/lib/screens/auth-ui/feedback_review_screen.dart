@@ -126,7 +126,7 @@ class _FeedbackReviewScreenState extends State<FeedbackReviewScreen> {
                         "Help us improve by sharing your thoughts",
                         style: TextStyle(
                           fontSize: 16,
-                          color: Appconstant.barcolor.withOpacity(0.9),
+                          color: Appconstant.barcolor.withValues(alpha: 0.9),
                         ),
                         textAlign: TextAlign.center,
                       ),

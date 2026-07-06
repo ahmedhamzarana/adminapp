@@ -167,7 +167,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withValues(alpha: 0.2),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -190,7 +190,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withValues(alpha: 0.2),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -284,15 +284,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                Appconstant.barcolor.withOpacity(0.15),
-                                Appconstant.barcolor.withOpacity(0.05),
+                                Appconstant.barcolor.withValues(alpha: 0.15),
+                                Appconstant.barcolor.withValues(alpha: 0.05),
                               ],
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
                             ),
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
-                              color: Appconstant.barcolor.withOpacity(0.3),
+                              color: Appconstant.barcolor.withValues(alpha: 0.3),
                               width: 1.5,
                             ),
                           ),
@@ -409,7 +409,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     borderRadius: BorderRadius.circular(12),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.05),
+                                        color: Colors.black.withValues(alpha: 0.05),
                                         blurRadius: 8,
                                         offset: const Offset(0, 2),
                                       ),
@@ -429,7 +429,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         ),
                                         decoration: BoxDecoration(
                                           color: Appconstant.barcolor
-                                              .withOpacity(0.1),
+                                              .withValues(alpha: 0.1),
                                           borderRadius: BorderRadius.circular(
                                             8,
                                           ),
@@ -517,10 +517,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Appconstant.appmaincolor.withOpacity(0.05),
+                            color: Appconstant.appmaincolor.withValues(alpha: 0.05),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: Appconstant.appmaincolor.withOpacity(0.2),
+                              color: Appconstant.appmaincolor.withValues(alpha: 0.2),
                               width: 1,
                             ),
                           ),
@@ -803,7 +803,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 15,
                     offset: const Offset(0, -5),
                   ),
@@ -850,7 +850,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: Appconstant.appmaincolor.withOpacity(0.1),
+                              color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
@@ -938,7 +938,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           gradient: LinearGradient(
                             colors: [
                               Appconstant.appmaincolor,
-                              Appconstant.appmaincolor.withOpacity(0.85),
+                              Appconstant.appmaincolor.withValues(alpha: 0.85),
                             ],
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
@@ -946,7 +946,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           borderRadius: BorderRadius.circular(14),
                           boxShadow: [
                             BoxShadow(
-                              color: Appconstant.appmaincolor.withOpacity(0.4),
+                              color: Appconstant.appmaincolor.withValues(alpha: 0.4),
                               blurRadius: 12,
                               offset: const Offset(0, 6),
                             ),
@@ -1057,7 +1057,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
+                      color: Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(
@@ -1090,7 +1090,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Appconstant.appmaincolor.withOpacity(0.1),
+                      color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
@@ -1192,7 +1192,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Appconstant.appmaincolor.withOpacity(0.1),
+                      color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(
@@ -1226,10 +1226,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.1),
+                          color: Colors.green.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: Colors.green.withOpacity(0.3),
+                            color: Colors.green.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Row(

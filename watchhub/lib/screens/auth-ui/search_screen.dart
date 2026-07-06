@@ -192,7 +192,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Center(
+                errorBuilder: (_, _, _) => Center(
                   child: Icon(Icons.watch,
                       size: 40, color: Colors.grey[400]),
                 ),

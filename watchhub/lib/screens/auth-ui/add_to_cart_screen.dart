@@ -87,7 +87,7 @@ class CartScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -209,7 +209,7 @@ class CartScreen extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 12,
             offset: const Offset(0, -5),
           ),
@@ -245,13 +245,13 @@ class CartScreen extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       Appconstant.barcolor,
-                      Appconstant.barcolor.withOpacity(0.85),
+                      Appconstant.barcolor.withValues(alpha: 0.85),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Appconstant.barcolor.withOpacity(0.4),
+                      color: Appconstant.barcolor.withValues(alpha: 0.4),
                       blurRadius: 12,
                       offset: const Offset(0, 6),
                     ),

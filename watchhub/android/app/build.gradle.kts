@@ -6,7 +6,10 @@ plugins {
 
 android {
     namespace = "com.example.watchhub"
-    compileSdk = flutter.compileSdkVersion
+
+    // FORCE STABLE SDK (IMPORTANT FIX)
+    compileSdk = 36
+
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -20,8 +23,12 @@ android {
 
     defaultConfig {
         applicationId = "com.example.watchhub"
+
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+
+        // FORCE SAME STABLE SDK
+        targetSdk = 36
+
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }

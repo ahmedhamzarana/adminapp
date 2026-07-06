@@ -118,7 +118,7 @@ class _RunningOrdersWidgetState extends State<RunningOrdersWidget> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -144,7 +144,7 @@ class _RunningOrdersWidgetState extends State<RunningOrdersWidget> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: _getStatusColor(order.status).withOpacity(0.1),
+                  color: _getStatusColor(order.status).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: _getStatusColor(order.status),

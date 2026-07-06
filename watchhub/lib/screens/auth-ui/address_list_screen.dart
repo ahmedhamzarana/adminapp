@@ -199,7 +199,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Appconstant.appmaincolor.withOpacity(0.1),
+                            color: Appconstant.appmaincolor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Row(
@@ -263,7 +263,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Appconstant.barcolor.withOpacity(0.1),
+                  color: Appconstant.barcolor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: IconButton(
@@ -288,7 +288,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
               const SizedBox(width: 8),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
+                  color: Colors.red.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: IconButton(
@@ -392,7 +392,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: Colors.red.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
